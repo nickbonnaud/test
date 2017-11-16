@@ -11,6 +11,8 @@ use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Model;
 
+use Illuminate\Support\Facades\Log;
+
 class Post extends Model {
 
 	protected $fillable = [ 'message', 'event_date', 'title', 'body', 'deal_item', 'end_date', 'price', 'insta_post_id', 'social_photo_url', 'fb_post_id'];
@@ -102,6 +104,7 @@ class Post extends Model {
   }
 
   public static function processPostFacebook($entry, $profile) {
+    Log::info($entry);
     foreach ($entry['changes'] as $postItem) {
       if ($postItem['field'] == 'feed') {
         $post = $postItem['value'];
