@@ -157,7 +157,6 @@ class Post extends Model {
         }
       }
       $event = json_decode($response->getBody());
-      dd($event);
       self::createEvent($event, $profile);
     }
   }
@@ -171,12 +170,13 @@ class Post extends Model {
     ]);
 
     $url = self::getEventPhoto($event->id, $profile);
+    dd($url);
     $event->social_photo_url = $url;
     $profile->posts()->save($event);
   }
 
   public static function getEventPhoto($eventId, $profile) {
-    $client = new Client(['base_uri' => 'https://graph.facebook.com/v2.11']);
+    $client = new Client(['base_uri' => 'https://graph.facebook.com/v2.11/']);
       try {
         $response = $client->request('GET', $eventId . '/picture', [
           'query' => ['redirect' => '0', 'access_token' => $profile->fb_app_id]
