@@ -1,0 +1,55 @@
+<?php
+
+namespace Tests\Feature;
+
+use Tests\TestCase;
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+
+class ApiTransactionTest extends TestCase
+{
+	use RefreshDatabase;
+
+	function test_unauthorized_users_cannot_retrieve_users_recent_transactions() {
+		$this->withExceptionHandling();
+		Notification::fake();
+		$user = create('App\User');
+		$profile = create('App\Profile');
+
+		$transaction = create('App\Transaction', ['profile_id' => $profile->id, 'user_id' => $user->id, 'paid' => true, 'refund_full' => false, 'status' => 20, ]);
+
+		$this->json('GET', '/api/mobile/transactions?recent=1')->assertStatus(401);
+	}
+
+	function test_a_user_not_owning_transactions_cannot_retrieve_transactions() {
+		Notification::fake();
+		$user = create('App\User');
+		$unAuthorizedUser = create('App\User');
+
+		$profile = create('App\Profile');
+
+		$transaction = create('App\Transaction', ['profile_id' => $profile->id, 'user_id' => $user->id, 'paid' => true, 'refund_full' => false, 'status' => 20, ]);
+
+		$response = $this->get('/api/mobile/transactions?recent=1', $this->headers($unAuthorizedUser))->getData();
+		$this->assertCount(0, $response->data);
+	}
+
+	function test_a_user_owning_transactions_can_retrieve_transactions() {
+		Notification::fake();
+		$user = create('App\User');
+		$photo = create('App\Photo');
+		$profile = create('App\Profile', ['logo_photo_id' => $photo->id]);
+		$transaction = create('App\Transaction', ['profile_id' => $profile->id, 'user_id' => $user->id, 'paid' => true, 'refund_full' => false, 'status' => 20, ]);
+
+		$profileOne = create('App\Profile', ['logo_photo_id' => $photo->id]);
+		$transaction = create('App\Transaction', ['profile_id' => $profileOne->id, 'user_id' => $user->id, 'paid' => true, 'refund_full' => false, 'status' => 20, ]);
+
+		$notUser = create('App\User');
+		$transactionNotUser = create('App\Transaction', ['profile_id' => $profileOne->id, 'user_id' => $notUser
+			->id, 'paid' => true, 'refund_full' => false, 'status' => 20, ]);
+
+
+		$response = $this->get('/api/mobile/transactions?recent=1', $this->headers($user))->getData();
+		$this->assertCount(2, $response->data);
+	}
+}

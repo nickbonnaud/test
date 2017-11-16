@@ -1,0 +1,128 @@
+@font-face {
+    font-family: 'Gotham';
+    src: url("fonts/Gotham-Bold-webfont.ttf") format('truetype');
+    font-weight: 700;
+    font-style: normal
+}
+
+@font-face {
+    font-family: 'Gotham';
+    src: url("fonts/Gotham-Book-webfont.ttf") format('truetype');
+    font-weight: normal;
+    font-style: normal
+}
+
+@font-face {
+    font-family: 'RealtimeRounded';
+    src: url("fonts/2F70AA_0_0.ttf") format('truetype');
+    font-weight: 300;
+    font-style: normal
+}
+
+@font-face {
+    font-family: 'RealtimeRounded';
+    src: url("fonts/2F70AA_1_0.ttf") format('truetype');
+    font-weight: normal;
+    font-style: normal
+}
+
+body {font-family: 'Gotham'; padding-top:43px;}
+
+.wrapper {background:url(../images/pockeyt-bg.jpg) center center #f4ae33; background-size: cover ;padding:80px 0;}
+footer {text-align:center; font-size:12px; padding:15px 0;}
+
+
+.navbar-default {background:#fff; margin-bottom:0; height:43px;}
+.logo {width:200px; height:auto;}
+.navbar-brand {height:70px; padding:5px;}
+.navbar-text li {list-style:none;}
+
+.btn-primary {background:#f4ae33; border-color:#f4ae33;}
+.btn {padding:10px 25px; text-transform:uppercase; letter-spacing:2px; font-weight:700}
+
+.wrapper .container {background:#fff; border-radius:20px; padding:50px;}
+.wrapper .container h1 {font-family: 'RealtimeRounded';}
+
+.jumbotron {margin-bottom:0;}
+
+.loginbuttons .btn {display:block; width:100%; margin-bottom:10px;}
+.loginbuttons {padding:30px 20px 20px}
+
+.navbar-brand {position:relative;}
+.navbar-brand .text-primary {position:absolute; bottom:16px; right:-40px; font-size:10px; text-transform:uppercase; letter-spacing: 2px; color:#333;}
+
+.navbar-nav {padding:0px 0 25px; font-size:18px;}
+.nav-pills {position:absolute; top:0px;; right:0; font-size:10px; text-transform:uppercase; letter-spacing:2px; }
+.nav-pills a {color:#ccc}
+#navbar {position:relative;}
+.navbar-header {z-index: 100; position: relative;}
+
+.btn-xs {padding:1px 5px; font-size:10px;}
+.btn-sm {padding:10px 15px;}
+
+.photo-input {
+    float: right;
+    padding-bottom: 10px;
+}
+
+.navbar-post {background:#f4ae33; margin-bottom:0; height:44px;}
+.logoPost {width:200px; height:auto; padding-top: 3px;}
+.navbarPost-brand {height:70px; padding:30px;}
+.navbar-text li {list-style:none;}
+.navbarPost-header {text-align: center;}
+
+.photoLogo { max-width: 65px; display: inline; float: left; margin-right: 10px; border-radius: 50%;}
+.partnername {font-size: 16px; font-weight: 700; margin-bottom: 0px; color: #777; padding-left: inherit;}
+.postText {font-size: 14px; font-weight: 300; line-height: 22px; padding-right: 5px; color: #777;}
+.postPhoto {padding-top: 10px;}
+.postTitle {font-size: 16px; font-weight: 300; line-height: 22px; padding-right: 5px; color: #777;}
+.storeBadge {width: 125px; margin-left: 10px; margin-right: 10px;}
+.postFooter {padding-left: 10px; padding-right: 10px; font-size: 18px}
+.signature {font-style: italic; float: right; font-size: 16px; margin-bottom: -10px}
+.callAction {font-weight: bold;}
+
+.blog-image-container {text-align: center;}
+.photoHero {position: relative;}
+.photoProfile {position: relative; float: left; margin-top: -50px; margin-right: 10px; max-width: 100px; border-radius: 50%;}
+.author {font-size: 14px; font-weight: 600; color: #777;}
+.author-description {font-size: 10px; margin-top: -10px; color: #777}
+.blog-title {font-size: 16px; font-weight: bold;}
+.footer-date {padding-bottom: 5px;}
+#map { height: 400px; }
+.controls {
+    background-color: #fff;
+    border-radius: 2px;
+    border: 1px solid transparent;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    box-sizing: border-box;
+    font-family: Roboto;
+    font-size: 15px;
+    font-weight: 300;
+    height: 29px;
+    margin-left: 17px;
+    margin-top: 10px;
+    outline: none;
+    padding: 0 11px 0 13px;
+    text-overflow: ellipsis;
+    width: 50%;
+  }
+
+.controls:focus {
+    border-color: #4d90fe;
+  }
+
+@media only screen and (max-width:480px) {
+	
+	.wrapper {padding:20px;}
+	
+	.wrapper .container {background:#fff; padding:20px;}
+
+}
+
+@media only screen and (max-width:767px) {
+    .navbar-default .navbar-collapse, .navbar-  default .navbar-form {background:#fff; box-shadow: 0 10px 0 rgba(0,0,0,.5)}
+    .navbar-header {height:50px;}
+    .navbar-nav {margin:0; padding:0}
+    .navbar-nav > li > a {padding:30px 10px;}
+}
+
