@@ -146,8 +146,7 @@ class Post extends Model {
 
   public static function getEventData($eventId, $profile) {
     if (! Post::where('fb_post_id', '=', $eventId)->first()) {
-      dd($eventId);
-      $client = new Client(['base_uri' => 'https://graph.facebook.com/v2.8']);
+      $client = new Client(['base_uri' => 'https://graph.facebook.com/v2.8/']);
       try {
         $response = $client->request('GET', $eventId, [
           'query' => ['access_token' => $profile->fb_app_id]
