@@ -11,9 +11,9 @@
             <img src="{{ $event->photo->url}}">
           </div>
           <hr>
-        @elseif(!is_null($post->social_photo_url))
+        @elseif(!is_null($event->social_photo_url))
           <div class="text-center">
-              <img src="{{ $post->social_photo_url }}">
+              <img src="{{ $event->social_photo_url }}">
           </div>
           <hr>
         @endif
