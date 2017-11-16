@@ -162,17 +162,16 @@ class Post extends Model {
   }
 
   public static function createEvent($event, $profile) {
-    dd($event->id);
+    $url = self::getEventPhoto($event->id, $profile);
     $post = new Post([
       'fb_post_id' => $event->id,
       'title' => $event->name,
       'body' => $event->description,
       'event_date' => date('Y-m-d', strtotime($event->start_time)),
+      'social_photo_url' => $url
     ]);
-
-    $url = self::getEventPhoto($event->id, $profile);
-    $event->social_photo_url = $url;
-    $profile->posts()->save($event);
+    dd($post);
+    $profile->posts()->save($post);
   }
 
   public static function getEventPhoto($eventId, $profile) {
