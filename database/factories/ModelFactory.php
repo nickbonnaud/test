@@ -41,11 +41,11 @@ $factory->define(App\Profile::class, function ($faker) {
 
 $factory->define(App\Tax::class, function () {
   return [
-    'county' => 'wake',
+    'county' => 'wake county',
 		'state' => 'nc',
-		'county_tax' => 100,
-		'state_tax' => 100,
-    'total' => 200
+		'county_tax' => 250,
+		'state_tax' => 475,
+    'total' => 725
   ];
 });
 

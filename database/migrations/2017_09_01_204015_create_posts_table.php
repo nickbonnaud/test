@@ -18,7 +18,7 @@ class CreatePostsTable extends Migration
             $table->integer('profile_id')->unsigned();
             $table->foreign('profile_id')->references('id')->on('profiles')->onDelete('cascade');
             $table->string('title')->nullable();
-            $table->string('body')->nullable();
+            $table->text('body')->nullable();
             $table->text('message')->nullable();
             $table->string('fb_post_id')->nullable();
             $table->string('insta_post_id')->nullable();
