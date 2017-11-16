@@ -50,12 +50,11 @@ Route::post('posts/{profile}', 'PostsController@store')->name('posts.store');
 Route::delete('posts/{post}', 'PostsController@destroy')->name('posts.destroy');
 
 // Events routes
+Route::get('events/test', 'EventsController@getEvents');
 Route::get('events/{profile}/{post}', 'EventsController@show')->name('events.show');
 Route::get('events/{profile}', 'EventsController@index')->name('events.profile');
 Route::post('events/{profile}', 'EventsController@store')->name('events.store');
 Route::delete('events/{post}', 'EventsController@destroy')->name('events.destroy');
-
-Route::get('events/test', 'EventsController@getEvents');
 
 // Deals routes
 Route::get('deals/{profile}/{post}', 'DealsController@show')->name('deals.show');
