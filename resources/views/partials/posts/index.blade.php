@@ -12,6 +12,11 @@
               <img src="{{ $post->photo->url }}">
           </div>
           <hr>
+        @elseif(!is_null($post->social_photo_url))
+          <div class="text-center">
+              <img src="{{ $post->social_photo_url }}">
+          </div>
+          <hr>
         @endif
         {{ $post->published_at->diffForHumans() }}
         by
