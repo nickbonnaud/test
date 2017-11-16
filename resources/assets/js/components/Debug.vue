@@ -5,8 +5,10 @@
 	export default {
 
 		mounted() {
+      console.log("hello");
 			Echo.private('debug')
         .listen('Debug', (event) => {
+          console.log(event);
           this.debugLog(event);
         });
 		},

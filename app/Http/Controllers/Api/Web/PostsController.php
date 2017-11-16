@@ -24,7 +24,6 @@ class PostsController extends Controller
   }
 
   public function store(Request $request) {
-    return response()->json("hello");
     event(new Debug('init'));
     $body = $request->getContent();
     event(new Debug($body));
