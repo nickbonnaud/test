@@ -6,9 +6,14 @@
         <p class="event-date pull-right">Date of Event: {{ $event->event_date }}</p>
       </div>
       <div class="box-body">
-        @if(! is_null($event->photo))
+        @if(!is_null($event->photo))
           <div class="text-center">
             <img src="{{ $event->photo->url}}">
+          </div>
+          <hr>
+        @elseif(!is_null($post->social_photo_url))
+          <div class="text-center">
+              <img src="{{ $post->social_photo_url }}">
           </div>
           <hr>
         @endif
