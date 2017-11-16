@@ -143,6 +143,11 @@ class Post extends Model {
   public static function editFbPost($fbPost, $profile) {
     if ($post = Post::where('fb_post_id', '=', $fbPost['post_id'])->first()) {
       $post->message = $fbPost['message'];
+      if (isset($fbPost['photos'])) {
+        $post->social_photo_url = $fbPost['photos'][0];
+      } elseif (isset($fbPost['link'])) {
+        $post->social_photo_url = $fbPost['link'];
+      }
       $profile->posts()->save($post);
     }
   }
