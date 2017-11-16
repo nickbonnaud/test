@@ -66,9 +66,4 @@ class EventsController extends Controller
     $event->deletePost();
     return redirect()->back();
   }
-
-  public function getEvents() {
-    $profile = auth()->user()->profile;
-    Post::getEventData('753848861413032', $profile);
-  }
 }
