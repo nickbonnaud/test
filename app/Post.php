@@ -155,6 +155,7 @@ class Post extends Model {
         }
       }
       $event = json_decode($response->getBody());
+      dd($event);
       self::createEvent($event, $profile);
     }
   }
