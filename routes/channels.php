@@ -30,7 +30,6 @@ Broadcast::channel('transaction-error.{profile}', function ($user, Profile $prof
 });
 
 Broadcast::channel('transactions-change.{profile}', function ($user, Profile $profile) {
-	dd($profile);
   return $user->profile->slug === $profile->slug;
 });
 
@@ -40,8 +39,4 @@ Broadcast::channel('transaction-success.{profile}', function ($user, Profile $pr
 
 Broadcast::channel('bill-push-success.{profile}', function ($user, Profile $profile) {
   return $user->profile->slug === $profile->slug;
-});
-
-Broadcast::channel('debug', function () {
-  return true;
 });

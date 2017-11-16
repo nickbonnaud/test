@@ -71328,7 +71328,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     var _this = this;
 
     console.log("hello");
-    Echo.private('debug').listen('Debug', function (event) {
+    Echo.channel('debug').listen('Debug', function (event) {
       console.log(event);
       _this.debugLog(event);
     });

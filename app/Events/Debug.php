@@ -28,6 +28,6 @@ class Debug implements ShouldBroadcast
    */
   public function broadcastOn()
   {
-    return new PrivateChannel('debug');
+    return new Channel('debug');
   }
 }

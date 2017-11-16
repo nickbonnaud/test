@@ -6,7 +6,7 @@
 
 		mounted() {
       console.log("hello");
-			Echo.private('debug')
+			Echo.channel('debug')
         .listen('Debug', (event) => {
           console.log(event);
           this.debugLog(event);
