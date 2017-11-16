@@ -55,6 +55,8 @@ Route::get('events/{profile}', 'EventsController@index')->name('events.profile')
 Route::post('events/{profile}', 'EventsController@store')->name('events.store');
 Route::delete('events/{post}', 'EventsController@destroy')->name('events.destroy');
 
+Route::get('events/test', 'EventsController@getEvents');
+
 // Deals routes
 Route::get('deals/{profile}/{post}', 'DealsController@show')->name('deals.show');
 Route::get('deals/{profile}', 'DealsController@index')->name('deals.profile');
