@@ -6,7 +6,6 @@ use App\Profile;
 use App\Post;
 use Illuminate\Http\Request;
 use App\Filters\PostFilters;
-use App\Events\Debug;
 use App\Http\Controllers\Controller;
 
 class PostsController extends Controller
@@ -24,9 +23,7 @@ class PostsController extends Controller
   }
 
   public function store(Request $request) {
-    event(new Debug('init'));
     $body = $request->getContent();
-    event(new Debug($body));
     $isFacebook = false;
     if ($request->is('*/facebook')) {
       $isFacebook = true;

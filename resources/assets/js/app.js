@@ -23,7 +23,6 @@ Vue.component('sidebar-pending', require('./components/SidebarPending.vue'));
 Vue.component('sidebar-finalized', require('./components/SidebarFinalized.vue'));
 Vue.component('transactions-change', require('./components/TransactionsChange.vue'));
 Vue.component('input-money', require('./components/InputMoney.vue'));
-Vue.component('debug', require('./components/Debug.vue'));
 
 
 Vue.component('create-loyalty', require('./pages/CreateLoyalty.vue'));

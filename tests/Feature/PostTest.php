@@ -5,8 +5,6 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use App\Post;
 use App\Profile;
-use Illuminate\Support\Facades\Event;
-use App\Events\Debug;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -127,14 +125,5 @@ class PostTest extends TestCase
 		$this->assertDatabaseMissing('posts', ['id' => $post->id]);
 		$this->assertDatabaseMissing('photos', ['name' => $post->photo_name]);
 		Storage::disk('public')->assertMissing('public/images/photos/' . $file->hashName());
-	}
-
-	function test_facebook_can_send_posts_to_endpoint() {
-		$profile = create('App\Profile');
-		$data = [
-			'message' => "something"
-		];
-
-		$this->json('POST', "api/web/posts/subscriptions/facebook", $data);
 	}
 }

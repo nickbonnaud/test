@@ -215,7 +215,6 @@
     <transactions-change profile-slug="{{ $profile->slug }}"></transactions-change>
     <transaction-success profile-slug="{{ $profile->slug }}"></transaction-success>
     <customer-request-bill profile-slug="{{ $profile->slug }}"></customer-request-bill>
-    <debug></debug>
 
   </div>
     <!-- ./wrapper -->

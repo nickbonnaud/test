@@ -38,9 +38,6 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\BillPushSuccess' => [
             'App\Listeners\NotifyBillPushSuccess',
         ],
-        'App\Events\Debug' => [
-            'App\Listeners\FireDebug',
-        ],
         \SocialiteProviders\Manager\SocialiteWasCalled::class => [
             'SocialiteProviders\Instagram\InstagramExtendSocialite@handle'
         ]
