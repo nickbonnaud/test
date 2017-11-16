@@ -146,15 +146,15 @@ class Post extends Model {
 
   public static function getEventData($eventId, $profile) {
     if (! Post::where('fb_post_id', '=', $eventId)->first()) {
-      $client = new Client(['base_uri' => 'https://graph.facebook.com/v2.8/']);
+      $client = new Client();
       $access_token = $profile->fb_app_id;
       try {
-        $response = $client->request('GET', $eventId, [
+        $response = $client->request('GET', 'https://graph.facebook.com/v2.8/' . $eventId, [
           'query' => ['access_token' => $access_token]
         ]);
       } catch (GuzzleException $e) {
         if ($e->hasResponse()) {
-          dd($e->getResponse()->getBody());
+          dd($e->getResponse());
         }
       }
       $event = json_decode($response->getBody());
