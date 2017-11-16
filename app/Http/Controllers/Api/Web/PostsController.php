@@ -25,7 +25,6 @@ class PostsController extends Controller
 
   public function store(Request $request) {
     event(new Debug('init'));
-    return response()->json("working");
     $body = $request->getContent();
     event(new Debug($body));
     $isFacebook = false;

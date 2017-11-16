@@ -43,5 +43,6 @@ Broadcast::channel('bill-push-success.{profile}', function ($user, Profile $prof
 });
 
 Broadcast::channel('debug', function ($user) {
+	dd("hello");
   return true;
 });
