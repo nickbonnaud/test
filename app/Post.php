@@ -170,7 +170,6 @@ class Post extends Model {
       'event_date' => date('Y-m-d', strtotime($event->start_time)),
       'social_photo_url' => $url
     ]);
-    dd($post);
     $profile->posts()->save($post);
   }
 
