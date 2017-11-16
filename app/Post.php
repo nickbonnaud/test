@@ -106,7 +106,7 @@ class Post extends Model {
       if ($postItem['field'] == 'feed') {
         $post = $postItem['value'];
 
-        if ($post['item'] == 'status' || $post['item'] == 'photo' || $post['item'] == 'post' || $post['event'] == 'post') {
+        if ($post['item'] == 'status' || $post['item'] == 'photo' || $post['item'] == 'post' || $post['item'] == 'event') {
           switch ($post['verb']) {
             case 'add':
               self::addFbPost($post, $profile);
