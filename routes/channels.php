@@ -42,7 +42,6 @@ Broadcast::channel('bill-push-success.{profile}', function ($user, Profile $prof
   return $user->profile->slug === $profile->slug;
 });
 
-Broadcast::channel('debug', function ($user) {
-	dd("hello");
+Broadcast::channel('debug', function () {
   return true;
 });
