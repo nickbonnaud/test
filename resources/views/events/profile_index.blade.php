@@ -16,7 +16,9 @@
 			<div class="col-md-6 col-sm-6 col-xs-12">
 				<div class="box box-primary">
 					<div class="box-header with-border">
-						<h3 class="box-title">Create a New Event</h3>
+						<a href="{{ action('EventsController@getEvents') }}">
+							<h3 class="box-title">Create a New Event</h3>
+						</a>
 					</div>
 						@include ('errors.form')
 						@include('partials.events.form_create')

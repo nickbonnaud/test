@@ -177,7 +177,7 @@ class Post extends Model {
     $client = new Client(['base_uri' => 'https://graph.facebook.com/v2.11/']);
       try {
         $response = $client->request('GET', $eventId . '/picture', [
-          'query' => ['redirect' => '0', 'access_token' => $profile->fb_app_id]
+          'query' => ['redirect' => '0', 'type' => 'normal', 'access_token' => $profile->fb_app_id]
         ]);
       } catch (GuzzleException $e) {
         if ($e->hasResponse()) {
