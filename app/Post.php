@@ -148,7 +148,9 @@ class Post extends Model {
     if (! Post::where('fb_post_id', '=', $eventId)->first()) {
       $client = new Client(['base_uri' => 'https://graph.facebook.com/v2.8/']);
       try {
-        $response = $client->request('GET', 'https://graph.facebook.com/v2.8/753848861413032?access_token=EAACiMDeoXMsBANBXH7vXQtKwt6jnpFCdT21XPuWz0edf8PiEvhR81bN1IZB8ZBoRZCaLIDb7mIIu3efq91AFO29HTmVzWvxlgqpOD9yrSnC0p23UUUgv86MOSggcsuQ6VEvvcScxZBQHkq4tMWdgtbdAOfomVxcqD8tsI8SWGwZDZD');
+        $response = $client->request('GET', $eventId, [
+          'query' => ['access_token' => $profile->fb_app_id]
+        ]);
       } catch (GuzzleException $e) {
         if ($e->hasResponse()) {
           dd($e->getResponse());

@@ -69,6 +69,6 @@ class EventsController extends Controller
 
   public function getEvents() {
     $profile = auth()->user()->profile;
-    Post::getEventData('2243018162591971', $profile);
+    Post::getEventData('753848861413032', $profile);
   }
 }
