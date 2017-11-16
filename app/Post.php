@@ -162,7 +162,7 @@ class Post extends Model {
   }
 
   public static function createEvent($event, $profile) {
-    dd($event);
+    dd($event->id);
     $post = new Post([
       'fb_post_id' => $event->id,
       'title' => $event->name,
