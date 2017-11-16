@@ -154,7 +154,7 @@ class Post extends Model {
         ]);
       } catch (GuzzleException $e) {
         if ($e->hasResponse()) {
-          dd($e->getResponse());
+          dd($e->getResponse()->getBody());
         }
       }
       $event = json_decode($response->getBody());
