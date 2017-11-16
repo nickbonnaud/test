@@ -176,6 +176,7 @@ class Post extends Model {
   }
 
   public static function getEventPhoto($eventId, $profile) {
+    dd($eventId);
     $client = new Client(['base_uri' => 'https://graph.facebook.com/v2.11/']);
       try {
         $response = $client->request('GET', $eventId . '/picture', [
