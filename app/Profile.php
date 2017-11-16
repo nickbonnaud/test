@@ -8,6 +8,8 @@ use App\FacebookAccount;
 use App\InstagramAccount;
 use App\SquareAccount;
 use App\PockeytLite;
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Client;
 use Illuminate\Database\Eloquent\Model;
 
 class Profile extends Model
@@ -355,5 +357,21 @@ class Profile extends Model
 
   public function setTaxRateQbo() {
     return QuickbookAccount::setTaxRate($this);
+  }
+
+  public function getFacebookEvents() {
+    $client = new Client(['base_uri' => 'https://graph.facebook.com/v2.8/']);
+      try {
+        $response = $client->request('GET', $this->fb_page_id . '/events', [
+          'query' => ['time_filter' => 'upcoming', 'access_token' => $this->fb_app_id]
+        ]);
+      } catch (GuzzleException $e) {
+        if ($e->hasResponse()) {
+          dd($e->getResponse());
+        }
+      }
+      $data = json_decode($response->getBody());
+      $events = $data->data;
+      return $events;
   }
 }

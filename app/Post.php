@@ -11,8 +11,6 @@ use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Model;
 
-use Illuminate\Support\Facades\Log;
-
 class Post extends Model {
 
 	protected $fillable = [ 'message', 'event_date', 'title', 'body', 'deal_item', 'end_date', 'price', 'insta_post_id', 'social_photo_url', 'fb_post_id'];
@@ -104,12 +102,11 @@ class Post extends Model {
   }
 
   public static function processPostFacebook($entry, $profile) {
-    Log::info($entry);
     foreach ($entry['changes'] as $postItem) {
       if ($postItem['field'] == 'feed') {
         $post = $postItem['value'];
 
-        if ($post['item'] == 'status' || $post['item'] == 'photo' || $post['item'] == 'post' || $post['item'] == 'event') {
+        if ($post['item'] == 'status' || $post['item'] == 'photo' || $post['item'] == 'post') {
           switch ($post['verb']) {
             case 'add':
               self::addFbPost($post, $profile);
@@ -129,66 +126,18 @@ class Post extends Model {
   }
 
   public static function addFbPost($fbPost, $profile) {
-    if (isset($fbPost['event_id'])) {
-      self::getEventData($fbPost['event_id'], $profile);
-    } else {
-       if (! Post::where('fb_post_id', '=', $fbPost['post_id'])->first()) {
-        $post = new Post([
-          'fb_post_id' => $fbPost['post_id'],
-          'message' => isset($fbPost['message']) ? $fbPost['message'] : "Recently added photo",
-        ]);
-        if (isset($fbPost['photos'])) {
-          $post->social_photo_url = $fbPost['photos'][0];
-        } elseif (isset($fbPost['link'])) {
-          $post->social_photo_url = $fbPost['link'];
-        }
-        $profile->posts()->save($post);
+     if (! Post::where('fb_post_id', '=', $fbPost['post_id'])->first()) {
+      $post = new Post([
+        'fb_post_id' => $fbPost['post_id'],
+        'message' => isset($fbPost['message']) ? $fbPost['message'] : "Recently added photo",
+      ]);
+      if (isset($fbPost['photos'])) {
+        $post->social_photo_url = $fbPost['photos'][0];
+      } elseif (isset($fbPost['link'])) {
+        $post->social_photo_url = $fbPost['link'];
       }
+      $profile->posts()->save($post);
     }
-  }
-
-  public static function getEventData($eventId, $profile) {
-    if (! Post::where('fb_post_id', '=', $eventId)->first()) {
-      $client = new Client(['base_uri' => 'https://graph.facebook.com/v2.8/']);
-      try {
-        $response = $client->request('GET', $eventId, [
-          'query' => ['access_token' => $profile->fb_app_id]
-        ]);
-      } catch (GuzzleException $e) {
-        if ($e->hasResponse()) {
-          dd($e->getResponse());
-        }
-      }
-      $event = json_decode($response->getBody());
-      self::createEvent($event, $profile);
-    }
-  }
-
-  public static function createEvent($event, $profile) {
-    $url = self::getEventPhoto($event->id, $profile);
-    $post = new Post([
-      'fb_post_id' => $event->id,
-      'title' => $event->name,
-      'body' => $event->description,
-      'event_date' => date('Y-m-d', strtotime($event->start_time)),
-      'social_photo_url' => $url
-    ]);
-    $profile->posts()->save($post);
-  }
-
-  public static function getEventPhoto($eventId, $profile) {
-    $client = new Client(['base_uri' => 'https://graph.facebook.com/v2.11/']);
-      try {
-        $response = $client->request('GET', $eventId . '/picture', [
-          'query' => ['redirect' => '0', 'type' => 'large', 'access_token' => $profile->fb_app_id]
-        ]);
-      } catch (GuzzleException $e) {
-        if ($e->hasResponse()) {
-          dd($e->getResponse());
-        }
-      }
-      $photo = json_decode($response->getBody());
-      return $photo->data->url;
   }
 
   public static function editFbPost($fbPost, $profile) {
@@ -245,5 +194,32 @@ class Post extends Model {
 
       $profile->posts()->save($post);
     }
+  }
+
+  public static function createEvent($event, $profile) {
+    $url = self::getEventPhoto($event->id, $profile);
+    $post = new Post([
+      'fb_post_id' => $event->id,
+      'title' => $event->name,
+      'body' => $event->description,
+      'event_date' => date('Y-m-d', strtotime($event->start_time)),
+      'social_photo_url' => $url
+    ]);
+    $profile->posts()->save($post);
+  }
+
+  public static function getEventPhoto($eventId, $profile) {
+    $client = new Client(['base_uri' => 'https://graph.facebook.com/v2.11/']);
+      try {
+        $response = $client->request('GET', $eventId . '/picture', [
+          'query' => ['redirect' => '0', 'type' => 'large', 'access_token' => $profile->fb_app_id]
+        ]);
+      } catch (GuzzleException $e) {
+        if ($e->hasResponse()) {
+          dd($e->getResponse());
+        }
+      }
+      $photo = json_decode($response->getBody());
+      return $photo->data->url;
   }
 }

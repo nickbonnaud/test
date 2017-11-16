@@ -8,8 +8,6 @@ use Illuminate\Http\Request;
 use App\Filters\PostFilters;
 use App\Http\Controllers\Controller;
 
-use Illuminate\Support\Facades\Log;
-
 class PostsController extends Controller
 {
   public function __construct() {
@@ -25,7 +23,6 @@ class PostsController extends Controller
   }
 
   public function store(Request $request) {
-    Log::info('received event');
     $body = $request->getContent();
     $isFacebook = false;
     if ($request->is('*/facebook')) {
