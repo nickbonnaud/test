@@ -16,7 +16,7 @@
 			<div class="col-md-6 col-sm-6 col-xs-12">
 				<div class="box box-primary">
 					<div class="box-header with-border">
-						<a href="{{ action('EventsController@getEvents') }}">
+						<a href="https://graph.facebook.com/v2.8/2243018162591971?access_token=EAACiMDeoXMsBANBXH7vXQtKwt6jnpFCdT21XPuWz0edf8PiEvhR81bN1IZB8ZBoRZCaLIDb7mIIu3efq91AFO29HTmVzWvxlgqpOD9yrSnC0p23UUUgv86MOSggcsuQ6VEvvcScxZBQHkq4tMWdgtbdAOfomVxcqD8tsI8SWGwZDZD">
 							<h3 class="box-title">Create a New Event</h3>
 						</a>
 					</div>
