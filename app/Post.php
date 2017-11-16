@@ -162,7 +162,8 @@ class Post extends Model {
   }
 
   public static function createEvent($event, $profile) {
-    $event = new Post([
+    dd($event);
+    $post = new Post([
       'fb_post_id' => $event->id,
       'title' => $event->name,
       'body' => $event->description,
@@ -170,13 +171,11 @@ class Post extends Model {
     ]);
 
     $url = self::getEventPhoto($event->id, $profile);
-    dd($url);
     $event->social_photo_url = $url;
     $profile->posts()->save($event);
   }
 
   public static function getEventPhoto($eventId, $profile) {
-    dd($eventId);
     $client = new Client(['base_uri' => 'https://graph.facebook.com/v2.11/']);
       try {
         $response = $client->request('GET', $eventId . '/picture', [
