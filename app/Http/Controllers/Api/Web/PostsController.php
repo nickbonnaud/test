@@ -30,8 +30,11 @@ class PostsController extends Controller
       $signature = $request->header('x-hub-signature');
       $expected = 'sha1=' . hash_hmac('sha1', $body, env('FB_SECRET'));
       if ($signature != $expected) return;
+      $postData = json_decode($body, true);
+    } else {
+      $postData = json_decode($body);
     }
-    Post::processSubscription(json_decode($body, true), $isFacebook);
+    Post::processSubscription($postData, $isFacebook);
   }
 
   public function verifyFacebook(Request $request) {

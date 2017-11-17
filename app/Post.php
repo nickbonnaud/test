@@ -160,11 +160,8 @@ class Post extends Model {
 
   public static function processInstagramPost($postData) {
     foreach ($postData as $post) {
-      $accountId = $post->object_id;
-      $mediaId = $post->data->media_id;
-
-      if ($profile = Profile::where('insta_account_id', '=', $accountId)->first()) {
-        self::getInstagramPost($mediaId, $profile);
+      if ($profile = Profile::where('insta_account_id', '=', $post->object_id)->first()) {
+        self::getInstagramPost($post->data->media_id, $profile);
       }
     }
   }
