@@ -92,12 +92,12 @@ class SyncTransactionsQuickbooks extends Command
 
   public static function sendInvoice($invoice) {
     self::$invoiceService = new \QuickBooks_IPP_Service_Invoice();
-    return $invoiceService->add(self::$context, self::$realm, $invoice);
+    return self::$invoiceService->add(self::$context, self::$realm, $invoice);
   }
 
   public static function sendPayment($payment) {
     self::$paymentService = new \QuickBooks_IPP_Service_Payment();
-    return $paymentService->add(self::$context, self::$realm, $payment);
+    return self::$paymentService->add(self::$context, self::$realm, $payment);
   }
 
   public static function init() {
