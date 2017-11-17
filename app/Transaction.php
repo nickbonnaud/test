@@ -104,4 +104,94 @@ class Transaction extends Model
   public function scopeApiFilter($query, $filters, $user) {
     return $filters->apply($query)->where('user_id', '=', $user->id);
   }
+
+  public function syncInvoiceWithQuickbooks() {
+    $invoice = $this->createQuickbooksInvoice();
+    $this->addSalesLine($invoice);
+    if ($this->tips) {
+      $this->addTipsLine($invoice);
+    }
+    $this->addTaxDetail($invoice);
+    $invoice->setCustomerRef($business->account->pockeyt_qb_id);
+    return $invoice;
+  }
+
+  public function createQuickbooksInvoice() {
+    $invoice = new \QuickBooks_IPP_Object_Invoice();
+    $invoice->setTxnDate($this->created_at->toDateString());
+    $invoice->setDueDate($this->created_at->toDateString());
+    $invoice->setPrivateNote('Pockeyt Sale Transaction ID # ' . $this->id);
+    return $invoice;
+  }
+
+  public function addSalesLine($invoice) {
+    $line = new \QuickBooks_IPP_Object_Line();
+    $line->setDetailType('SalesItemLineDetail');
+    $line->setAmount(($this->net_sales / 100));
+    $line->setDescription('Custom Amount');
+
+    $salesItemLineDetail = new \QuickBooks_IPP_Object_SalesItemLineDetail();
+    $salesItemLineDetail->setUnitPrice(($this->net_sales / 100));
+    $salesItemLineDetail->setQty(1);
+    $salesItemLineDetail->setItemRef($this->profile->account->pockeyt_item);
+    $salesItemLineDetail->setTaxCodeRef('TAX');
+
+    $line->addSalesItemLineDetail($salesItemLineDetail);
+    $invoice->addLine($line);
+    return $invoice;
+  }
+
+  public function addTipsLine($invoice) {
+    $line = new \QuickBooks_IPP_Object_Line();
+    $line->setDetailType('SalesItemLineDetail');
+    $line->setAmount(($this->tips / 100));
+    $line->setDescription('Pockeyt Tips Money');
+
+    $salesItemLineDetail = new \QuickBooks_IPP_Object_SalesItemLineDetail();
+    $salesItemLineDetail->setUnitPrice(($this->tips / 100));
+    $salesItemLineDetail->setQty(1);
+    $salesItemLineDetail->setItemRef($this->profile->account->pockeyt_tips_item);
+
+    $line->addSalesItemLineDetail($salesItemLineDetail);
+    $invoice->addLine($line);
+    return $invoice;
+  }
+
+  public function addTaxDetail($invoice) {
+    $taxDetail = new \QuickBooks_IPP_Object_TxnTaxDetail();
+    $taxDetail->setTxnTaxCodeRef($this->profile->account->pockeyt_qb_taxcode);
+    $taxDetail->setTotalTax($this->tax / 100);
+    $invoice->addTxnTaxDetail($taxDetail);
+    return $invoice;
+  }
+
+  public function syncPaymentDetailsWithQuickbooks($response) {
+    $quickbooksPayment = $this->createQuickbooksPayment();
+    $this->linkInvoice($response, $quickbooksPayment);
+    $quickbooksPayment->setCustomerRef($this->profile->account->pockeyt_qb_id);
+    return $quickbooksPayment;
+  }
+
+  public function createQuickbooksPayment() {
+    $quickbooksPayment = new \QuickBooks_IPP_Object_Payment();
+    $quickbooksPayment->setTotalAmt(($this->total / 100));
+    $quickbooksPayment->setTxnDate($this->created_at->toDateString());
+    $quickbooksPayment->setPrivateNote('Pockeyt Credit Card Payment. Pockeyt Transaction ID # ' . $this->id);
+    $quickbooksPayment->setPaymentRefNum($this->id);
+    $quickbooksPayment->setPaymentMethodRef($this->profile->account->pockeyt_payment_method);
+    return $quickbooksPayment;
+  }
+
+  public function linkInvoice($response, $quickbooksPayment) {
+    $line = new \QuickBooks_IPP_Object_Line();
+    $line->setAmount(($this->total / 100));
+
+    $linkedTxn = new \QuickBooks_IPP_Object_LinkedTxn();
+    $linkedTxn->setTxnId($response);
+    $linkedTxn->setTxnType('Invoice');
+
+    $line->setLinkedTxn($linkedTxn);
+    $quickbooksPayment->addLine($line);
+    return $quickbooksPayment;
+  }
 }

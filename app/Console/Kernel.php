@@ -13,7 +13,8 @@ class Kernel extends ConsoleKernel
    * @var array
    */
   protected $commands = [
-    Commands\SyncFacebookEvents::class
+    Commands\SyncFacebookEvents::class,
+    Commands\SyncTransactionsQuickbooks::class
   ];
 
   /**
@@ -25,6 +26,7 @@ class Kernel extends ConsoleKernel
   protected function schedule(Schedule $schedule)
   {
     $schedule->command('app:sync-facebook-events')->dailyAt('23:30');
+    $schedule->command('app:sync-transactions-quickbooks')->dailyAt('03:00');
   }
 
   /**
