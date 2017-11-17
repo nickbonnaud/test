@@ -112,7 +112,7 @@ class Transaction extends Model
       $this->addTipsLine($invoice);
     }
     $this->addTaxDetail($invoice);
-    $invoice->setCustomerRef($business->account->pockeyt_qb_id);
+    $invoice->setCustomerRef($this->profile->account->pockeyt_qb_id);
     return $invoice;
   }
 
