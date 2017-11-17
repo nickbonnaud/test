@@ -72,6 +72,7 @@ class SyncTransactionsQuickbooks extends Command
   public static function getUnSyncedTransactions($profile) {
     return Transaction::where(function($query) use ($profile) {
       $query->where('qb_synced', '=', false)
+            ->where('refund_full', '=', false)
             ->where('profile_id', '=', $profile->id)
             ->where('created_at', '>', $profile->account->qb_connected_date);
     })->get();
