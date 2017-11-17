@@ -42,7 +42,6 @@ class SyncFacebookEvents extends Command
     $profiles = Profile::whereNotNull('fb_page_id')->whereNotNull('fb_app_id')->get();
     foreach ($profiles as $profile) {
       $facebookEvents = $profile->getFacebookEvents();
-      dd($facebookEvents);
       self::createEvents($facebookEvents, $profile);
     }
   }
