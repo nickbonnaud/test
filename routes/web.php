@@ -126,6 +126,7 @@ Route::prefix('api/web')->group(function () {
 	Route::get('posts/analytics/{profile}', 'Api\Web\PostsController@index');
 	Route::get('posts/subscriptions/facebook', 'Api\Web\PostsController@verifyFacebook');
 	Route::post('posts/subscriptions/facebook', 'Api\Web\PostsController@store');
+	Route::get('posts/subscriptions/instagram', 'Api\Web\PostsController@verifyInstagram');
 	Route::post('posts/subscriptions/instagram', 'Api\Web\PostsController@store');
 
 	// UserLocation routes

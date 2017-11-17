@@ -39,4 +39,10 @@ class PostsController extends Controller
       return response($request->hub_challenge);
     }
   }
+
+  public function verifyInstagram(Request $request) {
+    if (($request->hub_mode == 'subscribe') && ($request->hub_verify_token == env('INSTA_VERIFY_TOKEN'))) {
+      return response($request->hub_challenge);
+    }
+  }
 }
