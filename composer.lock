@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "70190b95951f45a31449aec23275bf55",
+    "content-hash": "a441cb8b1a659ff3f87549ae7fa4aa0e",
     "packages": [
         {
             "name": "consolibyte/quickbooks",
@@ -2336,6 +2336,36 @@
             ],
             "description": "Easily add new or override built-in providers in Laravel Socialite.",
             "time": "2017-09-21T07:21:55+00:00"
+        },
+        {
+            "name": "splashpayments/splashpayments-php",
+            "version": "v1.0.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/bmsolutions/splashpayments-php.git",
+                "reference": "a33b075274bc56e2fab07c70c2591b501fd03ad7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/bmsolutions/splashpayments-php/zipball/a33b075274bc56e2fab07c70c2591b501fd03ad7",
+                "reference": "a33b075274bc56e2fab07c70c2591b501fd03ad7",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-openssl": "*",
+                "php": ">=5.4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "SplashPayments\\": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "description": "SplashPayments PHP SDK package",
+            "homepage": "https://portal.splashpayments.com",
+            "time": "2017-11-03T12:56:02+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
