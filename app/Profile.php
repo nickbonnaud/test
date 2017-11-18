@@ -30,7 +30,8 @@ class Profile extends Model
     'featured',
     'lat',
     'lng',
-    'tip_tracking_enabled'
+    'tip_tracking_enabled',
+    'approved'
   ];
 
   protected $casts = [
@@ -373,5 +374,9 @@ class Profile extends Model
       $data = json_decode($response->getBody());
       $events = $data->data;
       return $events;
+  }
+
+  public function setApprovedAttribute($approved) {
+    $this->attributes['approved'] = filter_var($approved, FILTER_VALIDATE_BOOLEAN);
   }
 }

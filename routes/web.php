@@ -18,10 +18,6 @@ Route::get('/', function () {
 Auth::routes();
 
 
-// Business Review Routes
-Route::post('profiles/{profile}/approve', 'BusinessReviewController@approve');
-Route::post('profiles/{profile}/unapprove', 'BusinessReviewController@unapprove');
-
 // Photos Routes
 Route::post('photos/{profile}', 'PhotosController@storeWeb')->name('photos.storeWeb');
 Route::delete('photos/{profile}', 'PhotosController@deleteWeb')->name('photos.deleteWeb');
@@ -97,6 +93,12 @@ Route::get('connections/{profile}', 'ConnectionsController@show')->name('connect
 // Quickbooks Routes
 Route::get('quickbooks/redirect', 'QuickbooksController@redirectOauth');
 
+// Admin Routes
+Route::get('business/review', 'BusinessReviewController@show')->name('review.business');
+Route::patch('business/review/profile/{profile}', 'BusinessReviewController@updateProfile')->name('review.updateProfile');
+Route::patch('business/review/account/{account}', 'BusinessReviewController@updateAccount')->name('review.updateAccount');
+
+
 
 // Web API routes
 Route::prefix('api/web')->group(function () {
@@ -141,6 +143,9 @@ Route::prefix('api/web')->group(function () {
 	Route::get('connections/instagram', 'Api\Web\ConnectionsController@connectInstagram');
 	Route::get('connections/square', 'Api\Web\ConnectionsController@connectSquare');
 	Route::get('connections/qbo', 'Api\Web\ConnectionsController@connectQbo');
+
+	// Account Routes
+	Route::post('accounts/status', 'Api\Web\AccountsController@update');
 });
 
 Route::resource('profiles', 'ProfilesController');

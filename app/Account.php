@@ -3,6 +3,7 @@
 namespace App;
 
 use Crypt;
+use SplashPayments;
 use Illuminate\Database\Eloquent\Model;
 
 class Account extends Model
@@ -147,5 +148,20 @@ class Account extends Model
     } else {
       return false;
     }
+  }
+
+  public function sendAccountDataToProcessor($formattedAccountData) {
+    SplashPayments\Utilities\Config::setTestMode(true);
+    SplashPayments\Utilities\Config::setApiKey(env('SPLASH_KEY'));
+    $object = new SplashPayments\merchants($formattedAccountData);
+
+    try {
+      $object->create();
+    } catch (SplashPayments\Exceptions\Base $e) {
+      dd($e);
+    }
+    $response = $object->getResponse();
+    $this->splashId = $response[0]->id;
+    $this->save();
   }
 }

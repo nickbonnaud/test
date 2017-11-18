@@ -128,7 +128,7 @@ class Transaction extends Model
     $line = new \QuickBooks_IPP_Object_Line();
     $line->setDetailType('SalesItemLineDetail');
     $line->setAmount(($this->net_sales / 100));
-    $line->setDescription('Custom Amount');
+    $line->setDescription('Total Amount');
 
     $salesItemLineDetail = new \QuickBooks_IPP_Object_SalesItemLineDetail();
     $salesItemLineDetail->setUnitPrice(($this->net_sales / 100));

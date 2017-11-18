@@ -17,7 +17,9 @@ class GeoLocationsController extends Controller {
 
 	public function index(Request $request, GeoLocationFilters $filters) {
 		$user = JWTAuth::parseToken()->authenticate();
-		$geoLocations = GeoLocation::filter($filters)->where('approved', '=', true)->get();
+		$geoLocations = GeoLocation::filter($filters)->whereHas('profile.account', function($query) {
+			$query->where('status', '=', 'approved');
+		})->get();
 		$locations = GeoLocation::getLocationsInRadius($request->coords, $geoLocations, $user);
 		return GeoLocationResource::collection($locations);
 	}

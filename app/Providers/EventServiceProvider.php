@@ -38,6 +38,9 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\BillPushSuccess' => [
             'App\Listeners\NotifyBillPushSuccess',
         ],
+        'App\Events\AccountReadyForProcessorReview' => [
+            'App\Listeners\SendAccountDataToProcessor',
+        ],
         \SocialiteProviders\Manager\SocialiteWasCalled::class => [
             'SocialiteProviders\Instagram\InstagramExtendSocialite@handle'
         ]

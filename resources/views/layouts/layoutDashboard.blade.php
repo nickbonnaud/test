@@ -177,7 +177,7 @@
             </ul>
           </li>
           @if($user->is_admin)
-            <li><a href="{{ route('businesses.review') }}"><i class="fa fa-key"></i> <span class="menu-text">Pending Businesses</span></a></li>
+            <li><a href="{{ route('review.business') }}"><i class="fa fa-key"></i> <span class="menu-text">Pending Businesses</span></a></li>
           @endif
         </ul>
       </section>

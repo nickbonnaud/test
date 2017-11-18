@@ -13,7 +13,7 @@ class ApiEventTest extends TestCase
 	function test_a_mobile_user_can_retrieve_events_today() {
 		$city = create('App\City');
 		$photo = create('App\Photo');
-		$profile = create('App\Profile', ['city_id' => $city->id, 'logo_photo_id' => $photo->id, 'hero_photo_id' => $photo->id]);
+		$profile = create('App\Profile', ['city_id' => $city->id, 'logo_photo_id' => $photo->id, 'hero_photo_id' => $photo->id, 'approved' => true]);
 		$events = create('App\Post', ['profile_id' => $profile->id, 'event_date' => Carbon::now()], 3);
 		$eventsNotToday = create('App\Post', ['profile_id' => $profile->id, 'event_date' => (Carbon::now())->addDays(2)], 2);
 
@@ -24,7 +24,7 @@ class ApiEventTest extends TestCase
 	function test_a_mobile_user_can_retrieve_events_tomorrow() {
 		$city = create('App\City');
 		$photo = create('App\Photo');
-		$profile = create('App\Profile', ['city_id' => $city->id, 'logo_photo_id' => $photo->id, 'hero_photo_id' => $photo->id]);
+		$profile = create('App\Profile', ['city_id' => $city->id, 'logo_photo_id' => $photo->id, 'hero_photo_id' => $photo->id, 'approved' => true]);
 		$events = create('App\Post', ['profile_id' => $profile->id, 'event_date' => Carbon::tomorrow()], 3);
 		$eventsNotTomorrow = create('App\Post', ['profile_id' => $profile->id, 'event_date' => (Carbon::now())->addDays(2)], 2);
 
@@ -35,7 +35,7 @@ class ApiEventTest extends TestCase
 	function test_a_mobile_user_can_retrieve_events_week() {
 		$city = create('App\City');
 		$photo = create('App\Photo');
-		$profile = create('App\Profile', ['city_id' => $city->id, 'logo_photo_id' => $photo->id, 'hero_photo_id' => $photo->id]);
+		$profile = create('App\Profile', ['city_id' => $city->id, 'logo_photo_id' => $photo->id, 'hero_photo_id' => $photo->id, 'approved' => true]);
 
 
 		$eventNotInWeek = create('App\Post', ['profile_id' => $profile->id, 'event_date' => Carbon::now()->startOfWeek()->subDay()], 1);
@@ -52,7 +52,7 @@ class ApiEventTest extends TestCase
 	function test_a_mobile_user_can_retrieve_events_weeekend() {
 		$city = create('App\City');
 		$photo = create('App\Photo');
-		$profile = create('App\Profile', ['city_id' => $city->id, 'logo_photo_id' => $photo->id, 'hero_photo_id' => $photo->id]);
+		$profile = create('App\Profile', ['city_id' => $city->id, 'logo_photo_id' => $photo->id, 'hero_photo_id' => $photo->id, 'approved' => true]);
 
 
 		$eventFriday = create('App\Post', ['profile_id' => $profile->id, 'event_date' => Carbon::now()->startOfWeek()->addDays(4)], 1);

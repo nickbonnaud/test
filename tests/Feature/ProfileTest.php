@@ -40,7 +40,7 @@ class ProfileTest extends TestCase
         $profile = make('App\Profile');
         $tax = create('App\Tax');
         $tags = create('App\Tag');
-        $profile->county = "wake";
+        $profile->county = "wake county";
         $profile->state = "nc";
         $profile->latitude = 34.78172000;
         $profile->longitude = -78.65666900;

@@ -37,7 +37,7 @@ class ProfileTest extends TestCase
   	$profile = create('App\Profile');
   	$tax = create('App\Tax');
 
-  	$profile = $profile->addTaxRate('wake', 'nc');
+  	$profile = $profile->addTaxRate('wake county', 'nc');
   	
   	$this->assertEquals($profile->tax_id, $tax->id);
   }
