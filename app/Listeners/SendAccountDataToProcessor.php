@@ -50,16 +50,7 @@ class SendAccountDataToProcessor
         'email' => $this->account->accountEmail,
         'ein' => preg_replace("/[^0-9]/","", $this->account->bizTaxId),
         'website' => $this->account->profile->website,
-        'accounts' => array(
-          array(
-            'primary' => 1,
-            'account' => array(
-              'method' => $this->account->method,
-              'number' => Crypt::decrypt($this->account->getOriginal('accountNumber')),
-              'routing' => Crypt::decrypt($this->account->getOriginal('routing'))
-            )
-          )
-        )
+        
       ),
       'members' => array(
         array(
