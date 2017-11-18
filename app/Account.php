@@ -158,7 +158,7 @@ class Account extends Model
     try {
       $object->create();
     } catch (SplashPayments\Exceptions\Base $e) {
-      dd($e);
+      dd($e->getResponse());
     }
     $response = $object->getResponse();
     $this->splashId = $response[0]->id;
