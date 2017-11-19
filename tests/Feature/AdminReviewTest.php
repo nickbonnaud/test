@@ -69,7 +69,7 @@ class AdminReviewTest extends TestCase
   }
 
   function test_an_authorized_user_can_approve_an_account() {
-  	// $this->expectsEvents(AccountReadyForProcessorReview::class);
+  	$this->expectsEvents(AccountReadyForProcessorReview::class);
   	$user = create('App\User', ['is_admin' => true]);
   	$this->signIn($user);
   	$profile = create('App\Profile');

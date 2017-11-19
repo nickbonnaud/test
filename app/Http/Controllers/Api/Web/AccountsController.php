@@ -3,13 +3,16 @@
 namespace App\Http\Controllers\Api\Web;
 
 use App\Account;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class AccountsController extends Controller {
 
-	public function update(Request $request) {
+	public function update(Request $request) {\
+		Log::info("hit the endpoint");
 		$business = json_decode($request->getContent());
+		Log::info($business);
     $account = Account::where('splashId', '=', $business->id)->first();
     if ($business->status == 2) {
       $account->status = "active";
