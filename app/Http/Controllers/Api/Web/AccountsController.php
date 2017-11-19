@@ -10,7 +10,7 @@ use App\Http\Controllers\Controller;
 class AccountsController extends Controller {
 
 	public function update(Request $request) {
-		log::info(json_decode($request->getContent()));
+		Log::info(json_decode($request->getContent()));
 		$business = json_decode($request->getContent());
     $account = Account::where('splashId', '=', $business->merchantId)->first();
     $account->status = $business->status;
