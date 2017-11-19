@@ -36,6 +36,7 @@ class SendAccountDataToProcessor
       'new' => 0,
       'established' => date_format(date_create($this->account->established), 'Ymd'),
       'annualCCSales' => $this->account->annualCCSales * 100,
+      'mcc' => '8111',
       'status' => 1,
       'tcVersion' => 1,
       'entity' => array(
