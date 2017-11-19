@@ -60,7 +60,7 @@ class ApiGeoLocationsTest extends TestCase
 		$logo = create('App\Photo');
 		$city = create('App\City');
 		$profile = create('App\Profile', ['logo_photo_id' => $logo->id, 'city_id' => $city->id]);
-		$account = create('App\Account', ['profile_id' => $profile->id, 'status' => 'approved']);
+		$account = create('App\Account', ['profile_id' => $profile->id, 'status' => 'Boarded']);
 
 		$geoLocation = create('App\GeoLocation', ['profile_id' => $profile->id]);
 
@@ -108,7 +108,7 @@ class ApiGeoLocationsTest extends TestCase
 		$logo = create('App\Photo');
 		$city = create('App\City');
 		$profile = create('App\Profile', ['logo_photo_id' => $logo->id, 'city_id' => $city->id]);
-		$account = create('App\Account', ['profile_id' => $profile->id, 'status' => 'approved']);
+		$account = create('App\Account', ['profile_id' => $profile->id, 'status' => 'Boarded']);
 
 		$geoLocation = create('App\GeoLocation', ['profile_id' => $profile->id]);
 		$userLocation = create('App\UserLocation', ['user_id' => $user->id, 'profile_id' => $profile->id, 'updated_at' => Carbon::yesterday()]);
@@ -133,7 +133,7 @@ class ApiGeoLocationsTest extends TestCase
 		$logo = create('App\Photo');
 		$city = create('App\City');
 		$profile = create('App\Profile', ['logo_photo_id' => $logo->id, 'city_id' => $city->id]);
-		$account = create('App\Account', ['profile_id' => $profile->id, 'status' => 'approved']);
+		$account = create('App\Account', ['profile_id' => $profile->id, 'status' => 'Boarded']);
 
 		$geoLocation = create('App\GeoLocation', ['profile_id' => $profile->id]);
 
@@ -161,7 +161,7 @@ class ApiGeoLocationsTest extends TestCase
 		$logo = create('App\Photo');
 		$city = create('App\City');
 		$profile = create('App\Profile', ['logo_photo_id' => $logo->id, 'city_id' => $city->id]);
-		$account = create('App\Account', ['profile_id' => $profile->id, 'status' => 'approved']);
+		$account = create('App\Account', ['profile_id' => $profile->id, 'status' => 'Boarded']);
 
 		$geoLocation = create('App\GeoLocation', ['profile_id' => $profile->id]);
 

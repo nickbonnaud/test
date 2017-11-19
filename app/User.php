@@ -3,6 +3,7 @@
 namespace App;
 
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use JWTAuth;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -150,5 +151,9 @@ class User extends Authenticatable implements JWTSubject
       $this->photo()->dissociate()->save();
       $photo->delete();
     }
+  }
+
+  public function createJwtToken() {
+    return JWTAuth::fromUser($this);
   }
 }
