@@ -9,18 +9,11 @@ use App\Http\Controllers\Controller;
 
 class AccountsController extends Controller {
 
-	public function update(Request $request) {\
-		Log::info("hit the endpoint real");
-		log::info($request->getContent());
-		$business = $request->getContent();
-    $account = Account::where('splashId', '=', $business->id)->first();
-    if ($business->status == 2) {
-      $account->status = "active";
-    } elseif ($business->status == 4) {
-      $account->status = 'denied';
-    } else {
-      $account->status = 'pending';
-    }
+	public function update(Request $request) {
+		log::info(json_decode($request->getContent()));
+		$business = json_decode($request->getContent());
+    $account = Account::where('splashId', '=', $business->merchantId)->first();
+    $account->status = $business->status;
     $account->save();
 	}
 }
