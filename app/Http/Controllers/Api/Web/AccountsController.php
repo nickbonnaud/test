@@ -11,7 +11,7 @@ class AccountsController extends Controller {
 
 	public function update(Request $request) {
 		$business = json_decode($request->getContent(), true);
-		Log::info('Hello' . $business['merchantId']);
+		Log::info($business);
     $account = Account::where('splashId', '=', $business['merchantId'])->first();
     $account->status = $business->status;
     $account->save();
