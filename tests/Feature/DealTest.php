@@ -131,25 +131,4 @@ class DealTest extends TestCase
 		$this->signIn();
 		$this->json('GET', "api/web/deals/{$deal->id}")->assertStatus(403);
 	}
-
-	// function test_an_authorized_user_can_view_deal_analytics_data_on_deals_index() {
-	// 	$this->signIn();
-	// 	$profile = create('App\Profile', ['user_id' => auth()->id()]);
-	// 	Storage::fake('public');
-
-	// 	$data = [
-	// 		'message' => "Fake Test Deal",
-	// 		'deal_item' => 'Coffee',
-	// 		'price' => '$ 10.00',
-	// 		'end_date' => date("Y-m-d"),
-	// 		'photo' => $file = UploadedFile::fake()->image('post.jpg')
-	// 	];
-
-	// 	$this->json('POST', "deals/{$profile->slug}", $data);
-	// 	$deal = Post::first();
-
-	// 	$response = $this->json('GET', "api/web/deals/{$deal->id}");
-	// 	dd($response->json());
-
-	// }
 }

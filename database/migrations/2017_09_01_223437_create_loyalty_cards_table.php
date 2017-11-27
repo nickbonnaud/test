@@ -20,6 +20,7 @@ class CreateLoyaltyCardsTable extends Migration
             $table->integer('loyalty_program_id')->unsigned();
             $table->foreign('loyalty_program_id')->references('id')->on('loyalty_programs')->onDelete('cascade');
             $table->integer('current_amount')->nullable();
+            $table->integer('unredeemed_rewards')->default(0);
             $table->integer('rewards_achieved')->default(0);
             $table->timestamps();
         });

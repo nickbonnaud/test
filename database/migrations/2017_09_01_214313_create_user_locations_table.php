@@ -18,6 +18,7 @@ class CreateUserLocationsTable extends Migration
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users');
             $table->integer('profile_id')->references('id')->on('profiles');
+            $table->boolean('exit_notification_sent')->default(false);
             $table->timestamps();
         });
     }

@@ -17,7 +17,7 @@ class SendNotification
    */
   public function __construct()
   {
-    $this->notificationTypes = ['TransactionBillWasClosed'];
+    $this->notificationTypes = ['TransactionBillWasClosed', 'LoyaltyRewardEarned', 'CustomerRedeemReward', 'CustomerRedeemDeal'];
   }
 
   /**
@@ -84,5 +84,23 @@ class SendNotification
     $transaction->save();
     $transaction->transactionChangeEvent();
     event(new BillPushSuccess($transaction->profile->slug, $success));
+  }
+
+  public function LoyaltyRewardEarned($event, $notification, $success) {
+    if ($success) {
+      $notification->delete();
+    }
+  }
+
+  public function CustomerRedeemReward($event, $notification, $success) {
+    if ($success) {
+      $notification->delete();
+    }
+  }
+
+  public function CustomerRedeemDeal($event, $notification, $success) {
+    if ($success) {
+      $notification->delete();
+    }
   }
 }

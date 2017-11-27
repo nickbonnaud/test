@@ -1,7 +1,7 @@
 <template>
 	<div class="scroll-contents">
 		<div v-for="user in customerFilter">
-		  <div class="col-sm-4 col-md-3">
+		  <div class="col-sm-6 col-md-4 col-lg-3">
 		    <div class="box box-primary">
 		      <div class="box-header with-border text-center">
 		        <a v-on:click="showCustomerInfoModal(user)" class="customer-name-title" href="#">
@@ -18,8 +18,21 @@
 	              <b>Bill</b>
 	            </a>
 		          <div v-if="user.deal_data">
-		            <a href="#" v-on:click="showDealModal(user)" class="btn btn-success btn-block btn-redeem">
+		            <a v-show="!redeemDealRequestSent" href="#" v-on:click="showDealModal(user)" class="btn btn-success btn-block btn-redeem">
 		              <b>Redeem Deal</b>
+		            </a>
+		             <a v-show="redeemDealRequestSent" href="#" class="btn btn-success btn-block btn-redeem">
+		              <i class="fa fa-spinner fa-spin"></i>
+		              <b>Pending Customer</b>
+		            </a>
+		          </div>
+		          <div v-if="unRedeemedReward(user)">
+		            <a v-show="!redeemRewardRequestSent" href="#" v-on:click="showRewardModal(user)" class="btn btn-success btn-block btn-redeem">
+		              <b>Redeem Reward</b>
+		            </a>
+		            <a v-show="redeemRewardRequestSent" href="#" class="btn btn-success btn-block btn-redeem">
+		            	<i class="fa fa-spinner fa-spin"></i>
+		              <b>Pending Customer</b>
 		            </a>
 		          </div>
 		        </div>
@@ -30,6 +43,7 @@
 	</div>
 </template>
 <script>
+	import swal from 'sweetalert2';
 	export default {
 		props: ['profile'],
 
@@ -40,7 +54,9 @@
 				selectedCustomer: {},
 				selectedEmployeeId: '',
 				openBillId: '',
-				query: ''
+				query: '',
+				redeemRewardRequestSent: false,
+				redeemDealRequestSent: false
 			}
 		},
 
@@ -54,9 +70,15 @@
         .listen('CustomerBreakGeoFence', (event) => {
           this.checkType(event);
       });
+      Echo.private('redeemed-item.' + this.profile.slug)
+        .listen('CustomerRedeemItem', (event) => {
+          this.setItemRedeemed(event);
+      });
+
 			VueEvent.listen('customerQueryChange', this.setQuery.bind(this));
 			VueEvent.listen('employeeSelected', this.setSelectedEmployee.bind(this));
 			VueEvent.listen('DealRedeemedSuccess',  this.removeDealData.bind(this));
+			VueEvent.listen('toggleRedeemRequestSent', this.toggleRedeemRequestSent.bind(this));
 		},
 
 		computed: {
@@ -189,12 +211,69 @@
       	VueEvent.fire('showDealModal', user);
       },
 
+      showRewardModal(user) {
+      	VueEvent.fire('showRewardModal', user);
+      },
+
       removeDealData(customerId) {
       	this.customersInLocation.forEach(function(customer) {
       		if (customer.id == customerId) {
       			return customer.deal_data = null;
       		}
       	});
+      },
+
+      unRedeemedReward(user) {
+      	if (user.loyalty_card) {
+      		return user.loyalty_card.unredeemed_rewards > 0 ? true : false;
+      	} else {
+      		return false;
+      	}
+      	
+      },
+
+      toggleRedeemRequestSent(type) {
+      	if (type == 'reward') {
+      		this.redeemRewardRequestSent = !this.redeemRewardRequestSent;
+      	} else {
+      		this.redeemDealRequestSent = !this.redeemDealRequestSent;
+      	}
+      },
+
+      setItemRedeemed(event) {
+      	if (event.type == 'loyalty_card') {
+      		this.redeemRewardRequestSent = false;
+      	} else {
+      		this.redeemDealRequestSent = false;
+      	}
+      	this.replaceUser(event.user);
+      	this.flashRedeemSuccess(event.user, event.type);
+      },
+
+      replaceUser(user) {
+      	var index = this.customersInLocation.findIndex(function(currentCustomer) {
+					return currentCustomer.id == this.id;
+				}, user);
+				if (index == -1) {
+					this.customersInLocation.push(user);
+				} else {
+					this.customersInLocation.splice(index, 1, user);
+				}
+      },
+
+      flashRedeemSuccess(user, type) {
+      	var item = type == 'loyalty_card' ? 'loyalty reward' : 'deal';
+      	swal({
+					title: 'Success',
+					text: user.first_name + ' has accepted to redeem their ' + item,
+					type: 'success',
+					timer: 1000,
+					showConfirmButton: false
+				}).then(
+					function() {},
+					function(dismiss) {
+					}.bind(this)
+				)
       }
 		}
 	}

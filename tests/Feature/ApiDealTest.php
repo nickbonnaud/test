@@ -5,6 +5,8 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Notification;
+use App\Notifications\CustomerRedeemDeal;
+use App\Events\CustomerRedeemItem;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ApiDealTest extends TestCase
@@ -56,4 +58,110 @@ class ApiDealTest extends TestCase
 		$response = $this->get('/api/mobile/transactions?deals=1', $this->headers($user))->getData();
 		$this->assertCount(2, $response->data);
 	}
+
+	function test_an_unauthorized_user_cannot_send_redeem_deal_notif_to_user() {
+    Notification::fake();
+    $this->withExceptionHandling();
+    $profile = create('App\Profile');
+    $post = create('App\Post', ['profile_id' => $profile->id, 'is_redeemable' => true, 'deal_item' => 'free coffee', 'price' => 100, 'end_date' => Carbon::tomorrow()]);
+
+		$user = create('App\User');
+		$transaction = create('App\Transaction', ['profile_id' => $profile->id, 'user_id' => $user->id, 'paid' => true, 'refund_full' => false, 'status' => 20, 'deal_id' => $post->id, 'redeemed' => false]);
+
+    $data = [
+      'redeem_deal' => true
+    ];
+
+    $this->patch("/api/web/deals/{$profile->slug}/{$transaction->id}", $data)->assertRedirect('/login');
+    $this->signIn();
+    $this->patch("/api/web/deals/{$profile->slug}/{$transaction->id}", $data)->assertStatus(403);
+  }
+
+  function test_authorized_user_cannot_send_redeem_deal_notif_if_user_already_redeemed() {
+  	Notification::fake();
+    $this->signIn();
+    $profile = create('App\Profile', ['user_id' => auth()->user()->id]);
+    $post = create('App\Post', ['profile_id' => $profile->id, 'is_redeemable' => true, 'deal_item' => 'free coffee', 'price' => 100, 'end_date' => Carbon::tomorrow()]);
+
+		$user = create('App\User');
+		$transaction = create('App\Transaction', ['profile_id' => $profile->id, 'user_id' => $user->id, 'paid' => true, 'refund_full' => false, 'status' => 20, 'deal_id' => $post->id, 'redeemed' => true]);
+
+    $data = [
+      'redeem_deal' => true
+    ];
+
+    $this->patch("/api/web/deals/{$profile->slug}/{$transaction->id}", $data);
+    Notification::assertNotSentTo(
+      [$user],
+      CustomerRedeemDeal::class
+    );
+  }
+
+  function test_authorized_user_can_send_redeem_deal_notif_if_user_have_not_redeemed_deal() {
+  	Notification::fake();
+    $this->signIn();
+    $profile = create('App\Profile', ['user_id' => auth()->user()->id]);
+    $post = create('App\Post', ['profile_id' => $profile->id, 'is_redeemable' => true, 'deal_item' => 'free coffee', 'price' => 100, 'end_date' => Carbon::tomorrow()]);
+
+		$user = create('App\User');
+		$transaction = create('App\Transaction', ['profile_id' => $profile->id, 'user_id' => $user->id, 'paid' => true, 'refund_full' => false, 'status' => 20, 'deal_id' => $post->id, 'redeemed' => false]);
+
+    $data = [
+      'redeem_deal' => true
+    ];
+
+    $this->patch("/api/web/deals/{$profile->slug}/{$transaction->id}", $data);
+    Notification::assertSentTo(
+      [$user],
+      CustomerRedeemDeal::class
+    );
+  }
+
+  function test_an_unauthorized_mobile_user_cannot_redeem_deal() {
+    $this->withExceptionHandling();
+    $profile = create('App\Profile');
+    $post = create('App\Post', ['profile_id' => $profile->id, 'is_redeemable' => true, 'deal_item' => 'free coffee', 'price' => 100, 'end_date' => Carbon::tomorrow()]);
+
+		$user = create('App\User');
+		$transaction = create('App\Transaction', ['profile_id' => $profile->id, 'user_id' => $user->id, 'paid' => true, 'refund_full' => false, 'status' => 20, 'deal_id' => $post->id, 'redeemed' => false]);
+
+    $data = [
+      'redeemed' => true
+    ];
+
+    $this->json('PATCH', "/api/mobile/deals/{$transaction->id}")->assertStatus(401);
+  }
+
+  function test_a_mobile_user_who_does_not_own_transaction_cannot_redeem_deal() {
+  	$this->withExceptionHandling();
+    $profile = create('App\Profile');
+    $post = create('App\Post', ['profile_id' => $profile->id, 'is_redeemable' => true, 'deal_item' => 'free coffee', 'price' => 100, 'end_date' => Carbon::tomorrow()]);
+
+		$user = create('App\User');
+		$transaction = create('App\Transaction', ['profile_id' => $profile->id, 'user_id' => $user->id, 'paid' => true, 'refund_full' => false, 'status' => 20, 'deal_id' => $post->id, 'redeemed' => false]);
+
+    $data = [
+      'redeemed' => true
+    ];
+
+    $unAuthUser = create('App\User');
+    $this->json('PATCH', "/api/mobile/deals/{$transaction->id}", $data, $this->headers($unAuthUser))->assertStatus(401);
+  }
+
+  function test_an_authorized_mobile_user_can_redeem_deal() {
+  	$this->expectsEvents(CustomerRedeemItem::class);
+    $profile = create('App\Profile');
+    $post = create('App\Post', ['profile_id' => $profile->id, 'is_redeemable' => true, 'deal_item' => 'free coffee', 'price' => 100, 'end_date' => Carbon::tomorrow()]);
+
+		$user = create('App\User');
+		$transaction = create('App\Transaction', ['profile_id' => $profile->id, 'user_id' => $user->id, 'paid' => true, 'refund_full' => false, 'status' => 20, 'deal_id' => $post->id, 'redeemed' => false]);
+
+    $data = [
+      'redeemed' => true
+    ];
+
+    $response = $this->json('PATCH', "/api/mobile/deals/{$transaction->id}", $data, $this->headers($user))->getData();
+    $this->assertEquals(true, $response->success);
+    $this->assertEquals(true, $transaction->fresh()->redeemed);
+  }
 }

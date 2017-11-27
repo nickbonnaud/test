@@ -152,8 +152,4 @@ class User extends Authenticatable implements JWTSubject
       $photo->delete();
     }
   }
-
-  public function createJwtToken() {
-    return JWTAuth::fromUser($this);
-  }
 }

@@ -60,4 +60,31 @@ class PostAnalytics extends Model
   public function scopeFilter($query, $filters, $profile, $type = null) {
     return $filters->apply($query, $type)->where('profile_id', '=', $profile->id);
   }
+
+
+
+  public static function checkRecentlyViewed($user, $profile, $transaction) {
+    $currentDate = Carbon::now();
+    $fromDate = Carbon::now()->subDays(2);
+
+    $viewedPostAnalytics = PostAnalytics::whereBetween('updated_at', [$fromDate, $currentDate])
+      ->where('user_id', '=', $user->id)
+      ->where('profile_id', '=', $profile->id)
+      ->orderBy('viewed_on', 'desc')->first();
+
+    if ($viewedPostAnalytics) {
+      $viewedPostAnalytics->transaction_resulted = true;
+      $viewedPostAnalytics->transaction_on = Carbon::now(new DateTimeZone(config('app.timezone')));
+      $viewedPostAnalytics->total_revenue = $viewedPostAnalytics->total_revenue + $transaction->tips + $transaction->net_sales;
+
+      $viewedPostAnalytics->save();
+      self::setPostTotalRevenue($viewedPostAnalytics, $transaction);
+    }
+  }
+
+  public static function setPostTotalRevenue($viewedPostAnalytics, $transaction) {
+    $post = Post::findOrFail($viewedPostAnalytics->post_id);
+    $post->total_revenue = $post->total_revenue + $transaction->tips + $transaction->net_sales;
+    $post->save();
+  }
 }

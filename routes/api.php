@@ -46,6 +46,7 @@ Route::patch('user', 'UsersController@update');
 
 // Loyalty Card routes
 Route::get('loyalty', 'LoyaltyCardsController@index');
+Route::patch('loyalty/{loyaltyCard}', 'LoyaltyCardsController@update');
 
 // Geolocation routes
 Route::post('location', 'GeoLocationsController@index');
@@ -53,3 +54,6 @@ Route::post('location', 'GeoLocationsController@index');
 // Card Vault
 Route::get('card/vault', 'CardVaultController@show');
 Route::post('card/vault/{user}', 'CardVaultController@store');
+
+// Deals routes
+Route::patch('deals/{transaction}', 'DealsController@update');

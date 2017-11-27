@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use App\Events\CustomerBreakGeoFence;
 use App\Notifications\CustomerEnterGeoFence;
 use Illuminate\Database\Eloquent\Model;
@@ -11,17 +12,14 @@ class UserLocation extends Model {
   protected $fillable = [
     'user_id',
     'profile_id',
-    'updated_at'
+    'updated_at',
+    'exit_notification_sent'
   ];
 
   protected static function boot() {
     static::created(function ($userLocation) {
       event(new CustomerBreakGeoFence($userLocation, $type='enter'));
       $userLocation->notifyUserEnter();
-    });
-
-    static::deleting(function ($userLocation) {
-      event(new CustomerBreakGeoFence($userLocation, $type='exit'));
     });
   }
 
@@ -54,6 +52,42 @@ class UserLocation extends Model {
       }
     } else {
       return false;
+    }
+  }
+
+  public function removeLocation() {
+    if ($transaction = $this->checkForUnpaidTransactionOnDelete()) {
+      if (!$this->exit_notification_sent) {
+        $this->sendPaymentNotificationByType($transaction);
+        $this->exit_notification_sent = true;
+        $this->save();
+      }
+    } else {
+      $this->removeLocationNoUnpaidTransaction();
+    }
+  }
+
+  public function removeLocationNoUnpaidTransaction() {
+    event(new CustomerBreakGeoFence($this, $type='exit'));
+    $this->delete();
+  }
+
+
+  public function checkForUnpaidTransactionOnDelete() {
+    return $this->user->transactions->where('paid', false)->where('profile_id', $this->profile->id)->first();
+  }
+
+  public function sendPaymentNotificationByType($transaction) {
+    if ($transaction->checkRecentSentNotification() == 0) {
+      if ($transaction->bill_closed && ($transaction->status != 0)) {
+        $transaction->sendBillClosedNotification();
+      } elseif($transaction->status !== 0) {
+        if ($transaction->status == 2) {
+          $transaction->sendFixTransactionNotification();
+        } else {
+          $transaction->sendPayOrKeepOpenNotification();
+        }
+      }
     }
   }
 }

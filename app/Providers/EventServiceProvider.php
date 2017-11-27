@@ -18,7 +18,7 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\AddRemoveUserPockeytLite',
         ],
         'App\Events\CustomerEarnReward' => [
-            'App\Listeners\NotifyReward',
+            'App\Listeners\NotifyReward'
         ],
         'App\Events\TransactionError' => [
             'App\Listeners\NotifyError',
@@ -40,6 +40,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         'App\Events\AccountReadyForProcessorReview' => [
             'App\Listeners\SendAccountDataToProcessor',
+        ],
+        'App\Events\CustomerRedeemItem' => [
+            'App\Listeners\NotifyBusinessCustomerRedeemItem',
         ],
         \SocialiteProviders\Manager\SocialiteWasCalled::class => [
             'SocialiteProviders\Instagram\InstagramExtendSocialite@handle'

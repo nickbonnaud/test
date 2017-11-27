@@ -37,13 +37,13 @@ class UserLocationTest extends TestCase
 		$userLocation = create('App\UserLocation');
   }
 
-  function test_deleting_a_userLocation_fires_geofence_event() {
+  function test_removing_a_userLocation_fires_geofence_event() {
     Notification::fake();
     $user = create('App\User');
 		$profile = create('App\Profile');
     $account = create('App\Account', ['profile_id' => $profile->id]);
     $userLocation = create('App\UserLocation', ['profile_id' => $profile->id, 'user_id' => $user->id]);
 		$this->expectsEvents(CustomerBreakGeoFence::class);
-		$userLocation->delete();
+		$userLocation->removeLocation();
   }
 }

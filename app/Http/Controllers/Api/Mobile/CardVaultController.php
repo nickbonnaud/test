@@ -19,7 +19,7 @@ class CardVaultController extends Controller
   public function show(Request $request) {
    	$user = JWTAuth::parseToken()->authenticate();
    	$user['token'] = $token = JWTAuth::getToken();
-    return view('card_vault.show', compact('user'));
+    return view('card_vault.show');
   }
 
   public function store(User $user, Request $request) {
@@ -27,7 +27,6 @@ class CardVaultController extends Controller
  		if ($user->id == $jwtUser->id) {
  			$user->last_four_card = $request->numberLastFour;
  			$user->customer_id = $request->token;
- 			$user->card_type = $this->setCardType($request->cardType);
  			$success = $user->save();
  			return response()->json($success);
  		} else {

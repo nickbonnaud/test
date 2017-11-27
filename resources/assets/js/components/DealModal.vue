@@ -27,7 +27,8 @@
 		data() {
 			return {
 				customerDeal: {},
-        products: ""
+        products: "",
+        requestSent: false
 			}
 		},
 
@@ -43,29 +44,21 @@
 			},
 
       redeemDeal() {
-        console.log(this.customerDeal.deal_data.id);
+        if (this.requestSent) return;
+        this.requestSent = true;
       	axios.patch('/api/web/transactions/' + this.profileSlug + '/' + this.customerDeal.deal_data.id, {
-					'redeemed': true
+					'redeem_deal': true
 				})
           .then(this.checkSuccess);
       },
 
       checkSuccess({data}) {
       	if (data.success) {
-      		this.notifySuccess();
+      	 VueEvent.fire('toggleRedeemRequestSent', 'deal');
       	} else {
       		this.notifyFail();
       	}
       	$('#redeemDealModal').modal('hide');
-      },
-
-      notifySuccess() {
-      	toastr["success"]("Deal Redeemed!", "Success", {
-          "newestOnTop": true,
-          "timeOut": 5000,
-          "extendedTimeOut": 5000,
-        });
-        VueEvent.fire('DealRedeemedSuccess', this.customerDeal.id);
       },
 
       notifyFail() {

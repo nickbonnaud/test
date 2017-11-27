@@ -105,6 +105,7 @@ Route::prefix('api/web')->group(function () {
 
 	// Deal Routes
 	Route::get('deals/{post}', 'Api\Web\DealsController@getPurchased');
+	Route::patch('deals/{profile}/{transaction}', 'Api\Web\DealsController@update');
 
 	// Profile Routes
 	Route::patch('profiles/{profile}', 'Api\Web\ProfilesController@update')->name('webApiProfiles.update');
@@ -146,6 +147,8 @@ Route::prefix('api/web')->group(function () {
 
 	// Account Routes
 	Route::post('accounts/status', 'Api\Web\AccountsController@update');
+
+	Route::patch('loyalty-card/{profile}/{loyaltyCard}', 'Api\Web\LoyaltyCardsController@update');
 });
 
 Route::resource('profiles', 'ProfilesController');

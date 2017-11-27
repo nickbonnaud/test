@@ -29,7 +29,6 @@ class ApiCardTest extends TestCase
   	];
   	$response = $this->post("api/mobile/card/vault/{$user->id}", $data, $this->headers($user))->getData();
   	$this->assertTrue($response);
-  	$this->assertEquals('MASTERCARD', $user->fresh()->card_type);
   	$this->assertEquals('exampleToken', $user->fresh()->customer_id);
   	$this->assertEquals('1223', $user->fresh()->last_four_card);
   }

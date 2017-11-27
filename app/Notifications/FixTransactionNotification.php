@@ -5,16 +5,24 @@ namespace App\Notifications;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Messages\MailMessage;
 
-class TransactionBillWasClosed extends Notification
+class FixTransactionNotification extends Notification
 {
   use Queueable;
 
   public $transaction;
+  public $previousNotifCount;
 
-  public function __construct($transaction)
+  /**
+   * Create a new notification instance.
+   *
+   * @return void
+   */
+  public function __construct($transaction, $previousNotifCount)
   {
     $this->transaction = $transaction;
+    $this->previousNotifCount = $previousNotifCount;
   }
 
   /**
@@ -28,6 +36,7 @@ class TransactionBillWasClosed extends Notification
     return ['database'];
   }
 
+
   /**
    * Get the array representation of the notification.
    *
@@ -36,21 +45,24 @@ class TransactionBillWasClosed extends Notification
    */
   public function toArray($notifiable)
   {
+    $pluralizedTerm = $this->previousNotifCount > 1 ? 'notifications' : 'notification';
     $total = round($this->transaction->total / 100, 2);
     $businessName = $this->transaction->profile->business_name;
     $businessLogo = $this->transaction->profile->logo->url;
-    $category = 'payment';
+    $businessPhoneNumber = $this->transaction->profile->account->phone;
+    $category = 'payment_rejected';
     $locKey = '1';
     $transactionId = $this->transaction->id;
     $businessId = $this->transaction->profile->id;
-    $inAppMessage = 'You have been charged $' . $total . ' by ' . $businessName . '.';
+    $title = 'Please settle your $' . $total . ' bill with ' . $businessName . '.';
+    $inAppMessage = 'Please resolve your bill dispute with ' . $businessName . ' and pay your bill. Failure to resolve your dispute will result in the automatic charge of $' . $total . ' after failing to respond to 3 Bill Notifications. You have been sent ' . $this->previousNotifCount . ' ' . $pluralizedTerm . '.';
     
     if (strtolower($notifiable->pushToken->device) == 'ios') {
       return [
         'aps' => [
           'alert' => [
-            'title' => 'Pockeyt Pay',
-            'body' => 'Please swipe left or down to view bill and pay. You have been charged $' . $total . ' by ' . $businessName . '.'
+            'title' => $title,
+            'body' => $inAppMessage
           ],
           'sound' => 'default'
         ],
@@ -61,15 +73,16 @@ class TransactionBillWasClosed extends Notification
             'transactionId' => $transactionId,
             'businessId' => $businessId,
             'inAppMessage' => $inAppMessage,
-            'businessLogo'=> $businessLogo
+            'businessLogo'=> $businessLogo,
+            'phoneNumber' => $businessPhoneNumber
           ]
         ]
       ];
     } else {
       return [
         'notification' => [
-          'title' => 'Pockeyt Pay',
-          'body' => 'You have been charged $' . $total . ' by ' . $businessName . '. Please swipe down if payment options not visible.',
+          'title' => $title,
+          'body' => $inAppMessage,
           'sound' => 'default'
         ],
         'data' => [
@@ -82,13 +95,13 @@ class TransactionBillWasClosed extends Notification
               'foreground' => true
             ],
             (object) [
-              'title' => 'REJECT',
-              'callback' => 'window.declineCharge',
-              'foreground' => true
-            ],
-            (object) [
               'title' => 'CUSTOM TIP',
               'callback' => 'window.changeTip',
+              'foreground' => true
+            ],
+             (object) [
+              'title' => 'CONTACT',
+              'callback' => 'window.contactBusiness',
               'foreground' => true
             ]
           ],
@@ -96,7 +109,8 @@ class TransactionBillWasClosed extends Notification
             'transactionId' => $transactionId,
             'businessId' => $businessId,
             'inAppMessage' => $inAppMessage,
-            'businessLogo' => $businessLogo
+            'businessLogo' => $businessLogo,
+            'phoneNumber' => $businessPhoneNumber
           ]
         ]
       ];

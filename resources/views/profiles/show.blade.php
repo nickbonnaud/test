@@ -23,6 +23,7 @@
     <customer-info-modal></customer-info-modal>
     <employee-select-modal profile-slug="{{ $profile->slug }}"></employee-select-modal>
     <deal-modal profile-slug="{{ $profile->slug }}"></deal-modal>
+    <reward-modal profile-slug="{{ $profile->slug }}"></reward-modal>
   </div>
 </dashboard-main>
 @stop

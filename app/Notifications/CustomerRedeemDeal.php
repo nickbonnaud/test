@@ -5,16 +5,24 @@ namespace App\Notifications;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Messages\MailMessage;
 
-class TransactionBillWasClosed extends Notification
+class CustomerRedeemDeal extends Notification
 {
   use Queueable;
 
   public $transaction;
+  public $deal;
 
+  /**
+   * Create a new notification instance.
+   *
+   * @return void
+   */
   public function __construct($transaction)
   {
     $this->transaction = $transaction;
+    $this->deal = $transaction->deal;
   }
 
   /**
@@ -25,8 +33,9 @@ class TransactionBillWasClosed extends Notification
    */
   public function via($notifiable)
   {
-    return ['database'];
+      return ['database'];
   }
+
 
   /**
    * Get the array representation of the notification.
@@ -36,21 +45,18 @@ class TransactionBillWasClosed extends Notification
    */
   public function toArray($notifiable)
   {
-    $total = round($this->transaction->total / 100, 2);
-    $businessName = $this->transaction->profile->business_name;
-    $businessLogo = $this->transaction->profile->logo->url;
-    $category = 'payment';
+    $category = 'redeem';
     $locKey = '1';
+    $title = 'Redeem your ' . $this->deal->deal_item . ' now?';
     $transactionId = $this->transaction->id;
-    $businessId = $this->transaction->profile->id;
-    $inAppMessage = 'You have been charged $' . $total . ' by ' . $businessName . '.';
+    $inAppMessage = 'Redeem your ' . $this->deal->deal_item . ' from ' . $this->transaction->profile->business_name . ' now?';
     
     if (strtolower($notifiable->pushToken->device) == 'ios') {
       return [
         'aps' => [
           'alert' => [
-            'title' => 'Pockeyt Pay',
-            'body' => 'Please swipe left or down to view bill and pay. You have been charged $' . $total . ' by ' . $businessName . '.'
+            'title' => $title,
+            'body' => 'Please swipe left or down to show options for redeeming your deal from ' . $this->transaction->profile->business_name . '.'
           ],
           'sound' => 'default'
         ],
@@ -59,17 +65,15 @@ class TransactionBillWasClosed extends Notification
           'locKey' => $locKey,
           'custom' => [
             'transactionId' => $transactionId,
-            'businessId' => $businessId,
             'inAppMessage' => $inAppMessage,
-            'businessLogo'=> $businessLogo
           ]
         ]
       ];
     } else {
       return [
         'notification' => [
-          'title' => 'Pockeyt Pay',
-          'body' => 'You have been charged $' . $total . ' by ' . $businessName . '. Please swipe down if payment options not visible.',
+          'title' => $title,
+          'body' => 'Please swipe down to show options for redeeming your deal from ' . $this->transaction->profile->business_name . '.',
           'sound' => 'default'
         ],
         'data' => [
@@ -77,26 +81,19 @@ class TransactionBillWasClosed extends Notification
           'locKey' => $locKey,
           'actions' => [
             (object) [
-              'title' => 'CONFIRM',
-              'callback' => 'window.acceptCharge',
+              'title' => 'REDEEM',
+              'callback' => 'window.redeemDeal',
               'foreground' => true
             ],
             (object) [
               'title' => 'REJECT',
-              'callback' => 'window.declineCharge',
-              'foreground' => true
-            ],
-            (object) [
-              'title' => 'CUSTOM TIP',
-              'callback' => 'window.changeTip',
+              'callback' => 'window.declineRedeemDeal',
               'foreground' => true
             ]
           ],
           'custom' => [
             'transactionId' => $transactionId,
-            'businessId' => $businessId,
             'inAppMessage' => $inAppMessage,
-            'businessLogo' => $businessLogo
           ]
         ]
       ];

@@ -27,17 +27,18 @@ class TransactionsController extends Controller {
 	public function update(Profile $profile, Request $request) {
 		$user = JWTAuth::parseToken()->authenticate();
 		$transaction = Transaction::findOrFail($request->id);
-		if (!($transaction->user_id == $user->id)) {
-			return response()->json(['error' => 'Unauthorized'], 401);
-		}
+		if (!($transaction->user_id == $user->id)) return response()->json(['error' => 'Unauthorized'], 401);
 		if ($request->status == 2) {
 			$transaction->update($request->all());
 			$transaction->transactionErrorEvent();
 			$transaction->transactionChangeEvent();
+			$success = true;
+			$type = 'user_decline';
 		} else {
-			$transaction->processCharge($request->tip);
+			$success = $transaction->processCharge($request->tip);
+			$type = 'user_pay';
 		}
-		return response()->json(['success' => 'Transaction Updated'], 200);
+		return response()->json(['success' => $success, 'type' => $type], 200);
 	}
 
 	public function store(Profile $profile, Request $request) {
@@ -46,8 +47,9 @@ class TransactionsController extends Controller {
 			'user_id' => $user->id
 		]);
 		if ($request->deal_id) {
-			$transaction->processDeal($request->deal_id);
+			$success = $transaction->processDeal($request->deal_id);
+			$type = 'user_deal';
+			return response()->json(['success' => $success, 'type' => $type], 200);
 		}
-		return response()->json(['success' => 'Transaction Stored'], 200);
 	}
 }

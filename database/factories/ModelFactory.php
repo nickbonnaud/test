@@ -161,6 +161,7 @@ $factory->define(App\UserLocation::class, function ($faker) {
   return [
     'profile_id' => $profile->id,
     'user_id' => $user->id,
+    'exit_notification_sent' => false
   ];
 });
 

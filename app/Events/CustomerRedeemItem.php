@@ -10,24 +10,24 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class CustomerEarnReward implements ShouldBroadcast
+class CustomerRedeemItem implements ShouldBroadcast
 {
   use Dispatchable, InteractsWithSockets, SerializesModels;
 
   public $user;
-  public $loyaltyProgram;
-  public $rewardsQuantity;
+  private $profile;
+  public $type;
 
   /**
    * Create a new event instance.
    *
    * @return void
    */
-  public function __construct($user, $loyaltyProgram, $rewardsQuantity)
+  public function __construct($user, $profile, $type)
   {
     $this->user = $user;
-    $this->loyaltyProgram = $loyaltyProgram;
-    $this->rewardsQuantity = $rewardsQuantity;
+    $this->profile = $profile;
+    $this->type = $type;
   }
 
   /**
@@ -37,6 +37,6 @@ class CustomerEarnReward implements ShouldBroadcast
    */
   public function broadcastOn()
   {
-    return new PrivateChannel('reward.' . $this->loyaltyProgram->profile->slug);
+    return new PrivateChannel('redeemed-item.' . $this->profile->slug);
   }
 }

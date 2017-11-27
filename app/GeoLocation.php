@@ -58,7 +58,7 @@ class GeoLocation extends Model {
   public static function addUserLocations($locations, $user) {
     foreach ($locations as $location) {
       UserLocation::updateOrCreate(
-        ['profile_id' => $location->profile_id, 'user_id' => $user->id],
+        ['profile_id' => $location->profile_id, 'user_id' => $user->id, 'exit_notification_sent' => false],
         ['updated_at' => Carbon::now()]
       );
     }
@@ -71,7 +71,7 @@ class GeoLocation extends Model {
         return $location->profile_id == $userLocation->profile_id;
       });
       if (!$location) {
-        $userLocation->delete();
+        $userLocation->removeLocation();
       }
     }
   }

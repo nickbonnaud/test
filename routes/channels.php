@@ -40,3 +40,7 @@ Broadcast::channel('transaction-success.{profile}', function ($user, Profile $pr
 Broadcast::channel('bill-push-success.{profile}', function ($user, Profile $profile) {
   return $user->profile->slug === $profile->slug;
 });
+
+Broadcast::channel('redeemed-item.{profile}', function ($user, Profile $profile) {
+  return $user->profile->slug === $profile->slug;
+});
