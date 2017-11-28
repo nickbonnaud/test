@@ -191,11 +191,4 @@ class ApiGeoLocationsTest extends TestCase
 		$response = $this->get("/api/mobile/cities?lat=35.913200&lng=-79.055845")->getData();
 		$this->assertNull($response->city);
 	}
-
-	function test_chapel_hill() {
-		$city = create('App\City');
-
-		$response = $this->get("/api/mobile/cities?lat=35.926341&lng=-79.0398522")->getData();
-		dd($response);
-	}
 }
