@@ -64,11 +64,13 @@ class City extends Model
 	}
 
 	public static function getCity($location) {
-		foreach ($location->results[0]->address_components as $addressComponent) {
-			${$addressComponent->types[0]} = strtolower($addressComponent->short_name);
-		}
-		return $city = City::where('name', '=', $locality)
-      ->where('county', '=', $administrative_area_level_2)
-      ->where('state', '=', $administrative_area_level_1)->first();
+		return $location;
+		// foreach ($location->results[0]->address_components as $addressComponent) {
+		// 	${$addressComponent->types[0]} = strtolower($addressComponent->short_name);
+		// }
+		// dd($locality);
+		// return $city = City::where('name', '=', $locality)
+  //     ->where('county', '=', $administrative_area_level_2)
+  //     ->where('state', '=', $administrative_area_level_1)->first();
 	}
 }
