@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Account;
 use App\Profile;
+use App\Http\Requests\CreateAccountRequest;
 use App\Http\Requests\UpdateAccountRequest;
 use Illuminate\Http\Request;
 
@@ -11,6 +12,19 @@ class AccountsController extends Controller
 {
 	public function __construct() {
 		$this->middleware('auth');
+	}
+
+	public function create(Profile $profile)
+	{
+		$this->authorize('update', $profile);
+		return view('accounts.create');
+	}
+
+	public function store(Profile $profile, CreateAccountRequest $request)
+	{
+		$this->authorize('update', $profile);
+		$account = $profile->createAccount(new Account($request->all()));
+		return redirect()->route('accounts.edit', ['accounts' => $account->slug]);
 	}
 
 	/**

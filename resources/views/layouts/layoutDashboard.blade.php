@@ -141,10 +141,14 @@
             </a>
             <ul class="treeview-menu">
               <li><a href="{{ route('profiles.edit', ['profiles' => $profile->slug])  }}"><i class="fa fa-circle-o"></i> Profile Info</a></li>
-              @if(!$profile->account->routing)
-                <li><a href="{{ route('accounts.edit', ['accounts' => $profile->account->slug]) }}"><i class="fa fa-circle-o"></i> Payment Account Info</a></li> 
+              @if($profile->account)
+                @if(!$profile->account->routing)
+                  <li><a href="{{ route('accounts.edit', ['accounts' => $profile->account->slug]) }}"><i class="fa fa-circle-o"></i> Payment Account Info</a></li> 
+                @else
+                  <li><a href="{{ route('accounts.show', ['accounts' => $profile->account->slug]) }}"><i class="fa fa-circle-o"></i> Payment Account Info</a></li> 
+                @endif
               @else
-                <li><a href="{{ route('accounts.show', ['accounts' => $profile->account->slug]) }}"><i class="fa fa-circle-o"></i> Payment Account Info</a></li> 
+                <li><a href="{{ route('accounts.create', ['profiles' => $profile->slug]) }}"><i class="fa fa-circle-o"></i> Create Account</a></li> 
               @endif
               <li><a href="{{ route('connections.show', ['profiles' => $profile->slug]) }}"><i class="fa fa-circle-o"></i> Account Connections</a></li>
             </ul>

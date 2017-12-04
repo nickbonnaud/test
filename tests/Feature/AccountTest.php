@@ -39,17 +39,6 @@ class AccountTest extends TestCase
     $this->get("/accounts/" . $profile->slug . "/edit")->assertSee('Business Info');
   }
 
-  function test_an_authenticated_user_can_create_an_account() {
-    $this->signIn();
-    $profile = create('App\Profile', ['user_id' => auth()->user()->id]);
-    $account = make('App\Account', ['profile_id' => $profile->id]);
-    
-    $response = $this->post("/accounts/" . $profile->slug, $account->toArray());
-    $response->assertRedirect('/accounts/' . $profile->account->slug . '/edit');
-
-    $this->assertDatabaseHas('accounts', ['profile_id' => $profile->id, 'status' => 'review']);
-  }
-
   function test_an_unathenticated_user_cannot_update_an_account() {
   	$this->withExceptionHandling();
   	$profile = create('App\Profile');
@@ -182,10 +171,22 @@ class AccountTest extends TestCase
   function test_authorized_user_can_view_account_bank_update_form_after_account_owner_update() {
   	$this->signIn();
     $profile = create('App\Profile', ['user_id' => auth()->user()->id]);
-    $account = make('App\Account', ['profile_id' => $profile->id, 'routing' => null, 'account_number' => null, 'method' => null]);
+    $account = create('App\Account', ['profile_id' => $profile->id, 'routing' => null, 'account_number' => null, 'method' => null]);
 
-    
-    $response = $this->post("/accounts/" . $profile->slug, $account->toArray());
+    $data = [
+      'type' => 'owner',
+      'account_user_first' => $account->account_user_first,
+      'account_user_last' => $account->account_user_last,
+      'date_of_birth' => $account->date_of_birth,
+      'ownership' => $account->ownership,
+      'indiv_street_address' => $account->indiv_street_address,
+      'indiv_city' => $account->indiv_city,
+      'indiv_state' => $account->indiv_state,
+      'indiv_zip' => $account->indiv_zip,
+      'owner_email' => $account->owner_email,
+      'ssn' => $account->ssn,
+    ];
+    $response = $this->patch("/accounts/" . $account->slug, $data);
     $response->assertRedirect('/accounts/' . $account->slug . '/edit');
 
     $this->get($response->headers->get('Location'))
