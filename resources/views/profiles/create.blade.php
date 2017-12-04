@@ -57,7 +57,6 @@
         var latitude = place.geometry.location.lat();
         var longitude = place.geometry.location.lng();
         var streetAddress;
-        console.log(place);
         place.address_components.forEach(function(e) {
           if (e.types.includes('street_number')) {
             streetAddress = e.short_name;
@@ -82,7 +81,7 @@
         $('#latitude').val(latitude);
         $('#longitude').val(longitude);
         $('#phone').val(place.formatted_phone_number);
-        $('#rating').val(place.rating);
+        $('#google_rating').val(place.rating);
         $('#google_id').val(place.place_id);
         $('#business_name').val(place.name);
         $('#website').val(place.website);

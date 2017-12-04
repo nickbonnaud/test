@@ -34,4 +34,13 @@ class CityTest extends TestCase
     $this->assertEquals(strtolower('Wake'), $city->county);
     $this->assertEquals(strtolower('NC'), $city->state);
   }
+
+  function test_a_profile_belongs_to_a_city() {
+    $profile = create('App\Profile');
+    $city = create('App\City');
+
+    $profile->associateCity(['name' => 'raleigh', 'county' => 'wake', 'state' => 'nc']);
+
+    dd($profile->city->name);
+  }
 }

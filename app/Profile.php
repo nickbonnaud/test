@@ -200,6 +200,7 @@ class Profile extends Model
       $city = $this->city()->create($cityData);
     }
     $this->city()->associate($city);
+    $this->save();
   }
 
   public function path() {
