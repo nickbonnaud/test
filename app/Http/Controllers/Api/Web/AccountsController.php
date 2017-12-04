@@ -14,7 +14,7 @@ class AccountsController extends Controller {
 		$merchantId = array_get($business, 'merchantData.merchantId');
 		$status = array_get($business, 'merchantData.status');
 
-    $account = Account::where('splashId', '=', $merchantId)->first();
+    $account = Account::where('splash_id', '=', $merchantId)->first();
     $account->status = $status;
     $account->save();
 	}

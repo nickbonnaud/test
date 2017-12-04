@@ -33,8 +33,10 @@ class AccountTest extends TestCase
   function test_an_authorized_user_can_view_create_account_form() {
     $this->signIn();
     $profile = create('App\Profile', ['user_id' => auth()->user()->id]);
+    $account = create('App\Account', ['profile_id' => $profile->id, 'legal_biz_name' => $profile->business_name, 'account_email' => null]);
 
-    $this->get("/accounts/" . $profile->slug . "/create")->assertSee('Business Info');
+
+    $this->get("/accounts/" . $profile->slug . "/edit")->assertSee('Business Info');
   }
 
   function test_an_authenticated_user_can_create_an_account() {
@@ -54,7 +56,7 @@ class AccountTest extends TestCase
   	$account = create('App\Account', ['profile_id' => $profile->id]);
 
   	$account['type'] = 'owner';
-    $account->ownerEmail = "fake@email.com";
+    $account->owner_email = "fake@email.com";
 
   	$this->patch("/accounts/" . $account->slug, $account->toArray())->assertRedirect('/login');
   	$this->signIn();
@@ -67,10 +69,10 @@ class AccountTest extends TestCase
     $account = create('App\Account', ['profile_id' => $profile->id]);
 
     $account['type'] = 'owner';
-    $account->ownerEmail = "fake@email.com";
+    $account->owner_email = "fake@email.com";
 
     $response = $this->patch("/accounts/" . $account->slug, $account->toArray());
-    $this->assertDatabaseHas('accounts', ['profile_id' => $profile->id, 'ownerEmail' => $account->ownerEmail]);
+    $this->assertDatabaseHas('accounts', ['profile_id' => $profile->id, 'owner_email' => $account->owner_email]);
   }
 
   function test_an_authenticated_user_can_update_their_account_business() {
@@ -79,10 +81,10 @@ class AccountTest extends TestCase
     $account = create('App\Account', ['profile_id' => $profile->id]);
 
     $account['type'] = 'business';
-    $account->accountEmail = "fakeAccount@email.com";
+    $account->account_email = "fakeAccount@email.com";
 
     $response = $this->patch("/accounts/" . $account->slug, $account->toArray());
-    $this->assertDatabaseHas('accounts', ['profile_id' => $profile->id, 'accountEmail' => $account->accountEmail]);
+    $this->assertDatabaseHas('accounts', ['profile_id' => $profile->id, 'account_email' => $account->account_email]);
   }
 
   function test_an_authenticated_user_can_update_their_account_pay() {
@@ -104,15 +106,15 @@ class AccountTest extends TestCase
 
     $data = [
     	'type' => 'owner',
-    	'accountUserFirst' => 'Test',
-      'accountUserLast' => 'User',
-      'dateOfBirth' => '1970-12-11',
+    	'account_user_first' => 'Test',
+      'account_user_last' => 'User',
+      'date_of_birth' => '1970-12-11',
       'ownership' => 75,
-      'indivStreetAddress' => '910 Fake St',
-      'indivCity' => 'Raleigh',
-      'indivState' => 'NC',
-      'indivZip' => '27603',
-      'ownerEmail' => 'fake@email.com',
+      'indiv_street_address' => '910 Fake St',
+      'indiv_city' => 'Raleigh',
+      'indiv_state' => 'NC',
+      'indiv_zip' => '27603',
+      'owner_email' => 'fake@email.com',
       'ssn' => 'XXX-XX-1233',
     ];
 
@@ -121,7 +123,7 @@ class AccountTest extends TestCase
     $this->assertEquals($account->ssn, $updatedAccount->ssn);
   }
 
-  function test_account_updates_do_not_save_masked_accountNumber_routing() {
+  function test_account_updates_do_not_save_masked_account_number_routing() {
   	$this->signIn();
     $profile = create('App\Profile', ['user_id' => auth()->user()->id]);
     $account = create('App\Account', ['profile_id' => $profile->id]);
@@ -129,14 +131,14 @@ class AccountTest extends TestCase
     $data = [
     	'type' => 'bank',
     	'routing' => 'XXXXX3456',
-      'accountNumber' => 'XXXXXX1234',
+      'account_number' => 'XXXXXX1234',
       'method' => 2
     ];
 
     $this->patch("/accounts/" . $account->slug, $data);
     $updatedAccount = Account::first();
     $this->assertEquals($account->routing, $updatedAccount->routing);
-    $this->assertEquals($account->accountNumber, $updatedAccount->accountNumber);
+    $this->assertEquals($account->account_number, $updatedAccount->account_number);
   }
 
   function test_unauthorized_users_cannot_view_account_update_form_pages() {
@@ -150,26 +152,27 @@ class AccountTest extends TestCase
   	$this->get("/accounts/" . $account->slug . '/edit')->assertStatus(403);
   }
 
-  function test_authorized_user_can_view_account_owner_update_form_after_account_create() {
+  function test_authorized_user_can_view_account_owner_update_form_after_account_business_update() {
   	$this->signIn();
     $profile = create('App\Profile', ['user_id' => auth()->user()->id]);
-
+    $account = create('App\Account', ['profile_id' => $profile->id, 'legal_biz_name' => $profile->business_name, 'biz_street_address' => '5877 Watson Land Suite 029', 'biz_city' => 'Williamsonbury', 'biz_state' => 'SC', 'biz_zip' => '95075', 'phone' => '910-821-1122', 'owner_email' => null]);
  		$data = [
- 			'legalBizName' => $profile->business_name,
-	    'businessType' => 0,
-	    'bizTaxId' => 12-3456789,
-	    'established' => '1996-11-13',
-	    'annualCCSales' => 10000,
-	    'bizStreetAddress' => '5877 Watson Land Suite 029',
-	    'bizCity' => 'Williamsonbury',
-	    'bizState' => 'SC',
-	    'bizZip' => '95075',
-	    'phone' => '910-821-1122',
-	    'accountEmail' => 'avery.kunze@example.net',
+      'type' => 'business',
+	    'legal_biz_name' => $profile->business_name,
+      'business_type' => 0,
+      'biz_tax_id' => 12-3456789,
+      'established' => '1996-11-13',
+      'annual_cc_sales' => 10000,
+      'biz_street_address' => '5877 Watson Land Suite 029',
+      'biz_city' => 'Williamsonbury',
+      'biz_state' => 'SC',
+      'biz_zip' => '95075',
+      'phone' => '910-821-1122',
+      'account_email' => 'avery.kunze@example.net',
  		];
 
     
-    $response = $this->post("/accounts/" . $profile->slug, $data);
+    $response = $this->patch("/accounts/" . $account->slug, $data);
     $response->assertRedirect('/accounts/' . $profile->account->slug . '/edit');
 
     $this->get($response->headers->get('Location'))
@@ -179,7 +182,7 @@ class AccountTest extends TestCase
   function test_authorized_user_can_view_account_bank_update_form_after_account_owner_update() {
   	$this->signIn();
     $profile = create('App\Profile', ['user_id' => auth()->user()->id]);
-    $account = make('App\Account', ['profile_id' => $profile->id, 'routing' => null, 'accountNumber' => null, 'method' => null]);
+    $account = make('App\Account', ['profile_id' => $profile->id, 'routing' => null, 'account_number' => null, 'method' => null]);
 
     
     $response = $this->post("/accounts/" . $profile->slug, $account->toArray());
@@ -192,11 +195,11 @@ class AccountTest extends TestCase
   function test_authorized_user_can_view_account_show_after_account_bank_update() {
   	$this->signIn();
     $profile = create('App\Profile', ['user_id' => auth()->user()->id]);
-    $account = create('App\Account', ['profile_id' => $profile->id, 'routing' => null, 'accountNumber' => null, 'method' => null]);
+    $account = create('App\Account', ['profile_id' => $profile->id, 'routing' => null, 'account_number' => null, 'method' => null]);
 
     $data = [
     	'routing' => '321456789',
-    	'accountNumber' => '789654321',
+    	'account_number' => '789654321',
     	'method' => 2,
     	'type' => 'bank'
     ];

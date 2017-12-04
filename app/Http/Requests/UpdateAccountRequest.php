@@ -41,39 +41,39 @@ class UpdateAccountRequest extends FormRequest
 
   public function validateOwner() {
     return [
-      'accountUserFirst' => 'required',
-      'accountUserLast' => 'required',
-      'dateOfBirth' => 'required|date_format:Y-m-d',
+      'account_user_first' => 'required',
+      'account_user_last' => 'required',
+      'date_of_birth' => 'required|date_format:Y-m-d',
       'ownership' => 'required',
-      'indivStreetAddress' => 'required',
-      'indivCity' => 'required',
-      'indivState' => 'required',
-      'indivZip' => 'required',
-      'ownerEmail' => 'required',
+      'indiv_street_address' => 'required',
+      'indiv_city' => 'required',
+      'indiv_state' => 'required',
+      'indiv_zip' => 'required',
+      'owner_email' => 'required',
       'ssn' => 'required',
     ];
   }
 
   public function validateBusiness() {
     return [
-      'legalBizName' => 'required',
-      'businessType' => 'required',
-      'bizTaxId' => 'required',
+      'legal_biz_name' => 'required',
+      'business_type' => 'required',
+      'biz_tax_id' => 'required',
       'established' => 'required|date_format:Y-m-d',
-      'annualCCSales' => 'required',
-      'bizStreetAddress' => 'required',
-      'bizCity' => 'required',
-      'bizState' => 'required',
-      'bizZip' => 'required',
+      'annual_cc_sales' => 'required',
+      'biz_street_address' => 'required',
+      'biz_city' => 'required',
+      'biz_state' => 'required',
+      'biz_zip' => 'required',
       'phone' => 'required',
-      'accountEmail' => 'required'
+      'account_email' => 'required'
     ];
   }
 
   public function validatePay() {
     return [
       'routing' => 'required',
-      'accountNumber' => 'required',
+      'account_number' => 'required',
       'method' => 'required'
     ];
   }

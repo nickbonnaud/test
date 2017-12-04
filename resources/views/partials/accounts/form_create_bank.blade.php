@@ -14,8 +14,8 @@
 	</div>
 
 	<div class="form-group">
-	    <label for="accountNumber">Account Number</label>
-	    <input type="tel" name="accountNumber" id="accountNumber" value="{{ old('accountNumber') }}" class="form-control" required>
+	    <label for="account_number">Account Number</label>
+	    <input type="tel" name="account_number" id="account_number" value="{{ old('account_number') }}" class="form-control" required>
 	</div>
 
 	<div class="form-group">

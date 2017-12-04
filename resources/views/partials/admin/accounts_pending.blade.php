@@ -2,7 +2,7 @@
   @foreach($accounts as $account)
   	<tr class="product-row">
   		<td class="product-row-data">{{ $account->profile->business_name }}</td>
-      @if($account->accountEmail)
+      @if($account->account_email)
         <td class="product-row-data"><span class="label label-success">Complete</span></td>
       @else
         <td class="product-row-data"><span class="label label-danger">Incomplete</span></td>

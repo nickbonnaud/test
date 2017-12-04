@@ -34,19 +34,19 @@
 										<ul class="list-group list-group-unbordered">
 											<li class="list-group-item">
 												<b>First Name</b>
-												<p class="pull-right">{{ $account->accountUserFirst }}</p>
+												<p class="pull-right">{{ $account->account_user_first }}</p>
 											</li>
 											<li class="list-group-item">
 												<b>Last Name</b>
-												<p class="pull-right">{{ $account->accountUserLast }}</p>
+												<p class="pull-right">{{ $account->account_user_last }}</p>
 											</li>
 											<li class="list-group-item">
 												<b>Email</b>
-												<p class="pull-right">{{ $account->ownerEmail }}</p>
+												<p class="pull-right">{{ $account->owner_email }}</p>
 											</li>
 											<li class="list-group-item">
 												<b>Date of Birth</b>
-												<p class="pull-right">{{ $account->dateOfBirth }}</p>
+												<p class="pull-right">{{ $account->date_of_birth }}</p>
 											</li>
 											<li class="list-group-item">
 												<b>SSN last 4</b>
@@ -58,19 +58,19 @@
 											</li>
 											<li class="list-group-item">
 												<b>Street Address</b>
-												<p class="pull-right">{{ $account->indivStreetAddress }}</p>
+												<p class="pull-right">{{ $account->indiv_street_address }}</p>
 											</li>
 											<li class="list-group-item">
 												<b>City</b>
-												<p class="pull-right">{{ $account->indivCity }} </p>
+												<p class="pull-right">{{ $account->indiv_city }} </p>
 											</li>
 											<li class="list-group-item">
 												<b>State</b>
-												<p class="pull-right">{{ $account->indivState }}</p>
+												<p class="pull-right">{{ $account->indiv_state }}</p>
 											</li>
 											<li class="list-group-item">
 												<b>Zip</b>
-												<p class="pull-right">{{ $account->indivZip }}</p>
+												<p class="pull-right">{{ $account->indiv_zip }}</p>
 											</li>
 										</ul>
 										<a href="#" class="btn btn-primary btn-block" data-toggle="modal" data-target="#individualAccountInfoModal">
@@ -89,7 +89,7 @@
 										<ul class="list-group list-group-unbordered">
 											<li class="list-group-item">
 												<b>Legal Business Name</b>
-												<p class="pull-right">{{ $account->legalBizName }}</p>
+												<p class="pull-right">{{ $account->legal_biz_name }}</p>
 											</li>
 											<li class="list-group-item">
 												<b>Type</b>
@@ -97,7 +97,7 @@
 											</li>
 											<li class="list-group-item">
 												<b>Tax ID (EIN)</b>
-												<p class="pull-right">{{ $account->bizTaxId }}</p>
+												<p class="pull-right">{{ $account->biz_tax_id }}</p>
 											</li>
 											<li class="list-group-item">
 												<b>Date Established</b>
@@ -105,23 +105,23 @@
 											</li>
 											<li class="list-group-item">
 												<b>Estimated Annual Credit Card Sales</b>
-												<p class="pull-right">${{ $account->annualCCSales }}</p>
+												<p class="pull-right">${{ $account->annual_cc_sales }}</p>
 											</li>
 											<li class="list-group-item">
 												<b>Street Address</b>
-												<p class="pull-right">{{ $account->bizStreetAddress }}</p>
+												<p class="pull-right">{{ $account->biz_street_address }}</p>
 											</li>
 											<li class="list-group-item">
 												<b>City</b>
-												<p class="pull-right">{{ $account->bizCity }} </p>
+												<p class="pull-right">{{ $account->biz_city }} </p>
 											</li>
 											<li class="list-group-item">
 												<b>State</b>
-												<p class="pull-right">{{ $account->bizState }}</p>
+												<p class="pull-right">{{ $account->biz_state }}</p>
 											</li>
 											<li class="list-group-item">
 												<b>Zip</b>
-												<p class="pull-right">{{ $account->bizZip }}</p>
+												<p class="pull-right">{{ $account->biz_zip }}</p>
 											</li>
 											<li class="list-group-item">
 												<b>Business Phone</b>
@@ -129,7 +129,7 @@
 											</li>
 											<li class="list-group-item">
 												<b>Business Email</b>
-												<p class="pull-right">{{ $account->accountEmail }}</p>
+												<p class="pull-right">{{ $account->account_email }}</p>
 											</li>
 										</ul>
 										<a href="#" class="btn btn-primary btn-block" data-toggle="modal" data-target="#businessAccountInfoModal">
@@ -152,7 +152,7 @@
 											</li>
 											<li class="list-group-item">
 												<b>Account Number last 4</b>
-												<p class="pull-right">{{ $account->accountNumber }}</p>
+												<p class="pull-right">{{ $account->account_number }}</p>
 											</li>
 											<li class="list-group-item">
 												<b>Routing Number last 4</b>

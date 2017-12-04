@@ -3,21 +3,21 @@
   {{ csrf_field() }}
   <input type="hidden" name="type" value="owner">
   <div class="form-group">
-    <label for="accountUserFirst" class="col-sm-2 control-label">First name</label>
+    <label for="account_user_first" class="col-sm-2 control-label">First name</label>
     <div class="col-sm-10">
-      <input type="text" name="accountUserFirst" class="form-control" id="accountUserFirst" value="{{ $account->accountUserFirst }}" required>
+      <input type="text" name="account_user_first" class="form-control" id="account_user_first" value="{{ $account->account_user_first }}" required>
     </div>
   </div>
   <div class="form-group">
-   <label for="accountUserLast" class="col-sm-2 control-label">Last name</label>
+   <label for="account_user_last" class="col-sm-2 control-label">Last name</label>
     <div class="col-sm-10">
-      <input type="text" name="accountUserLast" class="form-control" id="accountUserLast" value="{{ $account->accountUserLast }}" required>
+      <input type="text" name="account_user_last" class="form-control" id="account_user_last" value="{{ $account->account_user_last }}" required>
     </div>
   </div>
   <div class="form-group">
-   <label for="dateOfBirth" class="col-sm-2 control-label">DOB</label>
+   <label for="date_of_birth" class="col-sm-2 control-label">DOB</label>
     <div class="col-sm-10">
-      <input type="date" name="dateOfBirth" class="form-control" id="dateOfBirth" value="{{ $account->dateOfBirth }}" required>
+      <input type="date" name="date_of_birth" class="form-control" id="date_of_birth" value="{{ $account->date_of_birth }}" required>
     </div>
   </div>
   <div class="form-group">
@@ -27,33 +27,33 @@
     </div>
   </div>
   <div class="form-group">
-   <label for="indivStreetAddress" class="col-sm-2 control-label">Owner Address</label>
+   <label for="indiv_street_address" class="col-sm-2 control-label">Owner Address</label>
     <div class="col-sm-10">
-      <input type="text" name="indivStreetAddress" class="form-control" id="indivStreetAddress" value="{{ $account->indivStreetAddress }}" required>
+      <input type="text" name="indiv_street_address" class="form-control" id="indiv_street_address" value="{{ $account->indiv_street_address }}" required>
     </div>
   </div>
   <div class="form-group">
-   <label for="indivCity" class="col-sm-2 control-label">City</label>
+   <label for="indiv_city" class="col-sm-2 control-label">City</label>
     <div class="col-sm-10">
-      <input type="text" name="indivCity" class="form-control" id="indivCity" value="{{ $account->indivCity }}" required>
+      <input type="text" name="indiv_city" class="form-control" id="indiv_city" value="{{ $account->indiv_city }}" required>
     </div>
   </div>
   <div class="form-group">
-   <label for="indivState" class="col-sm-2 control-label">State</label>
+   <label for="indiv_state" class="col-sm-2 control-label">State</label>
     <div class="col-sm-10">
-      <input v-mask="'AA'" v-model="indivState" type="text" name="indivState" class="form-control" id="indivState" required>
+      <input v-mask="'AA'" v-model="indiv_state" type="text" name="indiv_state" class="form-control" id="indiv_state" required>
     </div>
   </div>
   <div class="form-group">
-   <label for="indivZip" class="col-sm-2 control-label">Zip</label>
+   <label for="indiv_zip" class="col-sm-2 control-label">Zip</label>
     <div class="col-sm-10">
-      <input v-mask="'#####'" v-model="indivZip" type="tel" name="indivZip" class="form-control" id="indivZip" required>
+      <input v-mask="'#####'" v-model="indiv_zip" type="tel" name="indiv_zip" class="form-control" id="indiv_zip" required>
     </div>
   </div>
   <div class="form-group">
-   <label for="ownerEmail" class="col-sm-2 control-label">Owner Email</label>
+   <label for="owner_email" class="col-sm-2 control-label">Owner Email</label>
     <div class="col-sm-10">
-      <input type="email" name="ownerEmail" class="form-control" id="ownerEmail" value="{{ $account->ownerEmail }}" required>
+      <input type="email" name="owner_email" class="form-control" id="owner_email" value="{{ $account->owner_email }}" required>
     </div>
   </div>
   <div class="form-group">

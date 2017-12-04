@@ -40,8 +40,14 @@ class ProfileTest extends TestCase
         $profile = make('App\Profile');
         $tax = create('App\Tax');
         $tags = create('App\Tag');
-        $profile->county = "wake county";
-        $profile->state = "nc";
+        $profile->biz_street_address = '1 Fake Ave';
+        $profile->biz_county = "wake county";
+        $profile->biz_state = "nc";
+        $profile->biz_city = "raleigh";
+        $profile->biz_zip = 27603;
+        $profile->phone = "(910) 853-2465";
+        $profile->google_rating = 4.5;
+        $profile->google_id = 'google_id1';
         $profile->latitude = 34.78172000;
         $profile->longitude = -78.65666900;
         $profile->tags = [0 => $tags->id];
@@ -49,9 +55,10 @@ class ProfileTest extends TestCase
 
         $response->assertRedirect($profile->path());
 
-        $this->assertDatabaseHas('profiles', ['business_name' => $profile->business_name, 'tax_id' => $tax->id]);
+        $this->assertDatabaseHas('profiles', ['business_name' => $profile->business_name, 'tax_id' => $tax->id, 'google_id' => $profile->google_id]);
         $this->assertDatabaseHas('geo_locations', ['identifier' => $profile->business_name]);
         $this->assertDatabaseHas('profile_tag', ['tag_id' => $tags->id] );
+        $this->assertDatabaseHas('accounts', ['profile_id' => $profile->first()->id, 'phone' => $profile->phone, 'biz_street_address' => $profile->biz_street_address, 'biz_city' => $profile->biz_city, 'biz_state' => $profile->biz_state, 'biz_zip' => $profile->biz_zip]);
 
     }
 

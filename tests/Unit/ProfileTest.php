@@ -52,17 +52,34 @@ class ProfileTest extends TestCase
       'name' => 'Raleigh',
       'county' => 'Wake County',
       'state' => 'NC' 
+    ],
+    [
+      'legal_biz_name' => 'acme inc',
+      'biz_street_address' => '1 Fake Ave',
+      'biz_city' => 'Raleigh',
+      'biz_state' => 'nc',
+      'biz_zip' => '27603',
+      'phone' => '910-853-2465'
     ]);
   	$this->assertDatabaseHas('geo_locations', [
-        'profile_id' => $this->profile->id,
-        'identifier' => 'acme',
-      	'latitude' => 34.78172000,
-      	'longitude' => -78.65666900
+      'profile_id' => $this->profile->id,
+      'identifier' => 'acme',
+    	'latitude' => 34.78172000,
+    	'longitude' => -78.65666900
     ]);
     $this->assertDatabaseHas('cities', [
-        'name' => 'raleigh',
-        'county' => 'wake county',
-        'state' => 'nc' 
+      'name' => 'raleigh',
+      'county' => 'wake county',
+      'state' => 'nc' 
+    ]);
+    $this->assertDatabaseHas('accounts', [
+      'profile_id' => $this->profile->id,
+      'legal_biz_name' => 'acme inc',
+      'biz_street_address' => '1 Fake Ave',
+      'biz_city' => 'Raleigh',
+      'biz_state' => 'nc',
+      'biz_zip' => '27603',
+      'phone' => '910-853-2465'
     ]);
   }
 

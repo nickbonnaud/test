@@ -320,7 +320,7 @@ class Transaction extends Model
 
     $response = new SplashPayments\txns(
       [
-        'merchant' => $this->profile->account->splashId,
+        'merchant' => $this->profile->account->splash_id,
         'type' => 1,
         'origin' => 2,
         'token' => $this->user->customer_id,

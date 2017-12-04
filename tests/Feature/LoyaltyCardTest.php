@@ -22,7 +22,7 @@ class LoyaltyCardTest extends TestCase
     $photo = create('App\Photo');
     $profile = create('App\Profile', ['logo_photo_id' => $photo->id, 'hero_photo_id' => $photo->id]);
     $loyaltyProgram = create('App\LoyaltyProgram', ['profile_id' => $profile->id, 'reward' => 'free coffee', 'is_increment' => true, 'purchases_required' => 2]);
-    $account = create('App\Account', ['profile_id' => $profile->id, 'splashId' => 't1_mer_5a10dfa09f4b06f5e326d8b']);
+    $account = create('App\Account', ['profile_id' => $profile->id, 'splash_id' => 't1_mer_5a10dfa09f4b06f5e326d8b']);
     $user = create('App\User', ['default_tip_rate' => 20, 'customer_id' => 'c793a464b8d3085506e1e82378656dbb']);
     create('App\PushToken', ['user_id' => $user->id]);
     $loyaltyCard = create('App\LoyaltyCard', ['user_id' => $user->id, 'loyalty_program_id' => $loyaltyProgram->id, 'current_amount' => 0]);
@@ -45,7 +45,7 @@ class LoyaltyCardTest extends TestCase
     $photo = create('App\Photo');
     $profile = create('App\Profile', ['logo_photo_id' => $photo->id, 'hero_photo_id' => $photo->id]);
     $loyaltyProgram = create('App\LoyaltyProgram', ['profile_id' => $profile->id, 'reward' => 'free coffee', 'is_increment' => true, 'purchases_required' => 2]);
-    $account = create('App\Account', ['profile_id' => $profile->id, 'splashId' => 't1_mer_5a10dfa09f4b06f5e326d8b']);
+    $account = create('App\Account', ['profile_id' => $profile->id, 'splash_id' => 't1_mer_5a10dfa09f4b06f5e326d8b']);
     $user = create('App\User', ['default_tip_rate' => 20, 'customer_id' => 'c793a464b8d3085506e1e82378656dbb']);
     create('App\PushToken', ['user_id' => $user->id]);
     $loyaltyCard = create('App\LoyaltyCard', ['user_id' => $user->id, 'loyalty_program_id' => $loyaltyProgram->id, 'current_amount' => 1]);
@@ -68,7 +68,7 @@ class LoyaltyCardTest extends TestCase
     $photo = create('App\Photo');
     $profile = create('App\Profile', ['logo_photo_id' => $photo->id, 'hero_photo_id' => $photo->id]);
     $loyaltyProgram = create('App\LoyaltyProgram', ['profile_id' => $profile->id, 'reward' => 'free coffee', 'is_increment' => false, 'amount_required' => 50]);
-    $account = create('App\Account', ['profile_id' => $profile->id, 'splashId' => 't1_mer_5a10dfa09f4b06f5e326d8b']);
+    $account = create('App\Account', ['profile_id' => $profile->id, 'splash_id' => 't1_mer_5a10dfa09f4b06f5e326d8b']);
     $user = create('App\User', ['default_tip_rate' => 20, 'customer_id' => 'c793a464b8d3085506e1e82378656dbb']);
     create('App\PushToken', ['user_id' => $user->id]);
     $loyaltyCard = create('App\LoyaltyCard', ['user_id' => $user->id, 'loyalty_program_id' => $loyaltyProgram->id, 'current_amount' => 0]);
@@ -92,7 +92,7 @@ class LoyaltyCardTest extends TestCase
     $photo = create('App\Photo');
     $profile = create('App\Profile', ['logo_photo_id' => $photo->id, 'hero_photo_id' => $photo->id]);
     $loyaltyProgram = create('App\LoyaltyProgram', ['profile_id' => $profile->id, 'reward' => 'free coffee', 'is_increment' => true, 'purchases_required' => 2]);
-    $account = create('App\Account', ['profile_id' => $profile->id, 'splashId' => 't1_mer_5a10dfa09f4b06f5e326d8b']);
+    $account = create('App\Account', ['profile_id' => $profile->id, 'splash_id' => 't1_mer_5a10dfa09f4b06f5e326d8b']);
     $user = create('App\User', ['default_tip_rate' => 20, 'customer_id' => 'c793a464b8d3085506e1e82378656dbb']);
     create('App\PushToken', ['user_id' => $user->id]);
     $loyaltyCard = create('App\LoyaltyCard', ['user_id' => $user->id, 'loyalty_program_id' => $loyaltyProgram->id, 'current_amount' => 1]);
@@ -112,7 +112,7 @@ class LoyaltyCardTest extends TestCase
     $photo = create('App\Photo');
     $profile = create('App\Profile', ['logo_photo_id' => $photo->id, 'hero_photo_id' => $photo->id]);
     $loyaltyProgram = create('App\LoyaltyProgram', ['profile_id' => $profile->id, 'reward' => 'free coffee', 'is_increment' => false, 'amount_required' => 50]);
-    $account = create('App\Account', ['profile_id' => $profile->id, 'splashId' => 't1_mer_5a10dfa09f4b06f5e326d8b']);
+    $account = create('App\Account', ['profile_id' => $profile->id, 'splash_id' => 't1_mer_5a10dfa09f4b06f5e326d8b']);
     $user = create('App\User', ['default_tip_rate' => 20, 'customer_id' => 'c793a464b8d3085506e1e82378656dbb']);
     create('App\PushToken', ['user_id' => $user->id]);
     $loyaltyCard = create('App\LoyaltyCard', ['user_id' => $user->id, 'loyalty_program_id' => $loyaltyProgram->id, 'current_amount' => 0]);

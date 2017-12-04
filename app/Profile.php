@@ -8,6 +8,7 @@ use App\FacebookAccount;
 use App\InstagramAccount;
 use App\SquareAccount;
 use App\PockeytLite;
+use App\Account;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
 use Illuminate\Database\Eloquent\Model;
@@ -31,7 +32,9 @@ class Profile extends Model
     'lat',
     'lng',
     'tip_tracking_enabled',
-    'approved'
+    'approved',
+    'google_id',
+    'google_rating'
   ];
 
   protected $casts = [
@@ -182,9 +185,10 @@ class Profile extends Model
     return $this;
   }
 
-  public function addlocationData($geoLocationData, $cityData) {
+  public function addlocationData($geoLocationData, $cityData, $accountData) {
    $this->geoLocation()->create($geoLocationData);
    $this->associateCity($cityData);
+   $this->createAccount(new Account($accountData));
    return $this;
   }
 
@@ -378,5 +382,9 @@ class Profile extends Model
 
   public function setApprovedAttribute($approved) {
     $this->attributes['approved'] = filter_var($approved, FILTER_VALIDATE_BOOLEAN);
+  }
+
+  public function accountRoute() {
+    return $this->account->slug;
   }
 }

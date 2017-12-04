@@ -56,21 +56,37 @@
 
         var latitude = place.geometry.location.lat();
         var longitude = place.geometry.location.lng();
-
+        var streetAddress;
+        console.log(place);
         place.address_components.forEach(function(e) {
+          if (e.types.includes('street_number')) {
+            streetAddress = e.short_name;
+          }
+          if (e.types.includes('route')) {
+            streetAddress = streetAddress + ' ' + e.short_name;
+          }
           if (e.types.includes("administrative_area_level_1")) {
-            $('#state').val(e.short_name);
+            $('#biz_state').val(e.short_name);
           }
           if (e.types.includes("administrative_area_level_2")) {
-            $('#county').val(e.short_name);
+            $('#biz_county').val(e.short_name);
           }
           if (e.types.includes("locality")) {
-            $('#city').val(e.short_name);
+            $('#biz_city').val(e.short_name);
+          }
+          if (e.types.includes('postal_code')) {
+            $('#biz_zip').val(e.short_name);
           }
         });
-
+        
         $('#latitude').val(latitude);
         $('#longitude').val(longitude);
+        $('#phone').val(place.formatted_phone_number);
+        $('#rating').val(place.rating);
+        $('#google_id').val(place.place_id);
+        $('#business_name').val(place.name);
+        $('#website').val(place.website);
+        $('#biz_street_address').val(streetAddress);
 
         infowindow.setContent('<div><strong>' + place.name + '</strong><br>' +
             place.formatted_address);

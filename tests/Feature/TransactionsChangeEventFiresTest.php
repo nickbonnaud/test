@@ -4,6 +4,8 @@ namespace Tests\Feature;
 
 use App\Transaction;
 use Tests\TestCase;
+use Illuminate\Support\Facades\Event;
+use App\Events\TransactionsChange;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -11,7 +13,7 @@ class TransactionsChangeEventFires extends TestCase
 {
 	use RefreshDatabase;
 
-	function test_transaction_change_event_fires_when_new_bill_is_closed() {
+	function test_transaction_status_changes_after_new_bill_is_closed() {
     $this->signIn();
     $photo = create('App\Photo');
     $profile = create('App\Profile', ['user_id' => auth()->id(), 'logo_photo_id' => $photo->id, 'hero_photo_id' => $photo->id]);
@@ -29,10 +31,13 @@ class TransactionsChangeEventFires extends TestCase
     ];
 
     $this->post("/api/web/transactions/{$profile->slug}/{$user->id}", $data);
-    $this->assertDatabaseHas('transactions', ['user_id' => $user->id, 'profile_id' => $profile->id, 'status' => 11]);
+    $transaction = Transaction::first();
+    $this->assertEquals($profile->id, $transaction->profile_id);
+    $this->assertEquals($user->id, $transaction->user_id);
+    $this->assertNotNull($transaction->status);
 	}
 
-	function test_transaction_change_event_fires_when_open_bill_is_closed() {
+	function test_transaction_status_changes_when_open_bill_is_closed() {
     $this->signIn();
     $photo = create('App\Photo');
     $profile = create('App\Profile', ['user_id' => auth()->id(), 'logo_photo_id' => $photo->id, 'hero_photo_id' => $photo->id]);
@@ -55,6 +60,6 @@ class TransactionsChangeEventFires extends TestCase
     ];
     $transaction = Transaction::first();
     $this->patch("/api/web/transactions/{$profile->slug}/{$transaction->id}", $data);
-    $this->assertDatabaseHas('transactions', ['user_id' => $user->id, 'profile_id' => $profile->id, 'status' => 11]);
+    $this->assertNotNull($transaction->fresh()->status);
 	}
 }

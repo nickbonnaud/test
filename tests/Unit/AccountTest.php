@@ -25,12 +25,12 @@ class AccountTest extends TestCase
   	$accountNumber = '1122334455';
   	$routing = '987654321';
 
-  	$account = make('App\Account', ['ssn' => $ssn, 'accountNumber' => $accountNumber, 'routing' => $routing]);
+  	$account = make('App\Account', ['ssn' => $ssn, 'account_number' => $accountNumber, 'routing' => $routing]);
 
   	$account->save();
 
   	$this->assertNotEquals($account->ssn, $ssn);
-  	$this->assertNotEquals($account->accountNumber, $accountNumber);
+  	$this->assertNotEquals($account->account_number, $accountNumber);
   	$this->assertNotEquals($account->routing, $routing);
   }
 
@@ -39,21 +39,21 @@ class AccountTest extends TestCase
   	$accountNumber = '1122334455';
   	$routing = '987654321';
 
-  	create('App\Account', ['ssn' => $ssn, 'accountNumber' => $accountNumber, 'routing' => $routing]);
+  	create('App\Account', ['ssn' => $ssn, 'account_number' => $accountNumber, 'routing' => $routing]);
 
   	$account = Account::first();
 
   	$this->assertEquals($account->ssn, substr($ssn, -4));
-  	$this->assertEquals($account->accountNumber, substr($accountNumber, -4));
+  	$this->assertEquals($account->account_number, substr($accountNumber, -4));
   	$this->assertEquals($account->routing, substr($routing, -4));
   }
 
   function test_an_account_cleans_annual_credit_card_sales_to_int() {
-  	$annualCCSales = "$10,002.40";
-  	$account = make('App\Account', ['annualCCSales' => $annualCCSales]);
+  	$annual_cc_sales = "$10,002.40";
+  	$account = make('App\Account', ['annual_cc_sales' => $annual_cc_sales]);
   	$account->save();
 
-  	$this->assertEquals($account->annualCCSales, 10002);
+  	$this->assertEquals($account->annual_cc_sales, 10002);
   }
 
   function test_an_account_stores_ownership_in_basis_points() {
@@ -76,36 +76,36 @@ class AccountTest extends TestCase
   function test_an_account_can_create_a_slug() {
     $account = create('App\Account');
 
-    $this->assertEquals($account->slug, str_slug($account->legalBizName, '-'));
+    $this->assertEquals($account->slug, str_slug($account->legal_biz_name, '-'));
   }
 
   function test_an_account_slug_is_unique() {
     $accountFirst = create('App\Account');
-    $accountSecond = make('App\Account', ['legalBizName' => $accountFirst->legalBizName]);
+    $accountSecond = make('App\Account', ['legal_biz_name' => $accountFirst->legal_biz_name]);
 
     $this->assertNotEquals($accountFirst->slug, $accountSecond->slug);
   }
 
   function test_an_account_knows_its_form_stage() {
     $account = new Account([
-      'legalBizName' => "Acme",
-      'businessType' => 0,
-      'bizTaxId' => 12-3456789,
+      'legal_biz_name' => "Acme",
+      'business_type' => 0,
+      'biz_tax_id' => 12-3456789,
       'established' => '1996-11-13',
-      'annualCCSales' => 10000,
-      'bizStreetAddress' => '5877 Watson Land Suite 029',
-      'bizCity' => 'Williamsonbury',
-      'bizState' => 'SC',
-      'bizZip' => '95075',
+      'annual_cc_Sales' => 10000,
+      'biz_street_address' => '5877 Watson Land Suite 029',
+      'biz_city' => 'Williamsonbury',
+      'biz_state' => 'SC',
+      'biz_zip' => '95075',
       'phone' => '910-821-1122',
-      'accountEmail' => 'avery.kunze@example.net',
+      'account_email' => 'avery.kunze@example.net',
     ]);
 
     $this->assertEquals('owner', $account->getAccountFormStage());
   }
 
   function test_an_account_returns_correct_route_based_on_account_completion() {
-    $account = create('App\Account', ['ownerEmail' => null]);
+    $account = create('App\Account', ['owner_email' => null]);
     $this->assertEquals("/accounts/{$account->slug}/edit", $account->route());
 
     $account1 = create('App\Account', ['method' => null]);
@@ -121,7 +121,7 @@ class AccountTest extends TestCase
   }
 
   function test_an_account_returns_its_business_type_name() {
-    $account = create('App\Account', ['businessType' => 2]);
+    $account = create('App\Account', ['business_type' => 2]);
     $this->assertEquals("LLC", $account->businessTypeName());
   }
 }

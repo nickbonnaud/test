@@ -435,8 +435,8 @@ Email the Pockeyt team
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
 <tr>
 <td align="center" class="call_text" style="font-family: Arial, sans-serif; font-size:14px; color:#8f969f; text-align:center; line-height:18px;" valign="top">
-@if(isset($profile->account->bizStreetAdress))
-{{ $profile->account->bizStreetAdress }}, {{ $profile->account->bizCity }}, {{ $profile->account->bizState }}, {{ $profile->account->bizZip }}
+@if(isset($profile->account->biz_street_adress))
+{{ $profile->account->biz_street_adress }}, {{ $profile->account->biz_city }}, {{ $profile->account->biz_state }}, {{ $profile->account->biz_zip }}
 @endif
 </td>
 </tr>

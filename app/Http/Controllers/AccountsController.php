@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Account;
 use App\Profile;
-use App\Http\Requests\CreateAccountRequest;
 use App\Http\Requests\UpdateAccountRequest;
 use Illuminate\Http\Request;
 
@@ -12,31 +11,6 @@ class AccountsController extends Controller
 {
 	public function __construct() {
 		$this->middleware('auth');
-	}
-
-
-	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @return \Illuminate\Http\Response
-	 */
-	public function create(Profile $profile)
-	{
-		$this->authorize('update', $profile);
-		return view('accounts.create');
-	}
-
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @param  \Illuminate\Http\Request  $request
-	 * @return \Illuminate\Http\Response
-	 */
-	public function store(Profile $profile, CreateAccountRequest $request)
-	{
-		$this->authorize('update', $profile);
-		$account = $profile->createAccount(new Account($request->all()));
-		return redirect()->route('accounts.edit', ['accounts' => $account->slug]);
 	}
 
 	/**
@@ -74,7 +48,9 @@ class AccountsController extends Controller
 	{
 		$this->authorize('update', $account);
 		$account->updateAccount($request->all());
-		if (!$account->method) {
+		if (!$account->owner_email) {
+			return redirect()->route('accounts.edit', ['accounts' => $account->slug]);
+		} elseif (!$account->method) {
 			return redirect()->route('accounts.edit', ['accounts' => $account->slug]);
 		} else {
 			return redirect()->route('accounts.show', ['accounts' => $account->slug]);

@@ -65,7 +65,7 @@ class SquareAccount extends Model
 	}
 
 	public static function matchLocation($locations, $account) {
-		$businessLocation = $account->bizStreetAddress;
+		$businessLocation = $account->biz_street_address;
 		foreach ($locations as $location) {
 			if ($location->business_address->address_line_1 == $businessLocation) {
 				self::saveSquareLocation($account, $location);

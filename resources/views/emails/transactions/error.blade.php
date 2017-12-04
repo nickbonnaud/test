@@ -14,7 +14,7 @@
 		<hr>
 		<h3>Error: {{ $msg }}</h3>
 		<h3>Code: {{ $code }}</h3>
-		<h4>Splash ID: {{ $splashId }}</h4>
+		<h4>Splash ID: {{ $transactionSplashId }}</h4>
 		<h4>Transaction ID: {{ $transaction->id }}</h4>
 	</body>
 </html>

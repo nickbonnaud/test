@@ -20,8 +20,8 @@
 
     data: {
       ownership: '{{ old('ownership') }}',
-      indivState: '{{ old('indivState') }}',
-      indivZip: '{{ old('indivZip') }}',
+      indiv_state: '{{ old('indiv_state') }}',
+      indiv_zip: '{{ old('indiv_zip') }}',
       ssn: '{{ old('ssn') }}'
     },
   });

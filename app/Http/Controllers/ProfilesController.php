@@ -34,16 +34,25 @@ class ProfilesController extends Controller
      */
     public function store(CreateProfileRequest $request) {
         $user = auth()->user();
-        $profile = $user->publish(new Profile($request->except(['latitude', 'longitude', 'county', 'state', 'city'])), $request->county, $request->state);
+        $profile = $user->publish(new Profile($request->all()), $request->biz_county, $request->biz_state);
         $profile->addlocationData([
             'identifier' => $request->business_name,
             'latitude' => $request->latitude,
             'longitude' => $request->longitude
         ],
         [
-            'name' => $request->city,
-            'county' => $request->county,
-            'state' => $request->state
+            'name' => $request->biz_city,
+            'county' => $request->biz_county,
+            'state' => $request->biz_state
+        ],
+        [
+            'legal_biz_name' => $request->business_name,
+            'biz_street_address' => $request->biz_street_address,
+            'biz_city' => $request->biz_city,
+            'biz_state' => $request->biz_state,
+            'biz_zip' => $request->biz_zip,
+            'phone' => $request->phone
+
         ])->tags()->sync($request->input('tags'));
 
         return redirect()->route('profiles.show', ['profiles' => $profile->slug]);
@@ -57,7 +66,7 @@ class ProfilesController extends Controller
      */
     public function show(Profile $profile) {
         $this->authorize('view', $profile);
-        return view('profiles.show', compact('profile'));
+        return view('profiles.show', compact('profile', 'accountRoute'));
     }
 
     /**

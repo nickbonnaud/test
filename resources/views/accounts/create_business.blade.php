@@ -22,11 +22,11 @@
     },
 
     data: {
-      bizTaxId: '{{ old('bizTaxId') }}',
-      annualCCSales: '',
-      bizState: '{{ old('bizState') }}',
-      bizZip: '{{ old('bizZip') }}',
-      phone: '{{ old('phone') }}',
+      biz_tax_id: '{{ old('biz_tax_id') }}',
+      annual_cc_sales: '{{ old('annual_CC_sales') }}',
+      biz_state: '{{ $account->biz_state }}',
+      biz_zip: '{{ $account->biz_zip }}',
+      phone: '{{ $account->phone }}',
       money: {
         decimal: '.',
         thousands: ',',

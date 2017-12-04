@@ -27,7 +27,7 @@ class UserPurchaseDealTest extends TestCase
 	function test_an_authorized_user_can_purchase_a_deal() {
   	$tax = create('App\Tax');
     $profile = create('App\Profile', ['tax_id' => $tax->id]);
-    $account = create('App\Account', ['profile_id' => $profile->id, 'splashId' => 't1_mer_5a10dfa09f4b06f5e326d8b']);
+    $account = create('App\Account', ['profile_id' => $profile->id, 'splash_id' => 't1_mer_5a10dfa09f4b06f5e326d8b']);
   	$user = create('App\User', ['customer_id' => 'c793a464b8d3085506e1e82378656dbb']);
   	$post = create('App\Post', ['is_redeemable' => true, 'deal_item' => 'Coffee', 'price' => 300]);
 
@@ -47,7 +47,7 @@ class UserPurchaseDealTest extends TestCase
     Mail::fake();
     $tax = create('App\Tax');
     $profile = create('App\Profile', ['tax_id' => $tax->id]);
-    $account = create('App\Account', ['profile_id' => $profile->id, 'splashId' => 't1_mer_5a10dfa09f4b06f5e326d8b']);
+    $account = create('App\Account', ['profile_id' => $profile->id, 'splash_id' => 't1_mer_5a10dfa09f4b06f5e326d8b']);
     $user = create('App\User', ['customer_id' => 'c793a464b8d3085506e1e82378656db']);
     $post = create('App\Post', ['is_redeemable' => true, 'deal_item' => 'Coffee', 'price' => 300]);
 

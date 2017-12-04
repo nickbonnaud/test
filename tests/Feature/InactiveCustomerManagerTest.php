@@ -88,7 +88,7 @@ class InactiveCustomerManagerTest extends TestCase
   	create('App\PushToken', ['user_id' => $user->id]);
   	$photo = create('App\Photo');
     $profile = create('App\Profile', ['logo_photo_id' => $photo->id, 'hero_photo_id' => $photo->id]);
-    $account = create('App\Account', ['profile_id' => $profile->id, 'splashId' => env('TEST_SPLASH_MERCHANT_ID')]);
+    $account = create('App\Account', ['profile_id' => $profile->id, 'splash_id' => env('TEST_SPLASH_MERCHANT_ID')]);
   	create('App\UserLocation', ['user_id' => $user->id, 'profile_id' => $profile->id, 'updated_at' => Carbon::now()->subMinutes(30)]);
   	$transaction = create('App\Transaction', ['user_id' => $user->id, 'profile_id' => $profile->id, 'paid' => false, 'bill_closed' => false]);
   	$transaction->sendPayOrKeepOpenNotification();
@@ -120,7 +120,7 @@ class InactiveCustomerManagerTest extends TestCase
   	create('App\PushToken', ['user_id' => $user->id]);
   	$photo = create('App\Photo');
     $profile = create('App\Profile', ['logo_photo_id' => $photo->id, 'hero_photo_id' => $photo->id]);
-    $account = create('App\Account', ['profile_id' => $profile->id, 'splashId' => env('TEST_SPLASH_MERCHANT_ID')]);
+    $account = create('App\Account', ['profile_id' => $profile->id, 'splash_id' => env('TEST_SPLASH_MERCHANT_ID')]);
   	create('App\UserLocation', ['user_id' => $user->id, 'profile_id' => $profile->id, 'updated_at' => Carbon::now()->subMinutes(30)]);
   	$transaction = create('App\Transaction', ['user_id' => $user->id, 'profile_id' => $profile->id, 'paid' => false, 'bill_closed' => false, 'status' => 2]);
   	Artisan::call('app:inactive_customer_manager');

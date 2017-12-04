@@ -93,7 +93,8 @@ class UserNotificatonsTest extends TestCase
   	create('App\PushToken', ['user_id' => $user->id]);
 
   	$transaction = create('App\Transaction', ['profile_id' => $profile->id, 'user_id' => $user->id, 'is_refund' => false, 'bill_closed' => true]);
-  	$this->assertDatabaseHas('transactions', ['status' => 11]);
+    $status = $transaction->fresh()->status;
+  	$this->assertDatabaseHas('transactions', ['status' => $status]);
 	}
 
   function test_a_user_is_notified_once_when_they_enter_a_location() {

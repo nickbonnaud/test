@@ -52,7 +52,7 @@ class UserConfirmBillTest extends TestCase
     $this->expectsEvents(TransactionSuccess::class);
     $this->expectsEvents(TransactionsChange::class);
   	$profile = create('App\Profile');
-    $account = create('App\Account', ['profile_id' => $profile->id, 'splashId' => 't1_mer_5a10dfa09f4b06f5e326d8b']);
+    $account = create('App\Account', ['profile_id' => $profile->id, 'splash_id' => 't1_mer_5a10dfa09f4b06f5e326d8b']);
   	$user = create('App\User', ['default_tip_rate' => 20, 'customer_id' => 'c793a464b8d3085506e1e82378656dbb']);
   	$transaction = create('App\Transaction', ['profile_id' => $profile->id, 'user_id' => $user->id, 'bill_closed' => true, 'is_refund' => false]);
 
@@ -80,7 +80,7 @@ class UserConfirmBillTest extends TestCase
     $this->expectsEvents(TransactionSuccess::class);
     $this->expectsEvents(TransactionsChange::class);
   	$profile = create('App\Profile');
-    $account = create('App\Account', ['profile_id' => $profile->id, 'splashId' => 't1_mer_5a10dfa09f4b06f5e326d8b']);
+    $account = create('App\Account', ['profile_id' => $profile->id, 'splash_id' => 't1_mer_5a10dfa09f4b06f5e326d8b']);
   	$user = create('App\User', ['default_tip_rate' => 20, 'customer_id' => 'c793a464b8d3085506e1e82378656dbb']);
   	$transaction = create('App\Transaction', ['profile_id' => $profile->id, 'user_id' => $user->id, 'bill_closed' => true, 'is_refund' => false]);
 
@@ -127,7 +127,7 @@ class UserConfirmBillTest extends TestCase
     $this->expectsEvents(TransactionError::class);
     $this->expectsEvents(TransactionsChange::class);
     $profile = create('App\Profile');
-    $account = create('App\Account', ['profile_id' => $profile->id, 'splashId' => 't1_mer_5a10dfa09f4b06f5e326d8b']);
+    $account = create('App\Account', ['profile_id' => $profile->id, 'splash_id' => 't1_mer_5a10dfa09f4b06f5e326d8b']);
     $user = create('App\User', ['default_tip_rate' => 20, 'customer_id' => 'c793a464b8d3085506e1e82378656db']);
     $transaction = create('App\Transaction', ['profile_id' => $profile->id, 'user_id' => $user->id, 'bill_closed' => true, 'is_refund' => false]);
 
@@ -151,7 +151,7 @@ class UserConfirmBillTest extends TestCase
     Mail::fake();
     $photo = create('App\Photo');
     $profile = create('App\Profile', ['logo_photo_id' => $photo->id, 'hero_photo_id' => $photo->id] );
-    $account = create('App\Account', ['profile_id' => $profile->id, 'splashId' => env('TEST_SPLASH_MERCHANT_ID')]);
+    $account = create('App\Account', ['profile_id' => $profile->id, 'splash_id' => env('TEST_SPLASH_MERCHANT_ID')]);
     $user = create('App\User', ['default_tip_rate' => 20, 'customer_id' => env('TEST_SPLASH_CUSTOMER_ID')]);
     create('App\PushToken', ['user_id' => $user->id]);
     $transaction = create('App\Transaction', ['profile_id' => $profile->id, 'user_id' => $user->id, 'bill_closed' => true, 'is_refund' => false]);
@@ -170,7 +170,7 @@ class UserConfirmBillTest extends TestCase
     Mail::fake();
     $photo = create('App\Photo');
     $profile = create('App\Profile', ['logo_photo_id' => $photo->id, 'hero_photo_id' => $photo->id] );
-    $account = create('App\Account', ['profile_id' => $profile->id, 'splashId' => 't1_mer_5a10dfa09f4b06f5e326d8b']);
+    $account = create('App\Account', ['profile_id' => $profile->id, 'splash_id' => 't1_mer_5a10dfa09f4b06f5e326d8b']);
     $user = create('App\User', ['default_tip_rate' => 20, 'customer_id' => 'c793a464b8d3085506e1e82378656dbb']);
     create('App\PushToken', ['user_id' => $user->id]);
     $transaction = create('App\Transaction', ['profile_id' => $profile->id, 'user_id' => $user->id, 'bill_closed' => true, 'is_refund' => false, 'paid' => false ]);
