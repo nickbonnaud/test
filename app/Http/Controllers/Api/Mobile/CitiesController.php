@@ -10,6 +10,6 @@ class CitiesController extends Controller {
 
 	public function index(Request $request) {
 		$city = City::getCurrentLocation($request->input('lat'), $request->input('lng'));
-    return response()->json(['city' => $city]);
+    return response()->json(['city' => 'raleigh']);
 	}
 }
