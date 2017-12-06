@@ -14,8 +14,8 @@ class ProductResource extends Resource
       'description' => $this->description,
       'category' => $this->category,
       'sku' => $this->sku,
-      'photo' => optional($this->photo)->url,
-      'thumbnail' => optional($this->photo)->thumbnail_url
+      'photo' => optional($this->photo)->apiUrl,
+      'thumbnail' => optional($this->photo)->apiThumbnailUrl
     ];
   }
 }

@@ -18,7 +18,7 @@ class LoyaltyCardResource extends Resource
       'amount_required' => $this->loyaltyProgram->amount_required,
       'reward' => $this->loyaltyProgram->reward,
       'business_name' => $this->loyaltyProgram->profile->business_name,
-      'logo' => $this->loyaltyProgram->profile->logo->thumbnail_url,
+      'logo' => $this->loyaltyProgram->profile->logo->apiThumbnailUrl,
       'last_purchase_date' => $this->updated_at
     ];
   }

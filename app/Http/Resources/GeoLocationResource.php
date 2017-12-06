@@ -10,7 +10,7 @@ class GeoLocationResource extends Resource
   {
     return [
       'location_id' => $this->profile_id,
-      'logo' => $this->profile->logo->thumbnail_url,
+      'logo' => $this->profile->logo->apiThumbnailUrl,
       'business_name' => $this->profile->business_name,
     ];
   }

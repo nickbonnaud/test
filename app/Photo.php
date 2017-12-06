@@ -77,4 +77,12 @@ class Photo extends Model {
   public function getThumbnailUrlAttribute() {
     return Storage::url($this->thumbnail_path);
   }
+
+  public function getApiUrlAttribute() {
+    return url(Storage::url($this->path));
+  }
+
+  public function getApiThumbnailUrlAttribute() {
+    return url(Storage::url($this->thumbnail_path));
+  }
 }
