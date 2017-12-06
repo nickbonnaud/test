@@ -13,7 +13,7 @@ class PostResource extends Resource
     return [
       'id' => $this->id,
       'profile_id' => $profile->id,
-      'business_name' => $profile->name,
+      'business_name' => $profile->business_name,
       'message' => $this->message,
       'title' => $this->title,
       'body' => $this->body,
