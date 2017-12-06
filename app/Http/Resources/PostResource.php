@@ -17,7 +17,7 @@ class PostResource extends Resource
       'message' => $this->message,
       'title' => $this->title,
       'body' => $this->body,
-      'photo_url' => $this->photo_path,
+      'photo_url' => isset($this->photo->url) ? $this->photo->url : $this->social_photo_url,
       'published_at' => $this->published_at,
       'event_date' => $this->event_date,
       'is_redeemable' => $this->is_redeemable,
