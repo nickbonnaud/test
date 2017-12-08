@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Post;
 use App\Profile;
 use App\Photo;
+use Carbon\Carbon;
 use App\Filters\PostFilters;
 use Illuminate\Http\Request;
 use App\Http\Requests\CreateEventRequest;
@@ -34,7 +35,8 @@ class EventsController extends Controller
    */
   public function store(Profile $profile, CreateEventRequest $request) {
     $this->authorize('update', $profile);
-    $event = new Post($request->all());
+    $event = new Post($request->except(['event_time', 'event_date']));
+    $event->event_date = new Carbon($request->event_date . ' ' . $request->event_time);
     if ($file = $request->file('photo')) {
       $event->associatePhoto(Photo::fromForm($file));
     } 

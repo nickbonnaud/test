@@ -3,7 +3,7 @@
     <div class="box box-default">
       <div class="box-header with-border">
         <h3 class="box-title"><a href="{{ route('events.show', ['profiles' => $profile->slug, 'posts' => $event->id]) }}">{{ str_limit($event->title, 85) }}</a></h3>
-        <p class="event-date pull-right">Date of Event: {{ $event->event_date }}</p>
+        <p class="event-date pull-right">Date: {{ $event->formatedEventTime() }}</p>
       </div>
       <div class="box-body">
         @if(!is_null($event->photo))

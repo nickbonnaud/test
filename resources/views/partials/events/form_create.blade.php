@@ -17,16 +17,32 @@
       <p class="help-block">Required photo</p>
     </div>
 
-    <div class="form-group">
-      <label>Event Date:</label>
-      <div class="input-group date">
-      	<div class="input-group-addon">
-      		<i class="fa fa-calendar"></i>
-      	</div>
-      	<input type="text" class="form-control pull-right" id="event_date_pretty">
+    
+    <div class="row">
+      <div class="col-xs-7">
+        <div class="form-group">
+          <label>Event Date:</label>
+          <div class="input-group date">
+            <div class="input-group-addon">
+              <i class="fa fa-calendar"></i>
+            </div>
+            <input type="text" class="form-control pull-right" id="event_date_pretty">
+          </div>
+        </div>
+      </div>
+
+      <div class="col-xs-5">
+        <div class="form-group">
+          <label>Time</label>
+          <div class="input-group date">
+            <div class="input-group-addon">
+              <i class="fa fa-clock-o"></i>
+            </div>
+            <input type="text" name="event_time" class="form-control pull-right" id="event_time">
+          </div>
+        </div>
       </div>
     </div>
-
     <input type="hidden" id="event_date" name="event_date" required>
   </div>
 

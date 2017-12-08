@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 use App\Post;
+use Carbon\Carbon;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -35,6 +36,7 @@ class EventTest extends TestCase
 			'title' => "Fake Test Event",
 			'body' => "Fake Test Event Body",
 			'event_date' => date("Y-m-d"),
+			'event_time' => '4:00pm',
 			'photo' => $file = UploadedFile::fake()->image('post.jpg')
 		]);
 
@@ -47,18 +49,20 @@ class EventTest extends TestCase
 		$this->signIn();
 		$profile = create('App\Profile', ['user_id' => auth()->id()]);
 		Storage::fake('public');
-
+		
+		$date =  date("Y-m-d");
+		$time = '4:00pm';
 		$data = [
 			'title' => "Fake Test Event",
 			'body' => "Fake Test Event Body",
-			'event_date' => date("Y-m-d"),
+			'event_date' => $date,
+			'event_time' => $time,
 			'photo' => $file = UploadedFile::fake()->image('post.jpg')
 		];
 
 		$this->json('POST', "events/{$profile->slug}", $data);
 		$event = Post::first();
-
-		$this->assertDatabaseHas('posts', ['profile_id' => $profile->id, 'event_date' => date("Y-m-d")]);
+		$this->assertDatabaseHas('posts', ['profile_id' => $profile->id, 'event_date' => new Carbon($date . ' ' . $time)]);
 		$this->assertEquals('images/photos/' . $file->hashName(), $event->photo->path);
   	Storage::disk('public')->assertExists('images/photos/' . $file->hashName());
 	}
@@ -74,11 +78,13 @@ class EventTest extends TestCase
   	];
   	$this->json('POST', "photos/{$profile->slug}", $data);
 
-
+  	$date =  date("Y-m-d");
+		$time = '4:00pm';
 		$data = [
 			'title' => "Fake Test Event",
 			'body' => "Fake Test Event Body",
-			'event_date' => date("Y-m-d"),
+			'event_date' => $date,
+			'event_time' => $time,
 			'photo' => $file = UploadedFile::fake()->image('post.jpg')
 		];
 
@@ -102,10 +108,14 @@ class EventTest extends TestCase
 		$profile = create('App\Profile', ['user_id' => auth()->id()]);
 		Storage::fake('public');
 
+		
+		$date =  date("Y-m-d");
+		$time = '4:00pm';
 		$data = [
 			'title' => "Fake Test Event",
 			'body' => "Fake Test Event Body",
-			'event_date' => date("Y-m-d"),
+			'event_date' => $date,
+			'event_time' => $time,
 			'photo' => $file = UploadedFile::fake()->image('post.jpg')
 		];
 

@@ -47,7 +47,7 @@ class PostTest extends TestCase {
       'message' => "Fake Test Deal",
       'deal_item' => 'Coffee',
       'price' => '$ 9.99',
-      'end_date' => date("Y-m-d")
+      'end_date' => date("Y-m-d"),
     ]);
     $this->assertDatabaseHas('posts', ['price' => 999]);
   }

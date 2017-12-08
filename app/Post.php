@@ -65,6 +65,11 @@ class Post extends Model {
     return $this->photo()->associate($photo);
   }
 
+  public function formatedEventTime() {
+    $dateTime = new Carbon($this->event_date);
+    return $dateTime->format('D d, M \a\t G:i');
+  }
+
   public function deletePost() {
     if ($photo = $this->photo) {
       $this->photo()->dissociate()->save();
@@ -199,7 +204,7 @@ class Post extends Model {
       'fb_post_id' => $event->id,
       'title' => $event->name,
       'body' => $event->description,
-      'event_date' => date('Y-m-d', strtotime($event->start_time)),
+      'event_date' => new Carbon($event->start_time),
       'social_photo_url' => $url
     ]);
     $profile->posts()->save($post);

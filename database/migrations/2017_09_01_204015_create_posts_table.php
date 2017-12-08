@@ -30,7 +30,7 @@ class CreatePostsTable extends Migration
             $table->integer('photo_id')->unsigned()->nullable();
             $table->foreign('photo_id')->references('id')->on('photos');
             $table->string('social_photo_url')->nullable();
-            $table->date('event_date')->nullable();
+            $table->timestamp('event_date')->nullable();
             $table->boolean('is_redeemable')->default(false);
             $table->string('deal_item')->nullable();
             $table->integer('price')->nullable();

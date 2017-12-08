@@ -27,7 +27,8 @@ class CreateEventRequest extends FormRequest
       'title' => 'required',
       'body' => 'required',
       'photo' => 'required|mimes:jpg,jpeg,png,bmp',
-      'event_date' => 'required|date_format:Y-m-d'
+      'event_date' => 'required|date_format:Y-m-d',
+      'event_time' => 'required'
     ];
   }
 }

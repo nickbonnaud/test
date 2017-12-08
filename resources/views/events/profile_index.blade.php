@@ -36,11 +36,13 @@
 	<script>
 		$(function() {
       $( "#event_date_pretty" ).datepicker({
-          dateFormat: "DD, d MM, yy",
+          dateFormat: "D, d MM",
           altField: "#event_date",
           altFormat: "yy-mm-dd"
       });
     });
+
+    $('#event_time').timepicker({ 'scrollDefault': 'now' });
 	</script>
 
 @stop

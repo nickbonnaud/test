@@ -19,6 +19,7 @@
   <link rel="stylesheet" href="{{ asset('/vendor/toastr/toastr.min.css') }}">
   <link rel="stylesheet" href="{{ asset('/vendor/select2/select2.min.css') }}">
   <link rel="stylesheet" href="{{ asset('/vendor/pace/pace-theme-minimal.css') }}">
+  <link rel="stylesheet" href="{{ asset('/vendor/timepicker/jquery.timepicker.min.css') }}">
   <link rel="manifest" href="/manifest.json">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
@@ -232,6 +233,7 @@
   <script src="{{ asset('/vendor/chart.js/dist/Chart.min.js') }}"></script>
 	<script src="{{ asset('/vendor/select2/select2.min.js') }}"></script>
   <script src="{{ asset('/vendor/noBounce/inobounce.min.js') }}"></script>
+  <script src="{{ asset('/vendor/timepicker/jquery.timepicker.min.js') }}"></script>
   <script src="//js.pusher.com/3.2/pusher.min.js"></script>
 	@yield('scripts.footer')
   @include('flash.flash')
