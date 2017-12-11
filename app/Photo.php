@@ -73,7 +73,7 @@ class Photo extends Model {
 
   protected function makeThumbnailDeal($file, $fileName) {
     $thumbnail = Image::make($file)
-      ->fit(400, 300, function($constraint) {
+      ->fit(400, 250, function($constraint) {
         $constraint->upsize();
       }, 'center')->encode('png');
     $thumbnailPath = $this->baseDir() . '/tn-' . $fileName;
