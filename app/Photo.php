@@ -36,6 +36,16 @@ class Photo extends Model {
     return $photo;
   }
 
+  public static function fromFormDeal($file) {
+    $photo = new Photo;
+     $photo->fill([
+        'path' => $filePath = $file->store($photo->baseDir(), 'public'),
+        'name' => $fileName = str_replace($photo->baseDir() . '/', '', $filePath),
+        'thumbnail_path' => $photo->makeThumbnailDeal($file, $fileName)
+      ])->save();
+    return $photo;
+  }
+
   /**
    * Get the base directory for photo uploads
    *
@@ -54,6 +64,16 @@ class Photo extends Model {
   protected function makeThumbnail($file, $fileName) {
     $thumbnail = Image::make($file)
       ->fit(200, 200, function($constraint) {
+        $constraint->upsize();
+      }, 'center')->encode('png');
+    $thumbnailPath = $this->baseDir() . '/tn-' . $fileName;
+    Storage::disk('public')->put($thumbnailPath, $thumbnail);
+    return $thumbnailPath;
+  }
+
+  protected function makeThumbnailDeal($file, $fileName) {
+    $thumbnail = Image::make($file)
+      ->fit(400, 300, function($constraint) {
         $constraint->upsize();
       }, 'center')->encode('png');
     $thumbnailPath = $this->baseDir() . '/tn-' . $fileName;

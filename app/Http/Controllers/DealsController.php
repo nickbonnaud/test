@@ -36,7 +36,7 @@ class DealsController extends Controller
     $this->authorize('update', $profile);
     $deal = new Post($request->all());
     if ($file = $request->file('photo')) {
-      $deal->associatePhoto(Photo::fromForm($file));
+      $deal->associatePhoto(Photo::fromFormDeal($file));
     } 
     $profile->posts()->save($deal);
     return redirect()->route('deals.profile', ['profiles' => $profile->slug]);
