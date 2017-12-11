@@ -62,6 +62,7 @@ class EventTest extends TestCase
 
 		$this->json('POST', "events/{$profile->slug}", $data);
 		$event = Post::first();
+		dd($event->formatedEventTime());
 		$this->assertDatabaseHas('posts', ['profile_id' => $profile->id, 'event_date' => new Carbon($date . ' ' . $time)]);
 		$this->assertEquals('images/photos/' . $file->hashName(), $event->photo->path);
   	Storage::disk('public')->assertExists('images/photos/' . $file->hashName());

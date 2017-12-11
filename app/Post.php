@@ -67,7 +67,7 @@ class Post extends Model {
 
   public function formatedEventTime() {
     $dateTime = new Carbon($this->event_date);
-    return $dateTime->format('D d, M \a\t G:i');
+    return $dateTime->format('D d, M \a\t g:i A');
   }
 
   public function deletePost() {

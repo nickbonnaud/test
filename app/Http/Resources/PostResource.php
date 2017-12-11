@@ -19,6 +19,7 @@ class PostResource extends Resource
       'title' => $this->title,
       'body' => $this->body,
       'photo_url' => isset($this->photo->url) ? $this->photo->apiUrl : $this->social_photo_url,
+      'photo_thumb_url' => isset($this->photo->url) ? $this->photo->apiThumbnailUrl : null,
       'published_at' => $this->published_at,
       'event_date' => $this->event_date,
       'is_redeemable' => $this->is_redeemable,
