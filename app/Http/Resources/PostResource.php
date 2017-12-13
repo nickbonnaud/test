@@ -33,6 +33,7 @@ class PostResource extends Resource
       'google_rating' => $this->profile->google_rating,
       'google_id' => $this->profile->google_id,
       'tags' => $this->profile->tags,
+      'phone' => optional($this->profile->account)->phone,
       'address' => [
         'street' => optional($this->profile->account)->biz_street_address,
         'city' =>  optional($this->profile->account)->biz_city,

@@ -19,11 +19,12 @@ class ProfileResource extends Resource
       'description' => $this->description,
       'google_rating' => $this->google_rating,
       'google_id' => $this->google_id,
+      'phone' => optional($this->account)->phone,
       'address' => [
-        'street' => optional($this->profile->account)->biz_street_address,
-        'city' =>  optional($this->profile->account)->biz_city,
-        'state' => optional($this->profile->account)->biz_state,
-        'zip' => optional($this->profile->account)->biz_zip
+        'street' => optional($this->account)->biz_street_address,
+        'city' =>  optional($this->account)->biz_city,
+        'state' => optional($this->account)->biz_state,
+        'zip' => optional($this->account)->biz_zip
       ]
     ];
   }
