@@ -13,7 +13,7 @@ class ProfileResource extends Resource
       'slug' => $this->slug,
       'business_name' => $this->name,
       'logo' =>  $this->logo->apiUrl,
-      'hero' => $this->hero->apiUrl,
+      'hero' => $this->hero->apiThumbnailUrl,
       'tags' => $this->tags,
       'website' => $this->website,
       'description' => $this->description,
