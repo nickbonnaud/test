@@ -22,7 +22,12 @@ class PhotosController extends Controller
    */
   public function storeWeb(Profile $profile, AddProfilePhotoRequest $request) {
     $this->authorize('update', $profile);
-    $photo = Photo::fromForm($request->file('photo'));
+    if ($request->type == 'hero') {
+      $photo = Photo::fromFormHero($request->file('photo'));
+    } else {
+      $photo = Photo::fromForm($request->file('photo'));
+    }
+    
     $photo->save();
     $profile->associatePhoto($request->type, $photo);
   }
