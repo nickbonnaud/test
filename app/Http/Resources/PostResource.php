@@ -30,6 +30,9 @@ class PostResource extends Resource
       'website' => $this->profile->website,
       'formatted_description' => $this->profile->formatted_description,
       'hero' => $this->profile->hero->apiUrl,
+      'google_rating' => $this->profile->google_rating,
+      'google_id' => $this->profile->google_id,
+      'tags' => $this->profile->tags
     ];
   }
 }
