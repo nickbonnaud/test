@@ -34,10 +34,10 @@ class PostResource extends Resource
       'google_id' => $this->profile->google_id,
       'tags' => $this->profile->tags,
       'address' => [
-        'street' => $this->profile->optional('account')->biz_street_address,
-        'city' => $this->profile->optional('account')->biz_city,
-        'state' => $this->profile->optional('account')->biz_state,
-        'zip' => $this->profile->optional('account')->biz_zip
+        'street' => optional($this->profile->account)->biz_street_address,
+        'city' =>  optional($this->profile->account)->biz_city,
+        'state' => optional($this->profile->account)->biz_state,
+        'zip' => optional($this->profile->account)->biz_zip
       ]
     ];
   }
