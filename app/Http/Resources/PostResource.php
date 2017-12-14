@@ -28,7 +28,7 @@ class PostResource extends Resource
       'end_date' => $this->end_date,
       'logo' =>  $this->profile->logo->apiUrl,
       'website' => $this->profile->website,
-      'description' => $this->profile->description,
+      'description' => $this->profile->formatted_description,
       'hero' => $this->profile->hero->apiThumbnailUrl,
       'google_rating' => $this->profile->google_rating,
       'google_id' => $this->profile->google_id,

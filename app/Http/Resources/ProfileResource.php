@@ -16,7 +16,7 @@ class ProfileResource extends Resource
       'hero' => $this->hero->apiThumbnailUrl,
       'tags' => $this->tags,
       'website' => $this->website,
-      'description' => $this->description,
+      'description' => $this->formatted_description,
       'google_rating' => $this->google_rating,
       'google_id' => $this->google_id,
       'phone' => optional($this->account)->phone,
