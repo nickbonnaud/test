@@ -7,7 +7,7 @@ use Carbon\Carbon;
 class PostFilters extends Filters
 {
 
-  protected $filters = ['profilePosts', 'profileEvents', 'profileDeals', 'interactionsWeek', 'interactionsMonth', 'interactionsTwoMonth', 'revenueWeek', 'revenueMonth', 'revenueTwoMonth', 'city', 'favs', 'event', 'bookmarks'];
+  protected $filters = ['profilePosts', 'profileEvents', 'profileDeals', 'interactionsWeek', 'interactionsMonth', 'interactionsTwoMonth', 'revenueWeek', 'revenueMonth', 'revenueTwoMonth', 'city', 'favs', 'event', 'bookmarks', 'business'];
 
   protected function profilePosts() {
     return $this->builder->whereNull('event_date')->where('is_redeemable', '=', false)->orderBy('published_at', 'desc')->limit(10);
@@ -90,6 +90,12 @@ class PostFilters extends Filters
   protected function favs($profileSlugs) {
     return $this->builder->whereHas('profile', function($query) use ($profileSlugs) {
       $query->whereIn('slug', $profileSlugs);
+    });
+  }
+
+  protected function business($profileSlug) {
+    return $this->builder->whereHas('profile', function($query) use ($profileSlug) {
+      $query->where('slug', $profileSlug);
     });
   }
 

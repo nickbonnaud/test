@@ -68,6 +68,19 @@ class ApiPostTest extends TestCase
 		$this->assertCount(6, $response->data);
 	}
 
+	function test_a_mobile_user_can_retrieve_a_single_profiles_post() {
+		$city = create('App\City');
+		$photo = create('App\Photo');
+		$profile1 = create('App\Profile', ['city_id' => $city->id, 'logo_photo_id' => $photo->id, 'hero_photo_id' => $photo->id, 'approved' => true]);
+		$posts1 = create('App\Post', ['profile_id' => $profile1->id], 3);
+
+		$profile2 = create('App\Profile', ['city_id' => $city->id, 'logo_photo_id' => $photo->id, 'hero_photo_id' => $photo->id, 'approved' => true]);
+		$posts2 = create('App\Post', ['profile_id' => $profile2->id], 4);
+
+		$response = $this->get("/api/mobile/v1/posts?city={$city->slug}&business={$profile1->slug}")->getData();
+		$this->assertCount(3, $response->data);
+	}
+
 	function test_a_mobile_user_can_retrieve_their_bookmarked_posts(){
 		$photo = create('App\Photo');
 
