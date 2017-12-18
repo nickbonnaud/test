@@ -21,6 +21,7 @@ class ApiPostTest extends TestCase
 		$posts = create('App\Post', ['profile_id' => $profileTwo->id], 10);
 
   	$response = $this->get("/api/mobile/v1/posts?city={$city->slug}")->getData();
+  	dd($response);
   	$this->assertCount(10, $response->data);
   	$this->assertEquals('http://pockeyt.dev/api/mobile/v1/posts?city=raleigh&page=2', $response->links->next);
 	}

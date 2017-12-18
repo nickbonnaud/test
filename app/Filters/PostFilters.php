@@ -96,7 +96,7 @@ class PostFilters extends Filters
   protected function business($profileSlug) {
     return $this->builder->whereHas('profile', function($query) use ($profileSlug) {
       $query->where('slug', $profileSlug);
-    });
+    })->latest();
   }
 
   protected function event($range) {
