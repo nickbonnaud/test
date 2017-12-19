@@ -87,9 +87,9 @@ class PostFilters extends Filters
     })->latest();
   }
 
-  protected function favs($profileSlugs) {
-    return $this->builder->whereHas('profile', function($query) use ($profileSlugs) {
-      $query->whereIn('slug', $profileSlugs);
+  protected function favs($ids) {
+    return $this->builder->whereHas('profile', function($query) use ($ids) {
+      $query->whereIn('id', $ids);
     });
   }
 

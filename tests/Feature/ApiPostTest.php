@@ -21,7 +21,6 @@ class ApiPostTest extends TestCase
 		$posts = create('App\Post', ['profile_id' => $profileTwo->id], 10);
 
   	$response = $this->get("/api/mobile/v1/posts?city={$city->slug}")->getData();
-  	dd($response);
   	$this->assertCount(10, $response->data);
   	$this->assertEquals('http://pockeyt.dev/api/mobile/v1/posts?city=raleigh&page=2', $response->links->next);
 	}
@@ -65,8 +64,25 @@ class ApiPostTest extends TestCase
 		$profileNotFav = create('App\Profile', ['city_id' => $city->id, 'logo_photo_id' => $photo->id, 'hero_photo_id' => $photo->id, 'approved' => true]);
 		$postsNotFav = create('App\Post', ['profile_id' => $profileNotFav->id], 3);
 
-		$response = $this->get("/api/mobile/v1/posts?city={$city->slug}&favs[]={$profileFav1->slug}&favs[]={$profileFav2->slug}")->getData();
+		$response = $this->get("/api/mobile/v1/posts?city={$city->slug}&favs[]={$profileFav1->id}&favs[]={$profileFav2->id}")->getData();
 		$this->assertCount(6, $response->data);
+	}
+
+	function test_a_mobile_user_can_only_retrieve_favorites_from_the_city_they_are_currently_in() {
+		$city = create('App\City');
+		$city1 = create('App\City', ['name' => 'Chapel Hill', 'county' => 'orange', 'state' => 'NC']);
+		$photo = create('App\Photo');
+		$profileFav1 = create('App\Profile', ['city_id' => $city->id, 'logo_photo_id' => $photo->id, 'hero_photo_id' => $photo->id, 'approved' => true]);
+		$postsFav1 = create('App\Post', ['profile_id' => $profileFav1->id], 3);
+
+		$profileFav2 = create('App\Profile', ['city_id' => $city1->id, 'logo_photo_id' => $photo->id, 'hero_photo_id' => $photo->id, 'approved' => true]);
+		$postsFav2 = create('App\Post', ['profile_id' => $profileFav2->id], 5);
+
+		$profileFav3 = create('App\Profile', ['city_id' => $city->id, 'logo_photo_id' => $photo->id, 'hero_photo_id' => $photo->id, 'approved' => true]);
+		$postsFav1 = create('App\Post', ['profile_id' => $profileFav3->id], 4);
+
+		$response = $this->get("/api/mobile/v1/posts?city={$city->slug}&favs[]={$profileFav1->id}&favs[]={$profileFav2->id}&favs[]={$profileFav3->id}")->getData();
+		$this->assertCount(7, $response->data);
 	}
 
 	function test_a_mobile_user_can_retrieve_a_single_profiles_post() {
