@@ -101,7 +101,7 @@ class PostFilters extends Filters
 
   protected function event($range) {
     $formattedRange = $this->formatDateRangeQuery($range);
-    return $this->builder->whereBetween('event_date', $formattedRange)->latest();
+    return $this->builder->whereBetween('event_date', $formattedRange)->orderBy('event_date');
   }
 
   protected function bookmarks($bookmarkIds) {
