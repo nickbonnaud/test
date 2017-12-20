@@ -82,10 +82,14 @@ class Post extends Model {
     return $filters->apply($query, $type)->where('profile_id', '=', $profile->id);
   }
 
-  public function scopeApiFilter($query, $filters) {
-    return $filters->apply($query)
-      ->where('is_redeemable', '=', false)
-      ->orWhere('end_date', '>', Carbon::now());
+  public function scopeApiFilter($query, $filters, $is_event) {
+    if ($is_event) {
+      return $filters->apply($query);
+    } else {
+      return $filters->apply($query)
+        ->where('is_redeemable', '=', false)
+        ->orWhere('end_date', '>', Carbon::now());
+    }
   }
 
   public static function processSubscription($postData, $isFacebook) {
