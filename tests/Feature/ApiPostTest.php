@@ -97,7 +97,7 @@ class ApiPostTest extends TestCase
 
 		$post2Deal = create('App\Post', ['profile_id' => $profile2->id, 'event_date' => Carbon::now()->addDay()], 2);
 
-		$response = $this->get("/api/mobile/v1/posts?city={$city->slug}&business={$profile1->slug}")->getData();
+		$response = $this->get("/api/mobile/v1/posts?city={$city->slug}&business={$profile1->id}")->getData();
 		$this->assertCount(3, $response->data);
 	}
 
