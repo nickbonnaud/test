@@ -84,7 +84,7 @@ class PostFilters extends Filters
   protected function city($city) {
     return $this->builder->whereHas('profile.city', function($query) use($city) {
       $query->where('slug', '=', $city);
-    })->latest();
+    });
   }
 
   protected function favs($ids) {
