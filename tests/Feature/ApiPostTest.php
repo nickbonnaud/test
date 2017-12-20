@@ -20,9 +20,9 @@ class ApiPostTest extends TestCase
 		$profileTwo = create('App\Profile', ['city_id' => $city->id, 'logo_photo_id' => $photo->id, 'hero_photo_id' => $photo->id, 'approved' => true]);
 		$posts = create('App\Post', ['profile_id' => $profileTwo->id], 10);
 
-  	$response = $this->get("/api/mobile/v1/posts?city={$city->slug}")->getData();
+  	$response = $this->get("/api/mobile/v1/posts?city={$city->slug}&explore=1")->getData();
   	$this->assertCount(10, $response->data);
-  	$this->assertEquals('http://pockeyt.dev/api/mobile/v1/posts?city=raleigh&page=2', $response->links->next);
+  	$this->assertEquals('http://pockeyt.dev/api/mobile/v1/posts?city=raleigh&explore=1&page=2', $response->links->next);
 	}
 
 	function test_a_mobile_user_retrieves_posts_only_from_their_location() {
@@ -36,7 +36,7 @@ class ApiPostTest extends TestCase
 		$profileTwo = create('App\Profile', ['city_id' => $otherCity->id, 'logo_photo_id' => $photo->id, 'hero_photo_id' => $photo->id, 'approved' => true]);
 		$posts = create('App\Post', ['profile_id' => $profileTwo->id], 10);
 
-  	$response = $this->get("/api/mobile/v1/posts?city={$city->slug}")->getData();
+  	$response = $this->get("/api/mobile/v1/posts?city={$city->slug}&explore=1")->getData();
   	$this->assertCount(5, $response->data);
 	}
 
@@ -48,7 +48,7 @@ class ApiPostTest extends TestCase
 		$dealExpired = create('App\Post', ['profile_id' => $profile->id, 'is_redeemable' => true, 'end_date' => (Carbon::now())->subDay()]);
 		$dealCurrent = create('App\Post', ['profile_id' => $profile->id, 'is_redeemable' => true, 'end_date' => (Carbon::now())->addDay()]);
 
-		$response = $this->get("/api/mobile/v1/posts?city={$city->slug}")->getData();
+		$response = $this->get("/api/mobile/v1/posts?city={$city->slug}&explore=1")->getData();
   	$this->assertCount(3, $response->data);
 	}
 

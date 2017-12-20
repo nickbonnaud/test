@@ -7,7 +7,7 @@ use Carbon\Carbon;
 class PostFilters extends Filters
 {
 
-  protected $filters = ['profilePosts', 'profileEvents', 'profileDeals', 'interactionsWeek', 'interactionsMonth', 'interactionsTwoMonth', 'revenueWeek', 'revenueMonth', 'revenueTwoMonth', 'city', 'favs', 'event', 'bookmarks', 'business'];
+  protected $filters = ['profilePosts', 'profileEvents', 'profileDeals', 'interactionsWeek', 'interactionsMonth', 'interactionsTwoMonth', 'revenueWeek', 'revenueMonth', 'revenueTwoMonth', 'city', 'favs', 'event', 'bookmarks', 'business', 'explore'];
 
   protected function profilePosts() {
     return $this->builder->whereNull('event_date')->where('is_redeemable', '=', false)->orderBy('published_at', 'desc')->limit(10);
@@ -87,16 +87,26 @@ class PostFilters extends Filters
     });
   }
 
+  protected function explore() {
+    return $this->builder->where('is_redeemable', '=', false)
+      ->orWhere('end_date', '>', Carbon::now())
+      ->latest();
+  }
+
   protected function favs($ids) {
     return $this->builder->whereHas('profile', function($query) use ($ids) {
       $query->whereIn('id', $ids);
-    });
+    })->where('is_redeemable', '=', false)
+      ->orWhere('end_date', '>', Carbon::now())
+      ->latest();
   }
 
   protected function business($profileSlug) {
     return $this->builder->whereHas('profile', function($query) use ($profileSlug) {
       $query->where('slug', $profileSlug);
-    })->latest();
+    })->where('is_redeemable', '=', false)
+      ->orWhere('end_date', '>', Carbon::now())
+      ->latest();
   }
 
   protected function event($range) {
