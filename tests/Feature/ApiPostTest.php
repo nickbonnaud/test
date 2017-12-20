@@ -65,6 +65,8 @@ class ApiPostTest extends TestCase
 		$postsNotFav = create('App\Post', ['profile_id' => $profileNotFav->id], 3);
 		$postNotFavDeal = create('App\Post', ['profile_id' => $profileNotFav->id, 'event_date' => Carbon::now()->addDay()], 2);
 
+		$something = [];
+		array_push($something, $profileFav1->id, $profileFav2->id);
 		$response = $this->get("/api/mobile/v1/posts?city={$city->slug}&favs[]={$profileFav1->id}&favs[]={$profileFav2->id}")->getData();
 		$this->assertCount(6, $response->data);
 	}
