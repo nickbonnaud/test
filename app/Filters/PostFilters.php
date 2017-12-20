@@ -94,10 +94,11 @@ class PostFilters extends Filters
   }
 
   protected function favs($ids) {
-    return $this->builder
-      ->where('is_redeemable', '=', false)
-      ->orWhere('end_date', '>', Carbon::now())->latest()
-      ->whereIn('profile_id', $ids);
+    return $this->builder->whereIn('profile_id', $ids)
+      ->where(function ($query) {
+        $query->where('is_redeemable', '=', false)
+              ->orWhere('end_date', '>', Carbon::now());
+      })->latest();
   }
 
   protected function business($profileSlug) {
