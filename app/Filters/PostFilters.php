@@ -82,15 +82,21 @@ class PostFilters extends Filters
   }
 
   protected function city($city) {
-    return $this->builder->whereHas('profile.city', function($query) use($city) {
+    return $this->builder
+      ->where('is_redeemable', '=', false)
+      ->orWhere('end_date', '>', Carbon::now())
+      ->whereHas('profile.city', function($query) use($city) {
       $query->where('slug', '=', $city);
     })->latest();
   }
 
   protected function favs($ids) {
-    return $this->builder->whereHas('profile', function($query) use ($ids) {
-      $query->whereIn('id', $ids);
-    });
+    return $this->builder
+      ->where('is_redeemable', '=', false)
+      ->orWhere('end_date', '>', Carbon::now())
+      ->whereHas('profile', function($query) use ($ids) {
+        $query->whereIn('id', $ids);
+      });
   }
 
   protected function business($profileSlug) {
@@ -101,8 +107,7 @@ class PostFilters extends Filters
 
   protected function event($range) {
     $formattedRange = $this->formatDateRangeQuery($range);
-    return $this->builder->whereBetween('event_date', $formattedRange)
-      ->where('is_redeemable', false);
+    return $this->builder->whereBetween('event_date', $formattedRange);
   }
 
   protected function bookmarks($bookmarkIds) {
