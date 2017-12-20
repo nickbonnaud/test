@@ -95,18 +95,18 @@ class PostFilters extends Filters
 
   protected function favs($ids) {
     return $this->builder->whereHas('profile', function($query) use ($ids) {
-      $query->whereIn('id', $ids);
-    })->where('is_redeemable', '=', false)
-      ->orWhere('end_date', '>', Carbon::now())
-      ->latest();
+      $query->whereIn('id', $ids)
+      ->where('is_redeemable', '=', false)
+      ->orWhere('end_date', '>', Carbon::now());
+    })->latest();
   }
 
   protected function business($profileSlug) {
     return $this->builder->whereHas('profile', function($query) use ($profileSlug) {
-      $query->where('slug', $profileSlug);
-    })->where('is_redeemable', '=', false)
-      ->orWhere('end_date', '>', Carbon::now())
-      ->latest();
+      $query->where('slug', $profileSlug)
+      ->where('is_redeemable', '=', false)
+      ->orWhere('end_date', '>', Carbon::now());
+    })->latest();
   }
 
   protected function event($range) {
