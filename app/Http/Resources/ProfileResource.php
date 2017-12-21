@@ -11,7 +11,7 @@ class ProfileResource extends Resource
     return [
       'id' => $this->id,
       'slug' => $this->slug,
-      'business_name' => $this->name,
+      'business_name' => $this->business_name,
       'logo' =>  $this->logo->apiUrl,
       'hero' => $this->hero->apiThumbnailUrl,
       'tags' => $this->tags,
