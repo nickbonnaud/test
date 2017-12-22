@@ -57,3 +57,6 @@ Route::post('card/vault/{user}', 'CardVaultController@store');
 
 // Deals routes
 Route::patch('deals/{transaction}', 'DealsController@update');
+
+//Tags routes
+Route::get('tags', 'TagsController@index');
