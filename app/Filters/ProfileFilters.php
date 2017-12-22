@@ -13,4 +13,9 @@ class ProfileFilters extends Filters
       $query->where('slug', '=', $city);
     })->orderBy('business_name', 'ASC');
   }
+
+  protected function query($search) {
+  	return $this->builder->where('business_name', 'like', '%' . $search . '%')
+  		->orderBy('business_name', 'ASC');
+  }
 }
