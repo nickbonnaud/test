@@ -12,7 +12,18 @@ use App\Http\Controllers\Controller;
 class ProfilesController extends Controller {
 
 	public function index(Request $request, ProfileFilters $filters) {
-		$profiles = Profile::filter($filters)->where('approved', '=', true)->paginate(10)->appends(Input::except('page'));
+		if ($request->has('rating')) {
+			$profiles = Profile::filter($filters)
+				->where('approved', '=', true)
+				->paginate(10)
+				->appends(Input::except('page'));
+		} else {
+			$profiles = Profile::filter($filters)
+				->where('approved', '=', true)
+				->orderBy('business_name', 'ASC')
+				->paginate(10)
+				->appends(Input::except('page'));
+		}
 		return ProfileResource::collection($profiles);
 	}
 }

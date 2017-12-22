@@ -6,16 +6,25 @@ namespace App\Filters;
 class ProfileFilters extends Filters
 {
 
-  protected $filters = ['city', 'query'];
+  protected $filters = ['city', 'query', 'rating', 'tags'];
 
   protected function city($city) {
     return $this->builder->whereHas('city', function($query) use($city) {
       $query->where('slug', '=', $city);
-    })->orderBy('business_name', 'ASC');
+    });
   }
 
   protected function query($search) {
-  	return $this->builder->where('business_name', 'LIKE', "%$search%")
-  		->orderBy('business_name', 'ASC');
+  	return $this->builder->where('business_name', 'LIKE', "%$search%");
+  }
+
+  protected function rating() {
+  	return $this->builder->orderBy('google_rating', 'DESC');
+  }
+
+  protected function tags($ids) {
+  	return $this->builder->whereHas('tags', function($query) use ($ids) {
+  		$query->whereIn('id', $ids);
+  	});
   }
 }
