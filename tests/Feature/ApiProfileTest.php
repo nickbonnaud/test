@@ -66,5 +66,8 @@ class ApiProfileTest extends TestCase
 		$businessName = substr($businessName, 0, -2);
 		$response = $this->get("/api/mobile/v1/profiles?city={$city->slug}&query=" . $businessName)->getData();
 		$this->assertEquals($profile->id, $response->data[0]->id);
+
+		$response = $this->get("/api/mobile/v1/profiles?city={$city->slug}&query=random")->getData();
+		$this->assertEquals(0, count($response->data));
 	}
 }
