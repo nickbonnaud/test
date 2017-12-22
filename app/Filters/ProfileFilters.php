@@ -15,7 +15,7 @@ class ProfileFilters extends Filters
   }
 
   protected function query($search) {
-  	return $this->builder->where('business_name', 'like', '%' . $search . '%')
+  	return $this->builder->where('business_name', 'LIKE', "%$search%")
   		->orderBy('business_name', 'ASC');
   }
 }
