@@ -26,7 +26,7 @@ class CreateProfilesTable extends Migration
             $table->string('insta_account_id')->nullable();
             $table->string('insta_account_token')->nullable();
             $table->string('google_id')->nullable();
-            $table->string('google_rating')->nullable();
+            $table->decimal('google_rating', 2, 1)->nullable();
             $table->string('square_token')->nullable();
             $table->string('connected')->nullable();
             $table->boolean('connected_qb')->default(false);

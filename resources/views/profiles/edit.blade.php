@@ -92,7 +92,7 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-            	<ul class="list-group list-group-unbordered"">
+            	<ul class="list-group list-group-unbordered">
                 @foreach ($profile->tags as $tag)
                   <li class="list-group-item business-tags">{{ $tag->name }}</li>
                 @endforeach

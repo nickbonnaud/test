@@ -76,18 +76,18 @@ class ApiProfileTest extends TestCase
 		$photo = create('App\Photo');
 
 		$profile1 = create('App\Profile', ['city_id' => $city->id, 'logo_photo_id' => $photo->id, 'hero_photo_id' => $photo->id, 'approved' => true, 'google_rating' => 5]);
-		$profile2 = create('App\Profile', ['city_id' => $city->id, 'logo_photo_id' => $photo->id, 'hero_photo_id' => $photo->id, 'approved' => true, 'google_rating' => 4]);
-		$profile3 = create('App\Profile', ['city_id' => $city->id, 'logo_photo_id' => $photo->id, 'hero_photo_id' => $photo->id, 'approved' => true, 'google_rating' => 3]);
-		$profile4 = create('App\Profile', ['city_id' => $city->id, 'logo_photo_id' => $photo->id, 'hero_photo_id' => $photo->id, 'approved' => true, 'google_rating' => 2]);
+		$profile2 = create('App\Profile', ['city_id' => $city->id, 'logo_photo_id' => $photo->id, 'hero_photo_id' => $photo->id, 'approved' => true, 'google_rating' => 4.2]);
+		$profile3 = create('App\Profile', ['city_id' => $city->id, 'logo_photo_id' => $photo->id, 'hero_photo_id' => $photo->id, 'approved' => true, 'google_rating' => 3.6]);
+		$profile4 = create('App\Profile', ['city_id' => $city->id, 'logo_photo_id' => $photo->id, 'hero_photo_id' => $photo->id, 'approved' => true, 'google_rating' => 3.7]);
 		$profile5 = create('App\Profile', ['city_id' => $city->id, 'logo_photo_id' => $photo->id, 'hero_photo_id' => $photo->id, 'approved' => true, 'google_rating' => 1]);
 
 		$response = $this->get("/api/mobile/v1/profiles?city={$city->slug}&rating=1")->getData();
 
-		$this->assertEquals(5, $response->data[0]->google_rating);
-		$this->assertEquals(4, $response->data[1]->google_rating);
-		$this->assertEquals(3, $response->data[2]->google_rating);
-		$this->assertEquals(2, $response->data[3]->google_rating);
-		$this->assertEquals(1, $response->data[4]->google_rating);
+		$this->assertEquals($profile1->google_rating, $response->data[0]->google_rating);
+		$this->assertEquals($profile2->google_rating, $response->data[1]->google_rating);
+		$this->assertEquals($profile4->google_rating, $response->data[2]->google_rating);
+		$this->assertEquals($profile3->google_rating, $response->data[3]->google_rating);
+		$this->assertEquals($profile5->google_rating, $response->data[4]->google_rating);
 	}
 
 	function test_a_mobile_user_can_filter_by_tags() {
