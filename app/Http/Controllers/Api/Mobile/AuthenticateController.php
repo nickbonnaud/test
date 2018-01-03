@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Mobile;
 
+use Carbon\Carbon;
 use App\User;
 use JWTAuth;
 use Tymon\JWTAuth\Exceptions;
@@ -57,6 +58,11 @@ class AuthenticateController extends Controller {
     } catch (Exceptions\JWTException $e) {
         return response()->json(['error' => 'token_absent']);
     }
+    $user['token'] = [
+    	'value' => JWTAuth::parseToken()->refresh(),
+    	'expiry' => Carbon::now()->addMinutes(env('JWT_TTL'))->timestamp
+    ];
+
     return response()->json(compact('user'));
 	}
 }
