@@ -2,16 +2,27 @@
 
 namespace App\Http\Controllers\Api\Mobile;
 
+use App\User;
 use JWTAuth;
 use Illuminate\Validation\Rule;
 use App\Rules\PasswordCheck;
+use App\Filters\UserFilters;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class UsersController extends Controller {
 
 	public function __construct() {
-		$this->middleware('jwt.auth');
+		$this->middleware('jwt.auth')->except('index');
+	}
+
+	public function index(Request $request, UserFilters $filters) {
+		$user = User::filter($filters);
+		if ($request->query('unique')) {
+			$unique = $user->count() == 0 ? true : false;
+			return response()->json(['unique' => $unique]);
+		}
+		return response()->json(['user' => $user]);
 	}
 
 	public function update(Request $request) {

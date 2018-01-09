@@ -42,6 +42,7 @@ Route::get('cities', 'CitiesController@index');
 route::get('notifications', 'NotificationsController@index');
 
 // User routes
+Route::get('user', 'UsersController@index');
 Route::patch('user', 'UsersController@update');
 
 // Loyalty Card routes

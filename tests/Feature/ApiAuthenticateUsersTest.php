@@ -48,8 +48,8 @@ class ApiAuthenticateUsersTest extends TestCase
 	function test_an_authenticated_user_can_get_their_user_data() {
 		$user = create('App\User');
 		$response = $this->get("/api/mobile/auth/me", $this->headers($user))->getData();
-		$this->assertEquals($user->first_name, $response->user->first_name);
-		$this->assertEquals($user->last_name, $response->user->last_name);
+		$this->assertEquals($user->first_name, $response->data->first_name);
+		$this->assertEquals($user->last_name, $response->data->last_name);
 	}
 
 	function test_an_unauthenticated_user_cannot_get_their_data() {

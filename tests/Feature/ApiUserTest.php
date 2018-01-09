@@ -134,4 +134,14 @@ class ApiUserTest extends TestCase
 		$this->assertDatabaseMissing('photos', ['id' => $oldPhotoId]);
 		Storage::disk('public')->assertMissing('public/images/photos/' . $file->hashName());
 	}
+
+	function test_a_new_user_can_check_if_email_is_taken() {
+		$user = create('App\User');
+		$response = $this->get("/api/mobile/user?email={$user->email}&unique=true")->getData();
+		$this->assertFalse($response->unique);
+
+		$newEmail = "new@email.com";
+		$response = $this->get("/api/mobile/user?email={$newEmail}&unique=true")->getData();
+		$this->assertTrue($response->unique);
+	}
 }

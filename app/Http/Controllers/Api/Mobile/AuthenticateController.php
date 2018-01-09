@@ -8,6 +8,7 @@ use JWTAuth;
 use Tymon\JWTAuth\Exceptions;
 use Illuminate\Http\Request;
 use App\Http\Requests\CreateApiUserRequest;
+use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
 
@@ -62,7 +63,6 @@ class AuthenticateController extends Controller {
     	'value' => JWTAuth::parseToken()->refresh(),
     	'expiry' => Carbon::now()->addMinutes(env('JWT_TTL'))->timestamp
     ];
-
-    return response()->json(compact('user'));
+    return new UserResource($user);
 	}
 }
