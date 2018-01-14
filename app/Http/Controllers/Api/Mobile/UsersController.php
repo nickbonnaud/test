@@ -13,7 +13,7 @@ use App\Http\Controllers\Controller;
 class UsersController extends Controller {
 
 	public function __construct() {
-		$this->middleware('jwt.auth')->except('index');
+		$this->middleware('jwt.auth')->except('update');
 	}
 
 	public function index(Request $request, UserFilters $filters) {
