@@ -26,7 +26,11 @@ class UsersController extends Controller {
 	}
 
 	public function update(Request $request) {
-		$user = $request->getContent();
+		$user = JWTAuth::parseToken()->authenticate();
+		$this->validateUserInfo($request, $user);
+		$user = $user->updateData($request->except('photo'), $request->file('photo'));
+
+    $user['token'] = JWTAuth::fromUser($user);
 		return response()->json(['user' => $user]);
 	}
 
