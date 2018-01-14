@@ -31,7 +31,7 @@ class UsersController extends Controller {
 		$user = $user->updateData($request->except('photo'), $request->file('photo'));
 
     $user['token'] = JWTAuth::fromUser($user);
-		return response()->json(['user' => $user]);
+		return response()->json(['user' => $request->all()]);
 	}
 
 
