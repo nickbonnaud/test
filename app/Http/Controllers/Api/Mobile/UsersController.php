@@ -26,7 +26,7 @@ class UsersController extends Controller {
 	}
 
 	public function update(Request $request) {
-		$user = $request->getContent();
+		$user = $request;
 		return response()->json(['user' => $user]);
 	}
 
