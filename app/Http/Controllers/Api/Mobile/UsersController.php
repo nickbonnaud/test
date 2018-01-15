@@ -26,7 +26,7 @@ class UsersController extends Controller {
 	}
 
 	public function update(Request $request) {
-		$data = $request->getContent('photo');
+		$data = $request->getContent('something');
 		
 		return response($data);
 	}
