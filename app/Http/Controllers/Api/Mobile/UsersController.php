@@ -13,7 +13,7 @@ use App\Http\Controllers\Controller;
 class UsersController extends Controller {
 
 	public function __construct() {
-		
+		$this->middleware('jwt.auth')->except('index');
 	}
 
 	public function index(Request $request, UserFilters $filters) {
@@ -26,8 +26,12 @@ class UsersController extends Controller {
 	}
 
 	public function update(Request $request) {
-		$data = $request->file('photo');
-		return response($data);
+		$user = JWTAuth::parseToken()->authenticate();
+		$this->validateUserInfo($request, $user);
+		$user = $user->updateData($request->except('photo'), $request->file('photo'));
+
+    $user['token'] = JWTAuth::fromUser($user);
+		return response()->json(['user' => $user]);
 	}
 
 
