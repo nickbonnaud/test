@@ -8,6 +8,7 @@ use Illuminate\Validation\Rule;
 use App\Rules\PasswordCheck;
 use App\Filters\UserFilters;
 use Illuminate\Http\Request;
+use App\Http\Resources\UserResource;
 use App\Http\Controllers\Controller;
 
 class UsersController extends Controller {
@@ -31,7 +32,7 @@ class UsersController extends Controller {
 		$user = $user->updateData($request->except('photo'), $request->file('photo'));
 
     $user['token'] = JWTAuth::fromUser($user);
-		return response()->json(['user' => $user]);
+    return new UserResource($user);
 	}
 
 
