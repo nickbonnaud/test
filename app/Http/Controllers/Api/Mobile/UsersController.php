@@ -26,7 +26,7 @@ class UsersController extends Controller {
 	}
 
 	public function update(Request $request) {
-		$data = $request->getContent('something');
+		$data = $request->all();
 		
 		return response($data);
 	}
