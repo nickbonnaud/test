@@ -20,8 +20,9 @@ class ApiAuthenticateUsersTest extends TestCase
 		];
 
   	$response = $this->post("/api/mobile/auth/register", $data)->getData();
+  	dd($response);
   	$this->assertDatabaseHas('users', ['first_name' => 'Test']);
-  	$this->assertNotEmpty($response->user->token);
+  	$this->assertNotEmpty($response->data->token);
 	}
 
 	function test_an_unauthorized_user_cannot_login_via_api() {
@@ -42,7 +43,7 @@ class ApiAuthenticateUsersTest extends TestCase
 			'password' => 'TestCase1!'
 		];
 		$response = $this->post("/api/mobile/auth/login", $data)->getData();
-		$this->assertNotEmpty($response->user->token);
+		$this->assertNotEmpty($response->data->token);
 	}
 
 	function test_an_authenticated_user_can_get_their_user_data() {

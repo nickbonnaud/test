@@ -41,9 +41,9 @@ class ApiUserTest extends TestCase
   	];
 
   	$response = $this->json("PATCH", "/api/mobile/user", $data, $this->headers($user))->getData();
-  	$this->assertEquals($firstName, $response->user->first_name);
-  	$this->assertEquals($lastName, $response->user->last_name);
-  	$this->assertNotNull($response->user->token);
+  	$this->assertEquals($firstName, $response->data->first_name);
+  	$this->assertEquals($lastName, $response->data->last_name);
+  	$this->assertNotNull($response->data->token);
 	}
 
 
@@ -59,8 +59,8 @@ class ApiUserTest extends TestCase
   	];
 
   	$response = $this->json("PATCH", "/api/mobile/user", $data, $this->headers($user))->getData();
-  	$this->assertEquals($email, $response->user->email);
-  	$this->assertNotNull($response->user->token);
+  	$this->assertEquals($email, $response->data->email);
+  	$this->assertNotNull($response->data->token);
 	}
 
 	function test_an_authorized_user_can_update_their_password() {
@@ -77,7 +77,7 @@ class ApiUserTest extends TestCase
 		$response = $this->json("PATCH", "/api/mobile/user", $data, $this->headers($user))->getData();
 		$dbUser = User::find($user->id);
 		$this->assertTrue(Hash::check($newPassword, $dbUser->password));
-		$this->assertNotNull($response->user->token);
+		$this->assertNotNull($response->data->token);
 	}
 
 	function test_an_authorized_user_cannot_update_their_password_if_wrong() {
@@ -108,7 +108,7 @@ class ApiUserTest extends TestCase
 		$response = $this->json('PATCH', "/api/mobile/user", $data, $this->headers($user))->getData();
 		$this->assertEquals('images/photos/' . $file->hashName(), $user->fresh()->photo->path);
 		Storage::disk('public')->assertExists('images/photos/' . $file->hashName());
-		$this->assertNotNull($response->user->photo);
+		$this->assertNotNull($response->data->photo_url);
 	}
 
 	function test_an_authorized_user_can_add_photo_with_previous_photo() {

@@ -29,40 +29,37 @@ class AuthenticateController extends Controller {
 	    return response()->json(['error' => 'could_not_create_token'], 500);
 		}
 		$user['token'] = $token;
-		return response()->json(compact('user'));
+		return new UserResource($user);
 	}
 
 	public function login(Request $request) {
 		$credentials = $request->only('email', 'password');
 
-    try {
-    	if (!$token = JWTAuth::attempt($credentials)) {
-    		return response()->json(['error' =>'invalid_email_or_password'], 422);
-    	}
-    } catch (Exceptions\JWTException $e) {
-    	return response()->json(['error' => 'failed_to_create_token'], 500);
-    }
-    $user = User::where('email', '=', $request->input('email'))->first();
-    $user['token'] = $token;
-    return response()->json(compact('user'));
+        try {
+        	if (!$token = JWTAuth::attempt($credentials)) {
+        		return response()->json(['error' =>'invalid_email_or_password'], 422);
+        	}
+        } catch (Exceptions\JWTException $e) {
+        	return response()->json(['error' => 'failed_to_create_token'], 500);
+        }
+        $user = User::where('email', '=', $request->input('email'))->first();
+        $user['token'] = $token;
+        return new UserResource($user);
 	}
 
 	public function me() {
 		try {
-      if (!$user = JWTAuth::parseToken()->authenticate()) {
-      	return response()->json(['error' => 'user_not_found'], 404);
-      }
-    } catch (Exceptions\TokenExpiredException $e) {
-        return response()->json(['error' => 'token_expired']);
-    } catch (Exceptions\TokenInvalidException $e) {
-        return response()->json(['error' => 'token_invalid']);
-    } catch (Exceptions\JWTException $e) {
-        return response()->json(['error' => 'token_absent']);
-    }
-    $user['token'] = [
-    	'value' => JWTAuth::parseToken()->refresh(),
-    	'expiry' => Carbon::now()->addMinutes(env('JWT_TTL'))->timestamp
-    ];
-    return new UserResource($user);
+          if (!$user = JWTAuth::parseToken()->authenticate()) {
+          	return response()->json(['error' => 'user_not_found'], 404);
+          }
+        } catch (Exceptions\TokenExpiredException $e) {
+            return response()->json(['error' => 'token_expired']);
+        } catch (Exceptions\TokenInvalidException $e) {
+            return response()->json(['error' => 'token_invalid']);
+        } catch (Exceptions\JWTException $e) {
+            return response()->json(['error' => 'token_absent']);
+        }
+        $user['token'] = JWTAuth::parseToken()->refresh();
+        return new UserResource($user);
 	}
 }
