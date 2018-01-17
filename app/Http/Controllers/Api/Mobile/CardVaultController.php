@@ -16,10 +16,10 @@ class CardVaultController extends Controller
 		$this->middleware('jwt.auth');
 	}
 
-  public function show(Request $request) {
+  public function show() {
    	$user = JWTAuth::parseToken()->authenticate();
    	$user['token'] = $token = JWTAuth::getToken();
-    return view('card_vault.show');
+    return view('card_vault.show', compact('user'));
   }
 
   public function store(User $user, Request $request) {

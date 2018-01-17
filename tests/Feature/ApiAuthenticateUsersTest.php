@@ -20,7 +20,6 @@ class ApiAuthenticateUsersTest extends TestCase
 		];
 
   	$response = $this->post("/api/mobile/auth/register", $data)->getData();
-  	dd($response);
   	$this->assertDatabaseHas('users', ['first_name' => 'Test']);
   	$this->assertNotEmpty($response->data->token);
 	}
