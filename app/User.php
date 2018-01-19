@@ -24,7 +24,8 @@ class User extends Authenticatable implements JWTSubject
     'password',
     'role',
     'on_shift',
-    'employer_id'
+    'employer_id',
+    'default_tip_rate'
   ];
 
   /**
