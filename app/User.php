@@ -120,8 +120,15 @@ class User extends Authenticatable implements JWTSubject
     $this->updatePassword($userData);
     $this->updateEmailName($userData);
     $this->updatePhoto($file);
+    $this->updateTipRate($userData);
     $this->save();
     return $this;
+  }
+
+  public function updateTipRate($userData) {
+    if (array_key_exists('default_tip_rate', $userData)) {
+      $this->default_tip_rate = $userData['default_tip_rate'];
+    }
   }
 
   public function updateEmailName($userData) {
