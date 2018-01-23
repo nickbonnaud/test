@@ -16,7 +16,7 @@ class UserResource extends Resource
       'email' => $this->email,
       'card_type' => $this->card_type,
       'last_four_card' => $this->last_four_card,
-      'photo_url' => optional($this->photo)->apiUrl,
+      'photo_url' => optional($this->photo)->apiThumbnailUrl,
       'default_tip' => $this->default_tip_rate,
       'token' => [
         'value' => $this->token,
