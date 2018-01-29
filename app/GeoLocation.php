@@ -45,13 +45,11 @@ class GeoLocation extends Model {
     return $filters->apply($query);
   }
 
-  public static function getLocationsInRadius($coords, $geoLocations, $user) {
+  public static function getLocationsInRadius($coords, $geoLocations) {
     $locations = $geoLocations->filter(function($geoLocation) use ($coords) {
       $distance = self::getDistance($coords, $geoLocation);
-      return $distance <= 50;
+      return $distance <= 1000;
     });
-    self::addUserLocations($locations, $user);
-    self::removeUserLocations($locations, $user);
     return $locations;
   }
 
