@@ -163,6 +163,7 @@ class Account extends Model
     
     }
     $response = $object->getResponse();
+    dd($response);
     $this->splash_id = $response[0]->id;
     $this->save();
   }
