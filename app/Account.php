@@ -159,6 +159,7 @@ class Account extends Model
 
     $object->create();
     $response = $object->getResponse();
+    dd($response);
     $this->splash_id = $response[0]->id;
     $this->save();
   }
