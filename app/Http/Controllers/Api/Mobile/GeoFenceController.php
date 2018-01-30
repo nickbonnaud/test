@@ -27,6 +27,6 @@ class GeoFenceController extends Controller {
 
 	public function update(Request $request) {
 		$user = JWTAuth::parseToken()->authenticate();
-		return response($request->input('current'));
+		return response($request->current);
 	}
 }
