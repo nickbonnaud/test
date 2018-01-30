@@ -157,11 +157,7 @@ class Account extends Model
     SplashPayments\Utilities\Config::setApiKey(env('SPLASH_KEY'));
     $object = new SplashPayments\merchants($formattedAccountData);
 
-    try {
-      $object->create();
-    } catch (SplashPayments\Exceptions\Base $e) {
-      dd($e);
-    }
+    $object->create();
     $response = $object->getResponse();
     $this->splash_id = $response[0]->id;
     $this->save();

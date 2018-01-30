@@ -39,7 +39,6 @@ class SendAccountDataToProcessor
       'mcc' => '8111',
       'status' => 1,
       'entity' => array(
-        'login' => 'g15952a377cbdce',
         'type' => $this->account->business_type,
         'name' => $this->account->legal_biz_name,
         'address1' => $this->account->biz_street_address,
