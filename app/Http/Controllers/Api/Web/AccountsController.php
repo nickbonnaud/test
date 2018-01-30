@@ -11,8 +11,9 @@ class AccountsController extends Controller {
 
 	public function update(Request $request) {
 		Log::info("Testing");
-		$business = json_decode($request->getContent(), true);
+		$business = json_decode($request->getContent());
 		Log::info($business);
+
 		$merchantId = array_get($business, 'merchantData.merchantId');
 		$status = array_get($business, 'merchantData.status');
 
