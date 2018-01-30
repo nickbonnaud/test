@@ -35,10 +35,9 @@ class SendAccountDataToProcessor
     $data = array (
       'new' => 0,
       'established' => date_format(date_create($this->account->established), 'Ymd'),
-      'annual_cc_sales' => $this->account->annual_cc_sales * 100,
+      'annualCCSales' => $this->account->annual_cc_sales * 100,
       'mcc' => '8111',
       'status' => 1,
-      'tcVersion' => 1,
       'entity' => array(
         'type' => $this->account->business_type,
         'name' => $this->account->legal_biz_name,
@@ -70,6 +69,11 @@ class SendAccountDataToProcessor
           'ownership' => $this->account->ownership,
           'email' => $this->account->owner_email,
           'ssn' => preg_replace("/[^0-9]/","", Crypt::decrypt($this->account->getOriginal('ssn'))),
+          'address1' => $this->account->indiv_street_address,
+          'city' => $this->account->indiv_city,
+          'state' => $this->account->indiv_state,
+          'zip' => $this->account->indiv_zip,
+          'country' => "USA",
           'primary' => 1
         )
       )
