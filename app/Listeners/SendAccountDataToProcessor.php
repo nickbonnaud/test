@@ -39,6 +39,7 @@ class SendAccountDataToProcessor
       'mcc' => '8111',
       'status' => 1,
       'entity' => array(
+        'login' => env('SPLASH_KEY'),
         'type' => $this->account->business_type,
         'name' => $this->account->legal_biz_name,
         'address1' => $this->account->biz_street_address,
