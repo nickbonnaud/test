@@ -78,6 +78,7 @@ class SendAccountDataToProcessor
         )
       )
     );
+    dd($data);
     return $data;
   }
 }
