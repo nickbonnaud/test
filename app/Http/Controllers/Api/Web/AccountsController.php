@@ -12,13 +12,14 @@ class AccountsController extends Controller {
 	public function update(Request $request) {
 		Log::info("Testing");
 		$business = json_decode($request->getContent(), true);
-		Log::info($business);
-		
-		$merchantId = array_get($business, 'merchantData.merchantId');
-		$status = array_get($business, 'merchantData.status');
+		Log::info(array_get($business, 'response.alert.merchantId'));
+		Log::info(array_get($business, 'response.alert.merchantStatus'));
+
+		$merchantId = array_get($business, 'response.alert.merchantId');
+		$status = array_get($business, 'response.alert.merchantStatus');
 
     $account = Account::where('splash_id', '=', $merchantId)->first();
-    $account->status = $status;
+    $account->status = strtolower($status);
     $account->save();
 	}
 }
