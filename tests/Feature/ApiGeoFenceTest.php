@@ -48,4 +48,16 @@ class ApiGeoFenceTest extends TestCase
 		$response = $this->get("/api/mobile/geofences?city={$city->slug}&lat={$lat}&lng=${lng}", $this->headers($user))->getData();
 		$this->assertCount(1, $response->data);
 	}
+
+	function test_an_authorized_user_can_send_active_and_exited_geofences() {
+		$user = create('App\User');
+		$logo = create('App\Photo');
+		$city = create('App\City');
+
+		$profileActive = create('App\Profile', ['logo_photo_id' => $logo->id, 'city_id' => $city->id]);
+		$geoLocationIn = create('App\GeoLocation', ['profile_id' => $profileActive->id]);
+
+		$profileNotActive = create('App\Profile', ['logo_photo_id' => $logo->id, 'city_id' => $city->id]);
+		$geoLocationOut = create('App\GeoLocation', ['profile_id' => $profileNotActive->id]);
+	}
 }
