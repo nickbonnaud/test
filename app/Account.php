@@ -160,7 +160,7 @@ class Account extends Model
     try {
       $object->create();
     } catch (SplashPayments\Exceptions\Base $e) {
-    
+      dd($e);
     }
     $response = $object->getResponse();
     dd($object);
