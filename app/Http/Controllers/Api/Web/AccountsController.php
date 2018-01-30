@@ -10,7 +10,7 @@ use App\Http\Controllers\Controller;
 class AccountsController extends Controller {
 
 	public function update(Request $request) {
-		Log::info("INIT!!!");
+		Log::info("Testing");
 		$business = json_decode($request->getContent(), true);
 		Log::info($business);
 		$merchantId = array_get($business, 'merchantData.merchantId');
