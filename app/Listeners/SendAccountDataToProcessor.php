@@ -32,7 +32,6 @@ class SendAccountDataToProcessor
   }
 
   public function formatAccountData() {
-    dd('here');
     $data = array (
       'new' => 0,
       'established' => date_format(date_create($this->account->established), 'Ymd'),
