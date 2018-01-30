@@ -7,6 +7,7 @@ use App\GeoLocation;
 use App\Filters\GeoLocationFilters;
 use App\Http\Resources\GeoLocationResource;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 
 class GeoFenceController extends Controller {
@@ -22,5 +23,10 @@ class GeoFenceController extends Controller {
 		$coords = ['latitude' => $request->lat, 'longitude' => $request->lng];
 		$locations = GeoLocation::getLocationsInRadius($coords, $geoLocations);
 		return GeoLocationResource::collection($locations);
+	}
+
+	public function update(Request $request) {
+		$user = JWTAuth::parseToken()->authenticate();
+		Log::info($request->all());
 	}
 }

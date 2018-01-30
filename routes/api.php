@@ -54,6 +54,7 @@ Route::post('location', 'GeoLocationsController@index');
 
 // Geofence routes
 Route::get('geofences', 'GeoFenceController@index');
+Route::post('geofences', 'GeoFenceController@update');
 
 // Card Vault
 Route::get('card/vault', 'CardVaultController@show');

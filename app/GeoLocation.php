@@ -48,7 +48,7 @@ class GeoLocation extends Model {
   public static function getLocationsInRadius($coords, $geoLocations) {
     $locations = $geoLocations->filter(function($geoLocation) use ($coords) {
       $distance = self::getDistance($coords, $geoLocation);
-      return $distance <= 1000;
+      return $distance <= 10000;
     });
     return $locations;
   }
