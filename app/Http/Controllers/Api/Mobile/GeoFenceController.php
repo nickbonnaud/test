@@ -17,7 +17,7 @@ class GeoFenceController extends Controller {
 
 	public function index(Request $request, GeoLocationFilters $filters) {
 		$geoLocations = GeoLocation::filter($filters)->whereHas('profile.account', function($query) {
-			$query->where('status', '=', 'Boarded');
+			$query->where('status', '=', 'boarded');
 		})->get();
 		$coords = ['latitude' => $request->lat, 'longitude' => $request->lng];
 		$locations = GeoLocation::getLocationsInRadius($coords, $geoLocations);
