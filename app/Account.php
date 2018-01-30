@@ -153,7 +153,6 @@ class Account extends Model
   }
 
   public function sendAccountDataToProcessor($formattedAccountData) {
-    dd($formattedAccountData);
     SplashPayments\Utilities\Config::setTestMode(true);
     SplashPayments\Utilities\Config::setApiKey(env('SPLASH_KEY'));
     $object = new SplashPayments\merchants($formattedAccountData);
