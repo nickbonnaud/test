@@ -10,7 +10,7 @@
 			    </h1>
 			    @if($account->status == 'pending' || $account->status == 'review')
 			    	<p><i class="fa fa-circle text-warning"></i> Payment Account Pending</p>
-			    @elseif($account->status == 'Boarded')
+			    @elseif($account->status == 'boarded')
 			    	<p><i class="fa fa-circle text-success"></i> Payment Account Active</p>
 			    @else
 			    	<p><i class="fa fa-circle text-danger"></i> Payment Account Not Approved</p>
