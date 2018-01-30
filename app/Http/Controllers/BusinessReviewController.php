@@ -29,6 +29,7 @@ class BusinessReviewController extends Controller
 
   public function updateAccount(Account $account, Request $request) {
     $account->status = $request->input('status');
+    $account->save();
     event(new AccountReadyForProcessorReview($account));
     return redirect()->back();
   }
