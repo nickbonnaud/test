@@ -66,7 +66,7 @@ class SendAccountDataToProcessor
           'first' => $this->account->account_user_first,
           'last' => $this->account->account_user_last,
           'dob' => date_format(date_create($this->account->date_of_birth), 'Ymd'),
-          'ownership' => $this->account->ownership,
+          'ownership' => $this->account->ownership * 100,
           'email' => $this->account->owner_email,
           'ssn' => preg_replace("/[^0-9]/","", Crypt::decrypt($this->account->getOriginal('ssn'))),
           'address1' => $this->account->indiv_street_address,
