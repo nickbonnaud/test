@@ -169,7 +169,7 @@ $factory->define(App\PushToken::class, function ($faker) {
   $user = factory('App\User')->create();
   return [
     'user_id' => $user->id,
-    'device' => 'Android',
+    'device' => 'android',
     'push_token' => 'dYt4KnJ8_Uw:APA91bGeE_Vg3FTbEw4W0pgZTiZ25IP4R5q5izMWtWdBmjuLeuO2P0RITmGTNhmGbC3QL1Xf56MrrtXNnYS99YWTq11ytkAnaD0mMC4qrq4XJLDRp0CtpxJjAS9jMImQ52GAJ28s2Qb-'
   ];
 });

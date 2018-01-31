@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Api\Mobile;
 
 use JWTAuth;
 use App\GeoLocation;
+use App\UserLocation;
 use App\Filters\GeoLocationFilters;
 use App\Http\Resources\GeoLocationResource;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 
 class GeoFenceController extends Controller {
@@ -27,6 +27,12 @@ class GeoFenceController extends Controller {
 
 	public function update(Request $request) {
 		$user = JWTAuth::parseToken()->authenticate();
-		return response($request->current);
+		if (count($request->current) > 0) {
+			UserLocation::addUserLocations($request->current, $user);
+		}
+
+		if (count($request->remove) > 0) {
+			UserLocation::removeUserLocations($request->remove, $user);
+		}
 	}
 }

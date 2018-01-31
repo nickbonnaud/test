@@ -65,3 +65,6 @@ Route::patch('deals/{transaction}', 'DealsController@update');
 
 //Tags routes
 Route::get('tags', 'TagsController@index');
+
+// Push Token routes
+Route::post('push-token', 'PushTokenController@store');

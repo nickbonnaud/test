@@ -48,31 +48,11 @@ class GeoLocation extends Model {
   public static function getLocationsInRadius($coords, $geoLocations) {
     $locations = $geoLocations->filter(function($geoLocation) use ($coords) {
       $distance = self::getDistance($coords, $geoLocation);
-      return $distance <= 10000;
+      return $distance <= 1000;
     });
     return $locations;
   }
 
-  public static function addUserLocations($locations, $user) {
-    foreach ($locations as $location) {
-      UserLocation::updateOrCreate(
-        ['profile_id' => $location->profile_id, 'user_id' => $user->id, 'exit_notification_sent' => false],
-        ['updated_at' => Carbon::now()]
-      );
-    }
-  }
-
-  public static function removeUserLocations($locations, $user) {
-    $userLocations = UserLocation::where('user_id', '=', $user->id)->get();
-    foreach ($userLocations as $userLocation) {
-      $location = $locations->first(function($location) use ($userLocation) {
-        return $location->profile_id == $userLocation->profile_id;
-      });
-      if (!$location) {
-        $userLocation->removeLocation();
-      }
-    }
-  }
 
   public static function getDistance($coords, $geoLocation) {
     $r = 6371000;

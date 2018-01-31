@@ -49,15 +49,43 @@ class ApiGeoFenceTest extends TestCase
 		$this->assertCount(1, $response->data);
 	}
 
-	function test_an_authorized_user_can_send_active_and_exited_geofences() {
+	function test_an_unauthorized_user_in_geofence_is_not_stored_in_the_database() {
+		$this->withExceptionHandling();
 		$user = create('App\User');
 		$logo = create('App\Photo');
 		$city = create('App\City');
 
-		$profileActive = create('App\Profile', ['logo_photo_id' => $logo->id, 'city_id' => $city->id]);
-		$geoLocationIn = create('App\GeoLocation', ['profile_id' => $profileActive->id]);
+		$profile = create('App\Profile', ['logo_photo_id' => $logo->id, 'city_id' => $city->id]);
+		$account = create('App\Account', ['profile_id' => $profile->id]);
+		$geoLocation = create('App\GeoLocation', ['profile_id' => $profile->id]);
 
-		$profileNotActive = create('App\Profile', ['logo_photo_id' => $logo->id, 'city_id' => $city->id]);
-		$geoLocationOut = create('App\GeoLocation', ['profile_id' => $profileNotActive->id]);
+		$data = [
+			'current' => [
+				['location_id' => $profile->id, 'action' => 'enter']
+			],
+			'remove' => []
+		];
+
+		$this->json('POST', '/api/mobile/geofences', $data)->assertStatus(401);
+	}
+
+	function test_an_authorized_user_in_geofence_is_stored_in_the_database() {
+		$user = create('App\User');
+		$logo = create('App\Photo');
+		$city = create('App\City');
+
+		$profile = create('App\Profile', ['logo_photo_id' => $logo->id, 'city_id' => $city->id]);
+		$account = create('App\Account', ['profile_id' => $profile->id]);
+		$geoLocation = create('App\GeoLocation', ['profile_id' => $profile->id]);
+
+		$data = [
+			'current' => [
+				['location_id' => $profile->id, 'action' => 'enter']
+			],
+			'remove' => []
+		];
+
+		$this->json('POST', '/api/mobile/geofences', $data, $this->headers($user));
+		$this->assertDatabaseHas('user_locations', ['user_id' => $user->id, 'profile_id' => $profile->id]);
 	}
 }
