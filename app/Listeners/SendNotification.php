@@ -2,6 +2,8 @@
 
 namespace App\Listeners;
 
+use Illuminate\Support\Facades\Log;
+
 use App\Events\BillPushSuccess;
 use Illuminate\Notifications\Events\NotificationSent;
 use Illuminate\Queue\InteractsWithQueue;
@@ -28,11 +30,13 @@ class SendNotification
    */
   public function handle(NotificationSent $event)
   {
+    Log::info('INSIDE LISTEN HANDLER');
     $notification = $this->getNotification($event);
+    Log::info($notification);
     $pushToken = $event->notifiable->pushToken;
-
+    Log::info($pushToken);
     $response = $this->sendPush($notification, $pushToken);
-
+    Log::info($response);
     $success = $this->checkSuccess($response, $pushToken);
     $type = str_replace_first("App\\Notifications\\",'', $notification->type);
     
