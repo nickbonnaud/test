@@ -33,7 +33,6 @@ class SendNotification
     $notification = $this->getNotification($event);
     $pushToken = $event->notifiable->pushToken;
     $response = $this->sendPush($notification, $pushToken);
-    dd($response);
     $success = $this->checkSuccess($response, $pushToken);
     $type = str_replace_first("App\\Notifications\\",'', $notification->type);
     
