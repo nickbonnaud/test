@@ -34,5 +34,6 @@ class GeoFenceController extends Controller {
 		if (count($request->remove) > 0) {
 			UserLocation::removeUserLocations($request->remove, $user);
 		}
+		return response()->json(['success' => true]);
 	}
 }

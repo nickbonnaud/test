@@ -3,6 +3,10 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
+use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Notification;
+use App\Events\CustomerBreakGeoFence;
+use App\Notifications\CustomerEnterGeoFence;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ApiGeoFenceTest extends TestCase
@@ -92,4 +96,52 @@ class ApiGeoFenceTest extends TestCase
 		$this->json('POST', '/api/mobile/geofences', $data, $this->headers($user));
 		$this->assertDatabaseHas('user_locations', ['user_id' => $user->id, 'profile_id' => $profile->id]);
 	}
+
+	function test_a_user_entering_geofence_creates_a_customer_break_geofence_event() {
+		Notification::fake();
+		$this->expectsEvents(CustomerBreakGeoFence::class);
+		$user = create('App\User');
+		$logo = create('App\Photo');
+		$city = create('App\City');
+
+		$profile = create('App\Profile', ['logo_photo_id' => $logo->id, 'city_id' => $city->id]);
+		$account = create('App\Account', ['profile_id' => $profile->id]);
+		$geoLocation = create('App\GeoLocation', ['profile_id' => $profile->id]);
+
+		$data = [
+			'current' => [
+				['location_id' => $profile->id, 'action' => 'enter']
+			],
+			'remove' => []
+		];
+
+		$this->json('POST', '/api/mobile/geofences', $data, $this->headers($user));
+	}
+
+	function test_a_user_geofence_is_sent_a_pockeyt_pay_notification() {
+		Notification::fake();
+		$user = create('App\User');
+		$pushToken = create('App\PushToken', ['user_id' => $user->id]);
+		$logo = create('App\Photo');
+		$city = create('App\City');
+
+		$profile = create('App\Profile', ['logo_photo_id' => $logo->id, 'city_id' => $city->id]);
+		$account = create('App\Account', ['profile_id' => $profile->id]);
+		$geoLocation = create('App\GeoLocation', ['profile_id' => $profile->id]);
+
+		$data = [
+			'current' => [
+				['location_id' => $profile->id, 'action' => 'enter']
+			],
+			'remove' => []
+		];
+
+		$this->json('POST', '/api/mobile/geofences', $data, $this->headers($user));
+
+		Notification::assertSentTo(
+      [$user],
+      CustomerEnterGeoFence::class
+    );
+	}
+
 }
