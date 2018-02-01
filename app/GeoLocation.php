@@ -49,7 +49,7 @@ class GeoLocation extends Model {
     $locations = $geoLocations->filter(function($geoLocation) use ($coords) {
       $distance = self::getDistance($coords, $geoLocation);
       return $distance <= 1000;
-    });
+    })->values();
     return $locations;
   }
 

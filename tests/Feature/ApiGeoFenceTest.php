@@ -41,12 +41,16 @@ class ApiGeoFenceTest extends TestCase
 		$profileNotInCity= create('App\Profile', ['logo_photo_id' => $logo->id, 'city_id' => $city1->id]);
 		$account = create('App\Account', ['profile_id' => $profileNotInCity->id, 'status' => 'boarded']);
 		$geoLocationOut = create('App\GeoLocation', ['profile_id' => $profileNotInCity->id, 'latitude' => 30.78172123, 'longitude' => -75.65666912]);
+
+		$profileInRadius2 = create('App\Profile', ['logo_photo_id' => $logo->id, 'city_id' => $city->id]);
+		$account = create('App\Account', ['profile_id' => $profileInRadius2->id, 'status' => 'boarded']);
+		$geoLocationIn = create('App\GeoLocation', ['profile_id' => $profileInRadius2->id]);
 		
 		$lat = $geoLocationIn->latitude;
 		$lng = $geoLocationIn->longitude;
 
 		$response = $this->get("/api/mobile/geofences?city={$city->slug}&lat={$lat}&lng=${lng}", $this->headers($user))->getData();
-		$this->assertCount(1, $response->data);
+		$this->assertCount(2, $response->data);
 	}
 
 	function test_an_unauthorized_user_in_geofence_is_not_stored_in_the_database() {
