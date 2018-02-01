@@ -144,4 +144,24 @@ class ApiGeoFenceTest extends TestCase
     );
 	}
 
+	function test_push_notificatiion_sent() {
+		$user = create('App\User');
+		$pushToken = create('App\PushToken', ['user_id' => $user->id, 'device' => 'android', 'push_token' => 'eS_Dbq-xbM8:APA91bH6HsMgNngmdFixOM-Neq7662mo6SoJ_e7b65ZUa77rMu8-V0V0DC6d2Gum4yFsp_7AoqX4-RgAMOybQMlO2n3ABxNH4r0TKild0AI_yMT-Rr8Hs8rG9uCQGG3zp0WamY5RNs7e']);
+		$logo = create('App\Photo');
+		$city = create('App\City');
+
+		$profile = create('App\Profile', ['logo_photo_id' => $logo->id, 'city_id' => $city->id]);
+		$account = create('App\Account', ['profile_id' => $profile->id]);
+		$geoLocation = create('App\GeoLocation', ['profile_id' => $profile->id]);
+
+		$data = [
+			'current' => [
+				['location_id' => $profile->id, 'action' => 'enter']
+			],
+			'remove' => []
+		];
+
+		$this->json('POST', '/api/mobile/geofences', $data, $this->headers($user));
+	}
+
 }

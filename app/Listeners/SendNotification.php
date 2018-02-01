@@ -30,13 +30,10 @@ class SendNotification
    */
   public function handle(NotificationSent $event)
   {
-    Log::info('INSIDE LISTEN HANDLER');
     $notification = $this->getNotification($event);
-    Log::info($notification);
     $pushToken = $event->notifiable->pushToken;
-    Log::info($pushToken);
     $response = $this->sendPush($notification, $pushToken);
-    Log::info($response);
+    dd($response);
     $success = $this->checkSuccess($response, $pushToken);
     $type = str_replace_first("App\\Notifications\\",'', $notification->type);
     
@@ -48,14 +45,14 @@ class SendNotification
   }
 
   public function sendPush($notification, $pushToken) {
-    $pushService = strtolower($pushToken->device) === 'ios' ? 'apn' : 'gcm';
+    $pushService = strtolower($pushToken->device) === 'ios' ? 'apn' : 'fcm';
 
     $push = \PushNotification::setService($pushService)
       ->setMessage($notification->data)
       ->setDevicesToken($pushToken->push_token);
 
-      if ($pushService === 'gcm') {
-        $push->setApiKey(env('GCM_KEY'));
+      if ($pushService === 'fcm') {
+        $push->setApiKey(env('FCM_KEY'));
       }
       return $push->send()->getFeedback();
   }
