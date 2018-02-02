@@ -6,7 +6,7 @@ namespace App\Filters;
 class ProfileFilters extends Filters
 {
 
-  protected $filters = ['city', 'query', 'rating', 'tags'];
+  protected $filters = ['city', 'query', 'rating', 'tags', 'id'];
 
   protected function city($city) {
     return $this->builder->whereHas('city', function($query) use($city) {

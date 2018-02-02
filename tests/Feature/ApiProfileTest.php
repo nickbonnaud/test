@@ -117,7 +117,10 @@ class ApiProfileTest extends TestCase
 		$photo = create('App\Photo');
 		$profile = create('App\Profile', ['city_id' => $city->id, 'logo_photo_id' => $photo->id, 'hero_photo_id' => $photo->id, 'approved' => true]);
 
+		$profile2 = create('App\Profile', ['city_id' => $city->id, 'logo_photo_id' => $photo->id, 'hero_photo_id' => $photo->id, 'approved' => true]);
+
 		$response = $this->get("/api/mobile/v1/profiles?city={$city->slug}&id={$profile->id}")->getData();
-		$this->assertEquals($profile->id, count($response->data[0]->id));
+		$this->assertEquals(1, count($response->data));
+		$this->assertEquals($profile->id, $response->data[0]->id);
 	}
 }
