@@ -110,4 +110,14 @@ class ApiProfileTest extends TestCase
 		$this->assertEquals($tag1->id, $response->data[0]->tags[0]->id);
 		$this->assertEquals($tag1->id, $response->data[1]->tags[0]->id);
 	}
+
+	function test_a_mobile_user_can_get_a_profile_by_id() {
+		$city = create('App\City');
+
+		$photo = create('App\Photo');
+		$profile = create('App\Profile', ['city_id' => $city->id, 'logo_photo_id' => $photo->id, 'hero_photo_id' => $photo->id, 'approved' => true]);
+
+		$response = $this->get("/api/mobile/v1/profiles?city={$city->slug}&id={$profile->id}")->getData();
+		$this->assertEquals($profile->id, count($response->data[0]->id));
+	}
 }

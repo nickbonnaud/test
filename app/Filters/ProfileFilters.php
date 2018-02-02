@@ -27,4 +27,8 @@ class ProfileFilters extends Filters
   		$query->whereIn('id', $ids);
   	});
   }
+
+  protected function id($id) {
+    return $this->builder->where('id', '=', $id);
+  }
 }
