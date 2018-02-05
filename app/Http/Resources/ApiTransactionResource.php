@@ -35,7 +35,9 @@ class ApiTransactionResource extends Resource
         'tips' => $this->tips,
         'net_sales' => $this->net_sales,
         'total' => $this->total,
-        'purchased_on' => $this->created_at
+        'purchased_on' => $this->created_at,
+        'status' => $this->status,
+        'bill_closed' => $this->bill_closed
       ];
     }
   }
