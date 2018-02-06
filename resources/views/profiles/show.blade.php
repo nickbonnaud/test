@@ -11,6 +11,7 @@
           <ol class="breadcrumb">
             <li><a href="{{ route('profiles.show', ['profiles' => $profile->slug]) }}"><i class="fa fa-dashboard"></i> Home</a></li>
           </ol>
+          <a href="{{ route('profiles.test') }}">Click Here</a>
         </section>
         <section class="content">
           <search-default search-type="customer"></search-default>
