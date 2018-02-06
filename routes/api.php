@@ -68,3 +68,9 @@ Route::get('tags', 'TagsController@index');
 
 // Push Token routes
 Route::post('push-token', 'PushTokenController@store');
+
+// Pusher Auth
+Route::post('pusher/{user}', 'PusherController@authenticate');
+
+
+

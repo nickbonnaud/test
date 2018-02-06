@@ -44,6 +44,9 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\CustomerRedeemItem' => [
             'App\Listeners\NotifyBusinessCustomerRedeemItem',
         ],
+        'App\Events\CustomerBillUpdate' => [
+            'App\Listeners\SendUpdatedBillToCustomer'
+        ],
         \SocialiteProviders\Manager\SocialiteWasCalled::class => [
             'SocialiteProviders\Instagram\InstagramExtendSocialite@handle'
         ]
