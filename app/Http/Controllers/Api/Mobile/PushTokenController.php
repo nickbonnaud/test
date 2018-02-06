@@ -14,10 +14,17 @@ class PushTokenController extends Controller {
 
 	public function store(Request $request) {
 		$user = JWTAuth::parseToken()->authenticate();
-		$user->pushToken()->updateOrCreate(
-			['push_token' => $request->push_token, 'device' => $request->device],
-			['push_token' => $request->push_token]
-		);
+		$pushToken = $user->pushToken();
+		if ($pushToken) {
+			$pushToken->push_token = $request->push_token;
+			$pushToken->device = $request->device;
+			$pushToken->save();
+		} else {
+			$user->pushToken()->create([
+				'push_token' => $request->push_token,
+				'device' => $request->device
+			]);
+		}
 		return response()->json(['success' => true]);
 	}
 }
