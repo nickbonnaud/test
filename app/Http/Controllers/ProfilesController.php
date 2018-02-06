@@ -3,13 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Profile;
-use App\UserLocation;
 use App\Tag;
 use Illuminate\Http\Request;
 use App\Http\Requests\CreateProfileRequest;
 use App\Http\Requests\UpdateProfileRequest;
-
-use App\Events\CustomerBreakGeoFence;
 
 class ProfilesController extends Controller
 {
@@ -95,10 +92,5 @@ class ProfilesController extends Controller
         $this->authorize('update', $profile);
         $profile->update($request->all());
         return redirect()->route('profiles.edit', ['profiles' => $profile->slug]);
-    }
-
-    public function test() {
-        $userLocation = UserLocation::first();
-        event(new CustomerBreakGeoFence($userLocation, 'enter'));
     }
 }

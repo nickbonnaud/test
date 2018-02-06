@@ -26,7 +26,6 @@ class CustomerBreakGeoFence implements ShouldBroadcast
    */
   public function __construct($userLocation, $type)
   {
-    dd('here');
     $this->userLocation = $userLocation;
     $this->type = $type;
     $this->profile = $userLocation->profile;

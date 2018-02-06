@@ -14,21 +14,21 @@ class CustomerBillUpdate implements ShouldBroadcast
 {
   use Dispatchable, InteractsWithSockets, SerializesModels;
 
-  public $user;
+  public $transaction;
 
-  public function __construct($user)
+  public function __construct($transaction)
   {
-    $this->user = $user;
+    $this->transaction = $transaction;
   }
 
   public function broadcastWith() {
     return [
-      'user' => $this->user
+      'transaction' => $this->transaction
     ];
   }
 
   public function broadcastOn()
   {
-    return new PrivateChannel('customer.' . $this->user->id);
+    return new PrivateChannel('customer.' . $transaction->user_id);
   }
 }
