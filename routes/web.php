@@ -152,8 +152,8 @@ Route::prefix('api/web')->group(function () {
 	Route::patch('loyalty-card/{profile}/{loyaltyCard}', 'Api\Web\LoyaltyCardsController@update');
 });
 
-// Route::resource('profiles', 'ProfilesController');
-// Route::resource('employees', 'EmployeesController');
-// Route::resource('loyalty', 'LoyaltyController');
-// Route::resource('refunds', 'RefundsController');
+Route::resource('profiles', 'ProfilesController');
+Route::resource('employees', 'EmployeesController');
+Route::resource('loyalty', 'LoyaltyController');
+Route::resource('refunds', 'RefundsController');
 
