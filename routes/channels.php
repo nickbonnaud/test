@@ -1,6 +1,7 @@
 <?php
 
 use App\Profile;
+use App\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,4 +44,8 @@ Broadcast::channel('bill-push-success.{profile}', function ($user, Profile $prof
 
 Broadcast::channel('redeemed-item.{profile}', function ($user, Profile $profile) {
   return $user->profile->slug === $profile->slug;
+});
+
+Broadcast::channel('customer.{user}', function ($user, User $authUser) {
+	return true;
 });
