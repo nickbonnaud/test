@@ -93,8 +93,4 @@ class ProfilesController extends Controller
         $profile->update($request->all());
         return redirect()->route('profiles.edit', ['profiles' => $profile->slug]);
     }
-
-    public function test() {
-        dd("connected");
-    }
 }

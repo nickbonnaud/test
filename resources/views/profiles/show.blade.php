@@ -15,7 +15,6 @@
         <section class="content">
           <search-default search-type="customer"></search-default>
           <div class="scroll-container">
-            <button><a href="{{ action('ProfilesController@test') }}"></a></button>
             <customer-list :profile="{{ $profile }}"></customer-list>
           </div>
         </section>
