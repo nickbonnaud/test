@@ -99,7 +99,6 @@ class ProfilesController extends Controller
 
     public function test() {
         $userLocation = UserLocation::first();
-        dd($userLocation);
-        event(new CustomerBreakGeoFence($userLocation));
+        event(new CustomerBreakGeoFence($userLocation, 'enter'));
     }
 }
