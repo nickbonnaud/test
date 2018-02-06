@@ -14,7 +14,7 @@ class PushTokenController extends Controller {
 
 	public function store(Request $request) {
 		$user = JWTAuth::parseToken()->authenticate();
-		$pushToken = $user->pushToken();
+		$pushToken = $user->pushToken()->first();
 		if ($pushToken) {
 			$pushToken->push_token = $request->push_token;
 			$pushToken->device = $request->device;
