@@ -100,7 +100,6 @@ class ProfilesController extends Controller
 
     public function test() {
         $user = User::where('id', 124)->first();
-        dd($user);
         event(new CustomerBillUpdate($user));
     }
 }
