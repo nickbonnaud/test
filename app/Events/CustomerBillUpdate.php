@@ -23,6 +23,6 @@ class CustomerBillUpdate implements ShouldBroadcast
 
   public function broadcastOn()
   {
-    return new PrivateChannel('customer');
+    return new Channel('customer.124');
   }
 }
