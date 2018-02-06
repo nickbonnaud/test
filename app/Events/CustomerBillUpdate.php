@@ -29,6 +29,6 @@ class CustomerBillUpdate implements ShouldBroadcast
 
   public function broadcastOn()
   {
-    return new PrivateChannel('customer.' . $user->id);
+    return new PrivateChannel('customer.' . $this->user->id);
   }
 }
