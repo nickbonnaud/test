@@ -89155,11 +89155,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   mounted: function mounted() {
     var _this = this;
 
+    console.log('hereeref');
     Echo.private('geofence.' + this.profile.slug).listen('CustomerBreakGeoFence', function (event) {
       _this.checkType(event);
     });
     Echo.private('redeemed-item.' + this.profile.slug).listen('CustomerRedeemItem', function (event) {
       _this.setItemRedeemed(event);
+    });
+
+    console.log('tada!');
+    Echo.private('customer.124').listen('CustomerBillUpdate', function (event) {
+      console.log('triggered');
+      console.log(event);
     });
 
     VueEvent.listen('customerQueryChange', this.setQuery.bind(this));
