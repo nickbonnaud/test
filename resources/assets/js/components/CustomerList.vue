@@ -66,6 +66,7 @@
 		},
 
 		mounted() {
+			console.log('hereeref');
 			Echo.private('geofence.' + this.profile.slug)
         .listen('CustomerBreakGeoFence', (event) => {
           this.checkType(event);
