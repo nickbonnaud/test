@@ -78,6 +78,7 @@
       console.log('tada!');
       Echo.private('customer.124')
         .listen('CustomerBillUpdate', (event) => {
+        	console.log('triggered');
           console.log(event);
       }); 
 
