@@ -66,7 +66,6 @@
 		},
 
 		mounted() {
-			console.log('hereeref');
 			Echo.private('geofence.' + this.profile.slug)
         .listen('CustomerBreakGeoFence', (event) => {
           this.checkType(event);
@@ -76,7 +75,6 @@
           this.setItemRedeemed(event);
       });
 
-      console.log('tada!');
       Echo.private('customer.124')
         .listen('CustomerBillUpdate', (event) => {
         	console.log('triggered');
