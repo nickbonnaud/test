@@ -75,7 +75,8 @@
           this.setItemRedeemed(event);
       });
 
-      Echo.channel('customer.124')
+      console.log('tada!');
+      Echo.private('customer.124')
         .listen('CustomerBillUpdate', (event) => {
           console.log(event);
       }); 
