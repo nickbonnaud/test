@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Profile;
+use App\User;
 use App\Tag;
 use Illuminate\Http\Request;
 use App\Http\Requests\CreateProfileRequest;
 use App\Http\Requests\UpdateProfileRequest;
+
+use App\Events\CustomerBillUpdate;
 
 class ProfilesController extends Controller
 {
@@ -95,6 +98,7 @@ class ProfilesController extends Controller
     }
 
     public function test() {
-        dd('here');
+        $user = User::where('id', '=', 124)->first();
+        event(new CustomerBillUpdate($user));
     }
 }

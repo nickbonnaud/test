@@ -18,6 +18,7 @@ class CustomerBillUpdate implements ShouldBroadcast
 
   public function __construct($user)
   {
+    dd($user);
     $this->user = $user;
   }
 
