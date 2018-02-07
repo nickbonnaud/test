@@ -46,6 +46,6 @@ Broadcast::channel('redeemed-item.{profile}', function ($user, Profile $profile)
   return $user->profile->slug === $profile->slug;
 });
 
-Broadcast::channel('customer.{id}', function ($user, $id) {
+Broadcast::channel('customer', function ($user) {
 	return true;
 });
