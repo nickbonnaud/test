@@ -75,12 +75,6 @@
           this.setItemRedeemed(event);
       });
 
-      Echo.private("customer.124")
-        .listen('CustomerBillUpdate', (event) => {
-        	console.log('triggered');
-          console.log(event);
-      }); 
-
 			VueEvent.listen('customerQueryChange', this.setQuery.bind(this));
 			VueEvent.listen('employeeSelected', this.setSelectedEmployee.bind(this));
 			VueEvent.listen('DealRedeemedSuccess',  this.removeDealData.bind(this));

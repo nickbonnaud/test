@@ -89162,11 +89162,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       _this.setItemRedeemed(event);
     });
 
-    Echo.private("customer.124").listen('CustomerBillUpdate', function (event) {
-      console.log('triggered');
-      console.log(event);
-    });
-
     VueEvent.listen('customerQueryChange', this.setQuery.bind(this));
     VueEvent.listen('employeeSelected', this.setSelectedEmployee.bind(this));
     VueEvent.listen('DealRedeemedSuccess', this.removeDealData.bind(this));
