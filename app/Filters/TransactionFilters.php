@@ -7,7 +7,7 @@ use Carbon\Carbon;
 class TransactionFilters extends Filters
 {
 
-  protected $filters = ['defaultDate', 'customDate', 'pending', 'finalized', 'recent', 'deals'];
+  protected $filters = ['defaultDate', 'customDate', 'pending', 'finalized', 'recent', 'deals', 'customerPending'];
 
   protected function defaultDate() {
   	$currentDate = Carbon::now();
@@ -22,6 +22,14 @@ class TransactionFilters extends Filters
   protected function pending() {
     return $this->builder->where('status', '<', '20')
       ->where('refund_full', '=', false)
+      ->orderBy('status', 'asc');
+  }
+
+  protected function customerPending() {
+    return $this->builder->where('status', '<', '20')
+      ->where('paid', false)
+      ->whereNull('deal_id')
+      ->where('is_refund', false)
       ->orderBy('status', 'asc');
   }
 

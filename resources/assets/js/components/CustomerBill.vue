@@ -124,14 +124,15 @@
 				return index;
 			},
 
-			saveBill(type) {
+			saveBill(closeBill) {
 				if (this.bill.id) {
 					axios.patch('/api/web/transactions/' + this.profile.slug + '/' + this.bill.id, {
 						'products': this.filterAttributes(),
 						'tax': Math.round(this.totalTax),
 						'net_sales': Math.round(this.subTotal),
 						'total': Math.round(this.totalBill),
-						'bill_closed': type
+						'bill_closed': closeBill,
+						'status': 10
 					})
           .then(this.checkSuccess);
 				} else {
@@ -143,7 +144,8 @@
 						'employee_id': this.employeeId,
 						'user_id': this.customer.id,
 						'profile_id': this.profile.id,
-						'bill_closed': type,
+						'bill_closed': closeBill,
+						'status': 10
 					})
           .then(this.checkSuccess);
 				}

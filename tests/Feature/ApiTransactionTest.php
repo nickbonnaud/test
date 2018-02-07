@@ -21,7 +21,7 @@ class ApiTransactionTest extends TestCase
 		$this->json('GET', '/api/mobile/transactions?recent=1')->assertStatus(401);
 	}
 
-	function test_a_user_not_owning_transactions_cannot_retrieve_transactions() {
+	function test_a_user_not_owning_transactions_cannot_retrieve_recent_transactions() {
 		Notification::fake();
 		$user = create('App\User');
 		$unAuthorizedUser = create('App\User');
@@ -34,7 +34,7 @@ class ApiTransactionTest extends TestCase
 		$this->assertCount(0, $response->data);
 	}
 
-	function test_a_user_owning_transactions_can_retrieve_transactions() {
+	function test_a_user_owning_transactions_can_retrieve_recent_transactions() {
 		Notification::fake();
 		$user = create('App\User');
 		$photo = create('App\Photo');
@@ -52,4 +52,46 @@ class ApiTransactionTest extends TestCase
 		$response = $this->get('/api/mobile/transactions?recent=1', $this->headers($user))->getData();
 		$this->assertCount(2, $response->data);
 	}
+
+	function test_an_unauthorized_user_cannot_retrieve_pending_transactions() {
+		$this->withExceptionHandling();
+		Notification::fake();
+		$user = create('App\User');
+		$profile = create('App\Profile');
+
+		$transaction = create('App\Transaction', ['profile_id' => $profile->id, 'user_id' => $user->id, 'paid' => false, 'is_refund' => false, 'status' => 10, ]);
+
+		$this->get('/api/mobile/transactions?customerPending=1')->assertStatus(401);
+	}
+
+	function test_a_user_not_owning_transactions_cannot_retrieve_pending_transactions() {
+		Notification::fake();
+		$user = create('App\User');
+		$unAuthorizedUser = create('App\User');
+
+		$profile = create('App\Profile');
+
+		$transaction = create('App\Transaction', ['profile_id' => $profile->id, 'user_id' => $user->id, 'paid' => false, 'is_refund' => false, 'status' => 10, ]);
+
+		$response = $this->get('/api/mobile/transactions?customerPending=1', $this->headers($unAuthorizedUser))->getData();
+
+		$this->assertCount(0, $response->data);
+	}
+
+	function test_a_user_owning_transactions_can_retrieve_pending_transactions() {
+		Notification::fake();
+		$user = create('App\User');
+		$photo = create('App\Photo');
+		$profile = create('App\Profile', ['logo_photo_id' => $photo->id]);
+
+		$transaction = create('App\Transaction', ['profile_id' => $profile->id, 'user_id' => $user->id, 'paid' => false, 'is_refund' => false, 'status' => 10, ]);
+
+		$transaction = create('App\Transaction', ['profile_id' => $profile->id, 'user_id' => $user->id, 'paid' => true, 'bill_closed' => true, 'is_refund' => false, 'status' => 10, ]);
+
+		$response = $this->get('/api/mobile/transactions?customerPending=1', $this->headers($user))->getData();
+
+		$this->assertCount(1, $response->data);
+	}
+
+
 }
