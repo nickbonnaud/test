@@ -73,12 +73,11 @@
         this.currentBill.forEach(function(product) {
           total = total + (product.quantity * product.price)
         });
-        console.log(total);
         return total;
       },
 
       totalTax() {
-        var tax = this.subTotal * this.profile.tax.total / 10000;
+        var tax = this.subTotal * this.profile.tax / 10000;
         console.log(tax);
         return tax;
       },
