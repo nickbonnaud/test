@@ -89162,7 +89162,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       _this.setItemRedeemed(event);
     });
 
-    Echo.private("customer").listen('CustomerBillUpdate', function (event) {
+    Echo.channel("customer").listen('CustomerBillUpdate', function (event) {
       console.log('triggered');
       console.log(event);
     });
