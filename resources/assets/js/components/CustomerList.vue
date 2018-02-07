@@ -75,7 +75,7 @@
           this.setItemRedeemed(event);
       });
 
-      Echo.channel("customer")
+      Echo.private("customer")
         .listen('CustomerBillUpdate', (event) => {
         	console.log('triggered');
           console.log(event);
