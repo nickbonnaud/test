@@ -13,6 +13,7 @@ use App\Notifications\FixTransactionNotification;
 use App\Events\TransactionError;
 use App\Events\TransactionSuccess;
 use App\Events\TransactionsChange;
+use App\Events\CustomerBillUpdate;
 use App\Mail\TransactionReceipt;
 use App\Mail\TransactionErrorEmail;
 use Illuminate\Support\Facades\Mail;
@@ -140,6 +141,10 @@ class Transaction extends Model
 
   public function transactionChangeEvent() {
     event(new TransactionsChange($this, $this->profile->slug));
+  }
+
+  public function updateCustomerEvent() {
+    event(new CustomerBillUpdate($this));
   }
 
   public function processCharge($tip = null) {

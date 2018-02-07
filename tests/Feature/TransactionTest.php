@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
+use App\Events\CustomerBillUpdate;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -122,7 +123,7 @@ class TransactionTest extends TestCase
   }
 
   function test_an_authorized_user_can_update_a_transaction() {
-   Notification::fake();
+    Notification::fake();
     $this->signIn();
     $profile = create('App\Profile', ['user_id' => auth()->id()]);
     $user = create('App\User');
@@ -133,5 +134,38 @@ class TransactionTest extends TestCase
     $response = $this->patch("/api/web/transactions/{$profile->slug}/{$transaction->id}", $data)->getData();
     $this->assertEquals($response->success, true);
     $this->assertEquals($response->transaction->bill_closed, true);
+  }
+
+  function test_creating_a_transaction_fires_a_update_customer_bill_event() {
+    Notification::fake();
+    $this->expectsEvents(CustomerBillUpdate::class);
+    $this->signIn();
+    $profile = create('App\Profile', ['user_id' => auth()->id()]);
+    $user = create('App\User');
+    
+    $data = [
+      'user_id' => $user->id,
+      'profile_id' => $profile->id,
+      'products' => 'pizza',
+      'tax' => 100,
+      'net_sales' => 200,
+      'total' => 300,
+      'bill_closed' => false
+    ];
+
+    $response = $this->post("/api/web/transactions/{$profile->slug}/{$user->id}", $data)->getData();
+  }
+
+  function test_updating_a_transaction_fires_a_update_customer_bill_event() {
+    Notification::fake();
+    $this->expectsEvents(CustomerBillUpdate::class);
+    $this->signIn();
+    $profile = create('App\Profile', ['user_id' => auth()->id()]);
+    $user = create('App\User');
+    $transaction = create('App\Transaction', ['profile_id' => $profile->id, 'user_id' => $user->id, 'bill_closed' => false, 'is_refund' => false]);
+
+    $this->assertDatabaseHas('transactions', ['profile_id' => $profile->id, 'user_id' => $user->id, 'bill_closed' => false]);
+    $data = ['bill_closed' => true];
+    $response = $this->patch("/api/web/transactions/{$profile->slug}/{$transaction->id}", $data)->getData();
   }
 }
