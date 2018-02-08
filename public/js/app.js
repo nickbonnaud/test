@@ -91113,7 +91113,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 			}
 		},
 		addProduct: function addProduct(product) {
-			product.price = product.price;
+			product.price = product.price * 100;
 			var index = this.getProductIndex(product);
 			if (index == -1) {
 				this.$set(product, 'quantity', 1);
@@ -91246,7 +91246,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       staticClass: "product-row-data"
     }, [_vm._v(_vm._s(product.name))]), _vm._v(" "), _c('td', {
       staticClass: "product-row-data"
-    }, [_vm._v("$" + _vm._s(product.price / 100))]), _vm._v(" "), _c('td', {
+    }, [_vm._v("$" + _vm._s(product.price))]), _vm._v(" "), _c('td', {
       staticClass: "product-row-data"
     }, [_c('span', {
       staticClass: "glyphicon glyphicon-minus-sign",
