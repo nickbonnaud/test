@@ -37,6 +37,7 @@ class ApiTransactionResource extends Resource
         'total' => $this->total,
         'purchased_on' => $this->created_at,
         'status' => $this->status,
+        'paid' => $this->paid,
         'bill_closed' => $this->bill_closed
       ];
     }
