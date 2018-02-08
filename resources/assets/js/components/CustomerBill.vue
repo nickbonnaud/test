@@ -18,7 +18,7 @@
           <tr class="product-row" v-for="product in this.currentBill">
 						<td class="product-row-data">{{ product.quantity }}</td>
 						<td class="product-row-data">{{ product.name }}</td>
-						<td class="product-row-data">${{ product.price }}</td>
+						<td class="product-row-data">${{ product.price / 100 }}</td>
 						<td class="product-row-data"><span class="glyphicon glyphicon-minus-sign" v-on:click="subtractProduct(product)"></span></td>
 					</tr>
         </tbody>
@@ -71,7 +71,7 @@
      subTotal() {
         var total = 0;
         this.currentBill.forEach(function(product) {
-          total = total + (product.quantity * product.price);
+          total = total + (product.quantity * product.price)
         });
         return total;
       },
@@ -99,9 +99,10 @@
 			},
 
 			addProduct(product) {
-				product.price = product.price * 100;
+				console.log(product);
 				var index = this.getProductIndex(product);
 				if (index == -1) {
+					product.price = product.price * 100;
 					this.$set(product, 'quantity', 1);
 					this.currentBill.push(product);
 				} else {
