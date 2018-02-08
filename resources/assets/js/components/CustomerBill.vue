@@ -99,7 +99,7 @@
 			},
 
 			addProduct(product) {
-				product.price = product.price * 100;
+				product.price = product.price;
 				var index = this.getProductIndex(product);
 				if (index == -1) {
 					this.$set(product, 'quantity', 1);
