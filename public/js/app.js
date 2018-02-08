@@ -91263,9 +91263,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "tax-section"
   }, [_c('span', [_vm._v("Tax:")]), _vm._v(" "), _c('span', {
     staticClass: "pull-right"
-  }, [_vm._v("$" + _vm._s((Math.round(_vm.totalTax) / 100)))])]), _vm._v(" "), _c('b', [_vm._v("Total:")]), _vm._v(" "), _c('div', {
+  }, [_vm._v("$" + _vm._s(Math.round(_vm.totalTax) / 100))])]), _vm._v(" "), _c('b', [_vm._v("Total:")]), _vm._v(" "), _c('div', {
     staticClass: "receipt-total"
-  }, [_c('b', [_vm._v("$" + _vm._s((_vm.totalBill / 100).toFixed(2)))])])]), _vm._v(" "), _c('div', [_c('button', {
+  }, [_c('b', [_vm._v("$" + _vm._s(Math.round(_vm.totalBill) / 100))])])]), _vm._v(" "), _c('div', [_c('button', {
     staticClass: "btn btn-block btn-success",
     on: {
       "click": function($event) {

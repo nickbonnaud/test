@@ -27,11 +27,11 @@
     <div class="box-footer-receipt">
       <div class="tax-section">
         <span>Tax:</span>
-        <span class="pull-right">${{ (Math.round(totalTax) / 100) }}</span>
+        <span class="pull-right">${{ Math.round(totalTax) / 100 }}</span>
       </div>
       <b>Total:</b>
       <div class="receipt-total">
-        <b>${{ (totalBill / 100).toFixed(2) }}</b>
+        <b>${{ Math.round(totalBill) / 100 }}</b>
       </div>
     </div>
     <div>
