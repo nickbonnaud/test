@@ -77,6 +77,7 @@
       },
 
       totalTax() {
+      	console.log(this.profile.tax);
         var tax = this.subTotal * this.profile.tax / 10000;
         console.log(tax);
         return tax;

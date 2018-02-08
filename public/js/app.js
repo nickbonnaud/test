@@ -91094,6 +91094,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 			return total;
 		},
 		totalTax: function totalTax() {
+			console.log(this.profile.tax);
 			var tax = this.subTotal * this.profile.tax / 10000;
 			console.log(tax);
 			return tax;
