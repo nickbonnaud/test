@@ -28,16 +28,14 @@ class TransactionsController extends Controller {
 		$user = JWTAuth::parseToken()->authenticate();
 		$transaction = Transaction::findOrFail($request->id);
 		if (!($transaction->user_id == $user->id)) return response()->json(['error' => 'Unauthorized'], 401);
+		$transaction->update($request->all());
+		$transaction->transactionChangeEvent();
 		if ($request->status == 2 || $request->status == 3 || $request->status == 4) {
-			$transaction->update($request->all());
 			$transaction->transactionErrorEvent();
-			$transaction->transactionChangeEvent();
 			$success = true;
 			$type = 'user_decline';
 		} elseif ($request->status == 12) {
-			$transaction->update($request->all());
 			$transaction->customerRequestBillEvent();
-			$transaction->transactionChangeEvent();
 			$success = true;
 			$type = 'request_bill';
 		} else {

@@ -70934,6 +70934,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
           return "menu-icon fa fa-thumbs-o-up bg-light-blue";
         case 12:
           return "menu-icon fa fa-bullhorn bg-yellow";
+        case 19:
+          return "menu-icon fa fa-thumbs-o-up bg-green";
       }
     },
     statusText: function statusText(status) {
@@ -70952,6 +70954,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
           return "Waiting customer approval";
         case 12:
           return "Requested bill";
+        case 19:
+          return "Customer approved bill";
       }
     }
   }

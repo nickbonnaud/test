@@ -57,7 +57,8 @@ class UserConfirmBillTest extends TestCase
   	$transaction = create('App\Transaction', ['profile_id' => $profile->id, 'user_id' => $user->id, 'bill_closed' => true, 'is_refund' => false]);
 
   	$data = [
-  		'id' => $transaction->id
+  		'id' => $transaction->id,
+      'status' => 19
   	];
 
   	$response = $this->patch("/api/mobile/transactions/{$profile->slug}", $data, $this->headers($user))->getData();
