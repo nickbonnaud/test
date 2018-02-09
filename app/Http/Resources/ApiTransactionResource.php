@@ -12,6 +12,7 @@ class ApiTransactionResource extends Resource
       return [
         'id' => $this->id,
         'business_name' => $this->profile->business_name,
+        'business_slug' => $this->profile->slug,
         'logo' => $this->profile->logo->apiUrl,
         'tax' => $this->tax,
         'net_sales' => $this->net_sales,
@@ -29,6 +30,7 @@ class ApiTransactionResource extends Resource
       return [
         'id' => $this->id,
         'business_name' => $this->profile->business_name,
+        'business_slug' => $this->profile->slug,
         'logo' => $this->profile->logo->apiUrl,
         'products' => $this->products,
         'tax' => $this->tax,

@@ -50,6 +50,8 @@
           case 0:
           case 1:
           case 2:
+          case 3:
+          case 4:
             return "menu-icon fa fa-warning bg-red";
           case 11:
             return "menu-icon fa fa-thumbs-o-up bg-light-blue";
@@ -64,6 +66,10 @@
             return "Unable to charge Card";
           case 2:
             return "Bill declined by customer";
+          case 3:
+            return "Not customer's bill";
+          case 4:
+            return "Error in customer's bill";
           case 11:
             return "Waiting customer approval";
         }

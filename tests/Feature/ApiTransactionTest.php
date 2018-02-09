@@ -3,6 +3,8 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
+use Illuminate\Support\Facades\Event;
+use App\Events\TransactionError;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -91,6 +93,26 @@ class ApiTransactionTest extends TestCase
 		$response = $this->get('/api/mobile/transactions?customerPending=1', $this->headers($user))->getData();
 
 		$this->assertCount(1, $response->data);
+	}
+
+	function test_an_authorized_user_can_notify_business_that_their_bill_is_wrong() {
+		Notification::fake();
+		$this->expectsEvents(TransactionError::class);
+		$photo = create('App\Photo');
+		$user = create('App\User');
+		$profile = create('App\Profile', ['logo_photo_id' => $photo->id]);
+		$transaction = create('App\Transaction', ['profile_id' => $profile->id, 'user_id' => $user->id, 'paid' => false, 'is_refund' => false, 'status' => 10, ]);
+
+		$data = [
+      'id' => $transaction->id,
+      'status' => 3,
+      'paid' => false,
+      'bill_closed' => false
+    ];
+
+		$response = $this->json("PATCH", "/api/mobile/transactions/{$profile->slug}", $data, $this->headers($user))->getData();
+		dd($response);
+		$this->assertDatabaseHas('transactions', ['id' => $transaction->id, 'status' => 3, 'paid' => false]);
 	}
 
 
