@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use Illuminate\Support\Facades\Event;
 use App\Events\TransactionError;
+use App\Events\CustomerRequestBill;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -111,8 +112,26 @@ class ApiTransactionTest extends TestCase
     ];
 
 		$response = $this->json("PATCH", "/api/mobile/transactions/{$profile->slug}", $data, $this->headers($user))->getData();
-		dd($response);
 		$this->assertDatabaseHas('transactions', ['id' => $transaction->id, 'status' => 3, 'paid' => false]);
+	}
+
+	function test_an_authorized_user_can_request_their_bill() {
+		Notification::fake();
+		$this->expectsEvents(CustomerRequestBill::class);
+		$photo = create('App\Photo');
+		$user = create('App\User');
+		$profile = create('App\Profile', ['logo_photo_id' => $photo->id]);
+		$transaction = create('App\Transaction', ['profile_id' => $profile->id, 'user_id' => $user->id, 'paid' => false, 'is_refund' => false, 'status' => 10, ]);
+
+		$data = [
+      'id' => $transaction->id,
+      'status' => 12,
+      'paid' => false,
+      'bill_closed' => false
+    ];
+
+		$response = $this->json("PATCH", "/api/mobile/transactions/{$profile->slug}", $data, $this->headers($user))->getData();
+		$this->assertDatabaseHas('transactions', ['id' => $transaction->id, 'status' => 12, 'paid' => false]);
 	}
 
 

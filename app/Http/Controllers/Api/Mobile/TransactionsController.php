@@ -34,6 +34,12 @@ class TransactionsController extends Controller {
 			$transaction->transactionChangeEvent();
 			$success = true;
 			$type = 'user_decline';
+		} elseif ($request->status == 12) {
+			$transaction->update($request->all());
+			$transaction->customerRequestBillEvent();
+			$transaction->transactionChangeEvent();
+			$success = true;
+			$type = 'request_bill';
 		} else {
 			$success = $transaction->processCharge($request->tip);
 			$type = 'user_pay';

@@ -14,6 +14,7 @@ use App\Events\TransactionError;
 use App\Events\TransactionSuccess;
 use App\Events\TransactionsChange;
 use App\Events\CustomerBillUpdate;
+use App\Events\CustomerRequestBill;
 use App\Mail\TransactionReceipt;
 use App\Mail\TransactionErrorEmail;
 use Illuminate\Support\Facades\Mail;
@@ -145,6 +146,10 @@ class Transaction extends Model
 
   public function updateCustomerEvent() {
     event(new CustomerBillUpdate($this));
+  }
+
+  public function customerRequestBillEvent() {
+    event(new CustomerRequestBill($this->user, $this->profile->slug));
   }
 
   public function processCharge($tip = null) {

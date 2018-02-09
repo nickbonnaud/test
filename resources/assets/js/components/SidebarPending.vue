@@ -55,6 +55,8 @@
             return "menu-icon fa fa-warning bg-red";
           case 11:
             return "menu-icon fa fa-thumbs-o-up bg-light-blue";
+          case 12:
+            return "menu-icon fa fa-bullhorn bg-yellow";
         }
       },
 
@@ -72,6 +74,8 @@
             return "Error in customer's bill";
           case 11:
             return "Waiting customer approval";
+          case 12:
+            return "Requested bill";
         }
       },
     }
