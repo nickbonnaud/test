@@ -44,7 +44,7 @@ class CustomerRedeemReward extends Notification
    */
   public function toArray($notifiable)
   {
-    $category = 'redeem';
+    $category = 'redeem_reward';
     $locKey = '1';
     $title = 'Redeem your ' . $this->loyaltyProgram->reward . ' now?';
     $loyaltyCardId = $this->loyaltyCard->id;

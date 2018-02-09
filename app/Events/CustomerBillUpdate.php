@@ -25,6 +25,7 @@ class CustomerBillUpdate implements ShouldBroadcast
       'transaction' => [
         'id' => $this->transaction->id,
         'business_name' => $this->transaction->profile->business_name,
+        'business_slug' => $this->transaction->profile->slug,
         'logo' => $this->transaction->profile->logo->apiUrl,
         'products' => $this->transaction->products,
         'tax' => $this->transaction->tax,

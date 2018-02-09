@@ -45,7 +45,7 @@ class CustomerRedeemDeal extends Notification
    */
   public function toArray($notifiable)
   {
-    $category = 'redeem';
+    $category = 'redeem_deal';
     $locKey = '1';
     $title = 'Redeem your ' . $this->deal->deal_item . ' now?';
     $transactionId = $this->transaction->id;
