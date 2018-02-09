@@ -9,12 +9,14 @@
 		mounted() {
 			Echo.private('transaction-error.' + this.profileSlug)
         .listen('TransactionError', (event) => {
+          console.log(event);
           this.notifyError(event);
         });
 		},
 
 		methods: {
       notifyError: function(data) {
+        console.log(data);
         if (data.transaction.status === 1) {
           toastr["error"]("Charge Failed<br /><br /><button type='button' class='btn btn-default'>Ok</button>", "Unable to charge " + data.user.first_name + " " + data.user.last_name + ". Unable to process payment for transaction id: " + data.transaction.id + ". Please contact Customer Support.", {
             "newestOnTop": true,
