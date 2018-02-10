@@ -347,6 +347,7 @@ class Transaction extends Model
     catch(SplashPayments\Exceptions\Base $e) {}
     if ($response->hasErrors()) {
       $error = $response->getErrors();
+      Log::info($error);
       $this->sendTransactionErrorsEmail($error[0]['msg'], $error[0]['code']);
       $success = false;
     } else {
