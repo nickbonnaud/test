@@ -277,7 +277,7 @@
 
 <!-- Actual receipt goes here. -->
 <div style="padding-bottom: 20px;">
-  <img style="border-radius: 50%; width:70px; height:70px; margin-top: 20px; margin-left: 25px; float: left; display: inline-block;" src="{{ $transaction->profile->logo->url }}">
+  <img style="border-radius: 50%; width:70px; height:70px; margin-top: 20px; margin-left: 25px; float: left; display: inline-block;" src="{{ $transaction->profile->logo->apiUrl }}">
   <h4 style="font-size: 16px; display: inline-block; margin-top: 70px; color: #3a3a3a;">Purchase on {{ date_format($transaction->updated_at, 'M-d-Y') }}</h4>
   <h4 style="font-size: 14px; margin-top: 0px">Receipt ID: {{ substr($transaction->splash_id, -5) }}</h4>
 </div>
