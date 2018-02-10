@@ -2,7 +2,7 @@
 <head>
 <meta charset="utf-8">
 <title>
-{{ $profile->business_name }}
+{{ $transaction->profile->business_name }}
 </title>
 <style>
 	.tips-top-section {
@@ -214,7 +214,7 @@
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="266">
 <tr>
 <td align="center" style="font-family:Georgia, 'Times New Roman', Times, serif; font-size:32px; font-style:bold; text-align:center; color:#1b2838; line-height:normal;" valign="top">
-{{ $profile->business_name }}
+{{ $transaction->profile->business_name }}
 </td>
 </tr>
 </table>
@@ -277,7 +277,7 @@
 
 <!-- Actual receipt goes here. -->
 <div style="padding-bottom: 20px;">
-  <img style="border-radius: 50%; width:70px; height:70px; margin-top: 20px; margin-left: 25px; float: left; display: inline-block;" src="{{ $profile->logo->url }}">
+  <img style="border-radius: 50%; width:70px; height:70px; margin-top: 20px; margin-left: 25px; float: left; display: inline-block;" src="{{ $transaction->profile->logo->url }}">
   <h4 style="font-size: 16px; display: inline-block; margin-top: 70px; color: #3a3a3a;">Purchase on {{ date_format($transaction->updated_at, 'M-d-Y') }}</h4>
   <h4 style="font-size: 14px; margin-top: 0px">Receipt ID: {{ substr($transaction->splash_id, -5) }}</h4>
 </div>
@@ -287,7 +287,7 @@
     <h4 style="display: inline; font-size: 16px; margin-top: 4px; color: #3a3a3a; float: right; margin-bottom: 5px;">Amount</h4>
   </div>
   <div style="margin-left: 10px; margin-right: 10px; color: #3a3a3a">
-    @foreach($items as $item)
+    @foreach($transaction->products as $item)
       <h4 style="display: inline; font-size: 14px; float: left; clear: left; margin-top: 10px;">{{ $item->quantity }}x {{ $item->name }}</h4>
       <h4 style="display: inline; font-size: 14px; float: right; clear: right; margin-top: 10px;">${{ number_format((float)round(($item->price * $item->quantity) / 100, 2), 2) }}</h4>
     @endforeach
@@ -435,8 +435,8 @@ Email the Pockeyt team
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
 <tr>
 <td align="center" class="call_text" style="font-family: Arial, sans-serif; font-size:14px; color:#8f969f; text-align:center; line-height:18px;" valign="top">
-@if(isset($profile->account->biz_street_adress))
-{{ $profile->account->biz_street_adress }}, {{ $profile->account->biz_city }}, {{ $profile->account->biz_state }}, {{ $profile->account->biz_zip }}
+@if(isset($transaction->profile->account->biz_street_adress))
+{{ $transaction->profile->account->biz_street_adress }}, {{ $transaction->profile->account->biz_city }}, {{ $transaction->profile->account->biz_state }}, {{ $transaction->profile->account->biz_zip }}
 @endif
 </td>
 </tr>
@@ -448,7 +448,7 @@ Email the Pockeyt team
 </tr>
 <tr>
 <td align="center" style="font-family: Arial, sans-serif; font-size:14px; color:#b1c300; text-align:center; line-height:18px;" valign="top">
-<a href="http://{{$profile->website}}" style="text-decoration:none; color:#b1c300;" >{{ $profile->website }}</a>
+<a href="http://{{$transaction->profile->website}}" style="text-decoration:none; color:#b1c300;" >{{ $transaction->profile->website }}</a>
 </td>
 </tr>
 </table>

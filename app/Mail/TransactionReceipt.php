@@ -13,15 +13,12 @@ class TransactionReceipt extends Mailable
 {
   use Queueable, SerializesModels;
 
-  public $profile;
   public $transaction;
-  public $items;
 
-  public function __construct(Profile $profile, Transaction $transaction)
+  public function __construct(Transaction $transaction)
   {
-    $this->profile = $profile;
+    $transaction->products = json_decode($transaction->products);
     $this->transaction = $transaction;
-    $this->items = json_decode($transaction->products);
   }
 
   /**

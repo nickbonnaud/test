@@ -136,7 +136,7 @@ class ApiTransactionTest extends TestCase
 
 	function test_an_authorized_user_can_accept_their_bill() {
 		Notification::fake();
-		$user = create('App\User', ['customer_id' => '9a01a8e187f9dbf268e0bf9de09efd9']);
+		$user = create('App\User', ['email' => 'nick.bonnaud@pockeyt.com', 'customer_id' => '9a01a8e187f9dbf268e0bf9de09efd99']);
 		$photo = create('App\Photo');
 		$profile = create('App\Profile', ['logo_photo_id' => $photo->id]);
 		$account = create('App\Account', ['profile_id' => $profile->id, 'splash_id' => 't1_mer_5a708a77838daf1d87f73d2']);
@@ -150,6 +150,17 @@ class ApiTransactionTest extends TestCase
     ];
 
     $response = $this->json("PATCH", "/api/mobile/transactions/{$profile->slug}", $data, $this->headers($user))->getData();
+	}
+
+	function test_basic_mail() {
+		$user = create('App\User', ['email' => 'nick.bonnaud@pockeyt.com', 'customer_id' => '9a01a8e187f9dbf268e0bf9de09efd99']);
+		$photo = create('App\Photo');
+		$profile = create('App\Profile', ['logo_photo_id' => $photo->id]);
+
+		$transaction = create('App\Transaction', ['profile_id' => $profile->id, 'user_id' => $user->id, 'paid' => true, 'is_refund' => false, 'status' => 20, ]);
+
+		$transaction->sendEmailReceipt($user, $profile);
+		$this->assertEquals(1, 1);
 	}
 
 

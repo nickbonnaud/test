@@ -184,7 +184,7 @@ class Transaction extends Model
   public function updateUserTransactionData() {
     PostAnalytics::checkRecentlyViewed($this->user, $this->profile, $this);
     LoyaltyCard::updateWithTransactions($this->user, $this->profile, $this);
-    $this->sendEmailReceipt($this->user, $this->profile);
+    $this->sendEmailReceipt($this->user);
   }
 
   public function addTipToTransaction($tip) {
@@ -366,8 +366,8 @@ class Transaction extends Model
     Mail::to(env('DEFAULT_EMAIL'))->send(new TransactionErrorEmail($this->profile, $this->user, $this, $msg, $code, $transactionSplashId));
   }
 
-  public function sendEmailReceipt($user, $profile) {
-    Mail::to($user->email)->send(new TransactionReceipt($profile, $this));
+  public function sendEmailReceipt($user) {
+    Mail::to($user->email)->send(new TransactionReceipt($this));
   }
 
   public function sendRedeemRequestToCustomer() {
