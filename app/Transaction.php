@@ -20,6 +20,8 @@ use App\Mail\TransactionErrorEmail;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Database\Eloquent\Model;
 
+use Illuminate\Support\Facades\Log;
+
 class Transaction extends Model
 {
 	protected static function boot() {
@@ -345,7 +347,8 @@ class Transaction extends Model
     catch(SplashPayments\Exceptions\Base $e) {}
     if ($response->hasErrors()) {
       $error = $response->getErrors();
-      $this->sendTransactionErrorsEmail($error[0]['msg'], $error[0]['code']);
+      Log::info($error);
+      // $this->sendTransactionErrorsEmail($error[0]['msg'], $error[0]['code']);
       $success = false;
     } else {
       $result = $response->getResponse();
