@@ -351,6 +351,7 @@ class Transaction extends Model
       $success = false;
     } else {
       $result = $response->getResponse();
+      Log::info($result);
       Log::info($result[0]);
       $success = $this->processSplashResults($result[0]);
     }
