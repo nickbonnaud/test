@@ -193,12 +193,8 @@ class Transaction extends Model
   }
 
   public function addUserDefaultTip() {
-    Log::info($this->user->default_tip_rate);
-    Log::info($this->total);
-    $this->tips = ($this->user->default_tip_rate / 100) * $this->total;
-    Log::info($this->tips);
+    $this->tips = round(($this->user->default_tip_rate / 100) * $this->total);
     $this->total = $this->total + $this->tips;
-    Log::info($this->total);
   }
 
   public function processDeal($dealId) {
