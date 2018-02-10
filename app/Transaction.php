@@ -351,27 +351,14 @@ class Transaction extends Model
       $success = false;
     } else {
       $result = $response->getResponse();
-      Log::info($result);
-      Log::info('shit');
-      Log::info($result[0]);
       $success = $this->processSplashResults($result[0]);
     }
     return $success;
   }
 
   public function processSplashResults($processedTransaction) {
-    Log::info($processedTransaction['id']);
-    if ($processedTransaction->status == '0' || $processedTransaction->status == '1') {
-      $success =  true;
-    } else {
-      $msg = 'Processed and Failed';
-      $code = $processedTransaction->status;
-      $splashId = $processedTransaction->id;
-      $this->sendTransactionErrorsEmail($msg, $code, $splashId);
-      $success =  false;
-    }
     $this->splash_id = $processedTransaction->id;
-    return $success;
+    return true;
   }
 
   public function sendTransactionErrorsEmail($msg, $code, $splashId = null) {
