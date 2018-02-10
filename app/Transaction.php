@@ -347,20 +347,18 @@ class Transaction extends Model
     catch(SplashPayments\Exceptions\Base $e) {}
     if ($response->hasErrors()) {
       $error = $response->getErrors();
-      Log::info('here');
-      Log::info($error);
-      // $this->sendTransactionErrorsEmail($error[0]['msg'], $error[0]['code']);
+      $this->sendTransactionErrorsEmail($error[0]['msg'], $error[0]['code']);
       $success = false;
     } else {
       $result = $response->getResponse();
-      Log::info("there");
-      Log::info($result);
+      Log::info($result[0]);
       $success = $this->processSplashResults($result[0]);
     }
     return $success;
   }
 
   public function processSplashResults($processedTransaction) {
+    Log::info($processedTransaction['id']);
     if ($processedTransaction->status == '0' || $processedTransaction->status == '1') {
       $success =  true;
     } else {
