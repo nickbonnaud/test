@@ -16144,6 +16144,106 @@ helpers.getValueAtIndexOrDefault = helpers.valueAtIndexOrDefault;
 /* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
+"use strict";
+/* WEBPACK VAR INJECTION */(function(process) {
+
+var utils = __webpack_require__(4);
+var normalizeHeaderName = __webpack_require__(154);
+
+var DEFAULT_CONTENT_TYPE = {
+  'Content-Type': 'application/x-www-form-urlencoded'
+};
+
+function setContentTypeIfUnset(headers, value) {
+  if (!utils.isUndefined(headers) && utils.isUndefined(headers['Content-Type'])) {
+    headers['Content-Type'] = value;
+  }
+}
+
+function getDefaultAdapter() {
+  var adapter;
+  if (typeof XMLHttpRequest !== 'undefined') {
+    // For browsers use XHR adapter
+    adapter = __webpack_require__(19);
+  } else if (typeof process !== 'undefined') {
+    // For node use HTTP adapter
+    adapter = __webpack_require__(19);
+  }
+  return adapter;
+}
+
+var defaults = {
+  adapter: getDefaultAdapter(),
+
+  transformRequest: [function transformRequest(data, headers) {
+    normalizeHeaderName(headers, 'Content-Type');
+    if (utils.isFormData(data) ||
+      utils.isArrayBuffer(data) ||
+      utils.isBuffer(data) ||
+      utils.isStream(data) ||
+      utils.isFile(data) ||
+      utils.isBlob(data)
+    ) {
+      return data;
+    }
+    if (utils.isArrayBufferView(data)) {
+      return data.buffer;
+    }
+    if (utils.isURLSearchParams(data)) {
+      setContentTypeIfUnset(headers, 'application/x-www-form-urlencoded;charset=utf-8');
+      return data.toString();
+    }
+    if (utils.isObject(data)) {
+      setContentTypeIfUnset(headers, 'application/json;charset=utf-8');
+      return JSON.stringify(data);
+    }
+    return data;
+  }],
+
+  transformResponse: [function transformResponse(data) {
+    /*eslint no-param-reassign:0*/
+    if (typeof data === 'string') {
+      try {
+        data = JSON.parse(data);
+      } catch (e) { /* Ignore */ }
+    }
+    return data;
+  }],
+
+  timeout: 0,
+
+  xsrfCookieName: 'XSRF-TOKEN',
+  xsrfHeaderName: 'X-XSRF-TOKEN',
+
+  maxContentLength: -1,
+
+  validateStatus: function validateStatus(status) {
+    return status >= 200 && status < 300;
+  }
+};
+
+defaults.headers = {
+  common: {
+    'Accept': 'application/json, text/plain, */*'
+  }
+};
+
+utils.forEach(['delete', 'get', 'head'], function forEachMethodNoData(method) {
+  defaults.headers[method] = {};
+});
+
+utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
+  defaults.headers[method] = utils.merge(DEFAULT_CONTENT_TYPE);
+});
+
+module.exports = defaults;
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(153)))
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
 /*!
  * sweetalert2 v6.10.3
  * Released under the MIT License.
@@ -17951,106 +18051,6 @@ return sweetAlert;
 })));
 if (window.Sweetalert2) window.sweetAlert = window.swal = window.Sweetalert2;
 
-
-/***/ }),
-/* 15 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(process) {
-
-var utils = __webpack_require__(4);
-var normalizeHeaderName = __webpack_require__(154);
-
-var DEFAULT_CONTENT_TYPE = {
-  'Content-Type': 'application/x-www-form-urlencoded'
-};
-
-function setContentTypeIfUnset(headers, value) {
-  if (!utils.isUndefined(headers) && utils.isUndefined(headers['Content-Type'])) {
-    headers['Content-Type'] = value;
-  }
-}
-
-function getDefaultAdapter() {
-  var adapter;
-  if (typeof XMLHttpRequest !== 'undefined') {
-    // For browsers use XHR adapter
-    adapter = __webpack_require__(19);
-  } else if (typeof process !== 'undefined') {
-    // For node use HTTP adapter
-    adapter = __webpack_require__(19);
-  }
-  return adapter;
-}
-
-var defaults = {
-  adapter: getDefaultAdapter(),
-
-  transformRequest: [function transformRequest(data, headers) {
-    normalizeHeaderName(headers, 'Content-Type');
-    if (utils.isFormData(data) ||
-      utils.isArrayBuffer(data) ||
-      utils.isBuffer(data) ||
-      utils.isStream(data) ||
-      utils.isFile(data) ||
-      utils.isBlob(data)
-    ) {
-      return data;
-    }
-    if (utils.isArrayBufferView(data)) {
-      return data.buffer;
-    }
-    if (utils.isURLSearchParams(data)) {
-      setContentTypeIfUnset(headers, 'application/x-www-form-urlencoded;charset=utf-8');
-      return data.toString();
-    }
-    if (utils.isObject(data)) {
-      setContentTypeIfUnset(headers, 'application/json;charset=utf-8');
-      return JSON.stringify(data);
-    }
-    return data;
-  }],
-
-  transformResponse: [function transformResponse(data) {
-    /*eslint no-param-reassign:0*/
-    if (typeof data === 'string') {
-      try {
-        data = JSON.parse(data);
-      } catch (e) { /* Ignore */ }
-    }
-    return data;
-  }],
-
-  timeout: 0,
-
-  xsrfCookieName: 'XSRF-TOKEN',
-  xsrfHeaderName: 'X-XSRF-TOKEN',
-
-  maxContentLength: -1,
-
-  validateStatus: function validateStatus(status) {
-    return status >= 200 && status < 300;
-  }
-};
-
-defaults.headers = {
-  common: {
-    'Accept': 'application/json, text/plain, */*'
-  }
-};
-
-utils.forEach(['delete', 'get', 'head'], function forEachMethodNoData(method) {
-  defaults.headers[method] = {};
-});
-
-utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
-  defaults.headers[method] = utils.merge(DEFAULT_CONTENT_TYPE);
-});
-
-module.exports = defaults;
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(153)))
 
 /***/ }),
 /* 16 */
@@ -60269,7 +60269,7 @@ module.exports = __webpack_require__(150);
 var utils = __webpack_require__(4);
 var bind = __webpack_require__(18);
 var Axios = __webpack_require__(152);
-var defaults = __webpack_require__(15);
+var defaults = __webpack_require__(14);
 
 /**
  * Create an instance of Axios
@@ -60352,7 +60352,7 @@ function isSlowBuffer (obj) {
 "use strict";
 
 
-var defaults = __webpack_require__(15);
+var defaults = __webpack_require__(14);
 var utils = __webpack_require__(4);
 var InterceptorManager = __webpack_require__(162);
 var dispatchRequest = __webpack_require__(163);
@@ -61074,7 +61074,7 @@ module.exports = InterceptorManager;
 var utils = __webpack_require__(4);
 var transformData = __webpack_require__(164);
 var isCancel = __webpack_require__(21);
-var defaults = __webpack_require__(15);
+var defaults = __webpack_require__(14);
 
 /**
  * Throws a `Cancel` if cancellation has been requested.
@@ -89113,7 +89113,7 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_sweetalert2__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_sweetalert2__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_sweetalert2___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_sweetalert2__);
 //
 //
@@ -91038,203 +91038,9 @@ module.exports = Component.exports
 
 /***/ }),
 /* 375 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_sweetalert2__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_sweetalert2___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_sweetalert2__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-	props: ['bill', 'customer', 'employeeId', 'profile'],
-
-	data: function data() {
-		return {
-			inventory: [],
-			query: '',
-			currentBill: []
-		};
-	},
-	created: function created() {
-		this.setCurrentBill();
-	},
-	mounted: function mounted() {
-		var _this = this;
-
-		VueEvent.listen('addProduct', this.addProduct.bind(this));
-
-		Echo.private('bill-push-success.' + this.profile.slug).listen('BillPushSuccess', function (event) {
-			_this.showPushSuccess(event);
-		});
-	},
-
-
-	computed: {
-		subTotal: function subTotal() {
-			var total = 0;
-			this.currentBill.forEach(function (product) {
-				total = total + product.quantity * product.price;
-			});
-			return total;
-		},
-		totalTax: function totalTax() {
-			console.log(this.profile.tax);
-			var tax = this.subTotal * this.profile.tax.total / 10000;
-			console.log(tax);
-			return tax;
-		},
-		totalBill: function totalBill() {
-			var total = this.subTotal + this.totalTax;
-			console.log(total);
-			return total;
-		}
-	},
-
-	methods: {
-		setCurrentBill: function setCurrentBill() {
-			if (this.bill.products) {
-				this.currentBill = JSON.parse(this.bill.products);
-			}
-		},
-		addProduct: function addProduct(product) {
-			console.log(product);
-			var index = this.getProductIndex(product);
-			if (index == -1) {
-				product.price = product.price * 100;
-				this.$set(product, 'quantity', 1);
-				this.currentBill.push(product);
-			} else {
-				this.currentBill[index].quantity++;
-			}
-		},
-		subtractProduct: function subtractProduct(product) {
-			var index = this.getProductIndex(product);
-			if (this.currentBill[index].quantity != 1) {
-				this.currentBill[index].quantity--;
-			} else {
-				this.currentBill.splice(index, 1);
-			}
-		},
-		getProductIndex: function getProductIndex(product) {
-			var index = this.currentBill.findIndex(function (selectedProduct) {
-				return selectedProduct.id == this.id;
-			}, product);
-			return index;
-		},
-		saveBill: function saveBill(closeBill) {
-			if (this.bill.id) {
-				axios.patch('/api/web/transactions/' + this.profile.slug + '/' + this.bill.id, {
-					'products': this.filterAttributes(),
-					'tax': Math.round(this.totalTax),
-					'net_sales': Math.round(this.subTotal),
-					'total': Math.round(this.totalBill),
-					'bill_closed': closeBill,
-					'status': 10
-				}).then(this.checkSuccess);
-			} else {
-				axios.post('/api/web/transactions/' + this.profile.slug + '/' + this.customer.id, {
-					'products': this.filterAttributes(),
-					'tax': Math.round(this.totalTax),
-					'net_sales': Math.round(this.subTotal),
-					'total': Math.round(this.totalBill),
-					'employee_id': this.employeeId,
-					'user_id': this.customer.id,
-					'profile_id': this.profile.id,
-					'bill_closed': closeBill,
-					'status': 10
-				}).then(this.checkSuccess);
-			}
-		},
-		checkSuccess: function checkSuccess(_ref) {
-			var data = _ref.data;
-
-			console.log(data);
-			if (!data.success) {
-				__WEBPACK_IMPORTED_MODULE_0_sweetalert2___default()({
-					title: 'Oops! Something went wrong.',
-					text: 'Transaction was not processed. Please try again. If error continues please contact Pockeyt.',
-					type: 'error',
-					showConfirmButton: true
-				});
-			}
-		},
-		showPushSuccess: function showPushSuccess(data) {
-			console.log(data);
-			if (data.success) {
-				__WEBPACK_IMPORTED_MODULE_0_sweetalert2___default()({
-					title: 'Success',
-					text: 'Awaiting customer approval',
-					type: 'success',
-					timer: 1000,
-					showConfirmButton: false
-				}).then(function () {}, function (dismiss) {
-					return window.location.href = "/profiles/" + this.profile.slug;
-				}.bind(this));
-			} else {
-				__WEBPACK_IMPORTED_MODULE_0_sweetalert2___default()({
-					title: 'Oops! Something went wrong.',
-					text: 'Unable to send bill to customer for approval. Please try again. If error continues please contact Pockeyt.',
-					type: 'error',
-					showConfirmButton: true
-				});
-			}
-		},
-		filterAttributes: function filterAttributes() {
-			this.currentBill.forEach(function (item) {
-				delete item.description;
-				delete item.category;
-				delete item.sku;
-				delete item.photo;
-				delete item.thumbnail;
-			});
-			return JSON.stringify(this.currentBill);
-		}
-	}
-});
+throw new Error("Module build failed: SyntaxError: Unexpected token, expected , (137:35)\n\n\u001b[0m \u001b[90m 135 | \u001b[39m\t\t\t\t\t\t\u001b[32m'total'\u001b[39m\u001b[33m:\u001b[39m \u001b[33mMath\u001b[39m\u001b[33m.\u001b[39mround(\u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mtotalBill)\u001b[33m,\u001b[39m\n \u001b[90m 136 | \u001b[39m\t\t\t\t\t\t\u001b[32m'bill_closed'\u001b[39m\u001b[33m:\u001b[39m closeBill\u001b[33m,\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 137 | \u001b[39m\t\t\t\t\t\t\u001b[32m'status'\u001b[39m\u001b[33m:\u001b[39m closeBill \u001b[33m?\u001b[39m \u001b[35m11\u001b[39m \u001b[33m:\u001b[39m \u001b[35m10\u001b[39m\u001b[33m;\u001b[39m\n \u001b[90m     | \u001b[39m\t\t\t\t\t\t                             \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 138 | \u001b[39m\t\t\t\t\t})\n \u001b[90m 139 | \u001b[39m          \u001b[33m.\u001b[39mthen(\u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mcheckSuccess)\u001b[33m;\u001b[39m\n \u001b[90m 140 | \u001b[39m\t\t\t\t} \u001b[36melse\u001b[39m {\u001b[0m\n");
 
 /***/ }),
 /* 376 */
@@ -91658,7 +91464,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_ConnectSquarePockeytLite_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__components_ConnectSquarePockeytLite_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_ConnectQuickbooks_vue__ = __webpack_require__(396);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_ConnectQuickbooks_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__components_ConnectQuickbooks_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_sweetalert2__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_sweetalert2__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_sweetalert2___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_sweetalert2__);
 //
 //
@@ -93022,7 +92828,7 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_sweetalert2__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_sweetalert2__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_sweetalert2___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_sweetalert2__);
 //
 //
