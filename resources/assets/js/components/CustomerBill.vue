@@ -127,6 +127,8 @@
 			},
 
 			saveBill(closeBill) {
+				console.log(closeBill);
+				console.log(closeBill ? 11 : 10);
 				if (this.bill.id) {
 					axios.patch('/api/web/transactions/' + this.profile.slug + '/' + this.bill.id, {
 						'products': this.filterAttributes(),
