@@ -20,8 +20,6 @@ use App\Mail\TransactionErrorEmail;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Database\Eloquent\Model;
 
-use Illuminate\Support\Facades\Log;
-
 class Transaction extends Model
 {
 	protected static function boot() {
@@ -347,8 +345,7 @@ class Transaction extends Model
     catch(SplashPayments\Exceptions\Base $e) {}
     if ($response->hasErrors()) {
       $error = $response->getErrors();
-      Log::info($error);
-      $this->sendTransactionErrorsEmail($error[0]['msg'], $error[0]['code']);
+      $this->sendTransactionErrorsEmail($error);
       $success = false;
     } else {
       $result = $response->getResponse();
@@ -362,9 +359,8 @@ class Transaction extends Model
     return true;
   }
 
-  public function sendTransactionErrorsEmail($msg, $code, $splashId = null) {
-    $transactionSplashId = isset($splashId) ? $splashId : 'Not Processed';
-    Mail::to(env('DEFAULT_EMAIL'))->send(new TransactionErrorEmail($this->profile, $this->user, $this, $msg, $code, $transactionSplashId));
+  public function sendTransactionErrorsEmail($error) {
+    Mail::to(env('DEFAULT_EMAIL'))->send(new TransactionErrorEmail($this, $error));
   }
 
   public function sendEmailReceipt($user) {

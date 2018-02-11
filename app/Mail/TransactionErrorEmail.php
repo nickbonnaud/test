@@ -14,21 +14,14 @@ class TransactionErrorEmail extends Mailable
 {
   use Queueable, SerializesModels;
 
-  public $profile;
-  public $user;
   public $transaction;
-  public $msg;
-  public $code;
-  public $transactionSplashId;
+  protected $error;
 
-  public function __construct(Profile $profile, User $user, Transaction $transaction, $msg, $code, $transactionSplashId)
+
+  public function __construct(Transaction $transaction, $error)
   {
-    $this->profile = $profile;
-    $this->user = $user;
     $this->transaction = $transaction;
-    $this->msg = $msg;
-    $this->code = $code;
-    $this->transactionSplashId = $transactionSplashId;
+    $this->error = $error;
   }
 
   /**
@@ -40,6 +33,7 @@ class TransactionErrorEmail extends Mailable
   {
     return $this->from('error@pockeyt.com')
       ->subject('Pockeyt Transaction Error')
-      ->view('emails.transactions.error');
+      ->view('emails.transactions.error')
+      ->with(['error' => $this->error]);
   }
 }
