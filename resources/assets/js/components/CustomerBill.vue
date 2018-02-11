@@ -136,7 +136,7 @@
 						'net_sales': Math.round(this.subTotal),
 						'total': Math.round(this.totalBill),
 						'bill_closed': closeBill,
-						'status': closeBill ? 11 : 10;
+						'status': closeBill ? 11 : 10
 					})
           .then(this.checkSuccess);
 				} else {
@@ -149,7 +149,7 @@
 						'user_id': this.customer.id,
 						'profile_id': this.profile.id,
 						'bill_closed': closeBill,
-						'status': closeBill ? 11 : 10;
+						'status': closeBill ? 11 : 10
 					})
           .then(this.checkSuccess);
 				}
