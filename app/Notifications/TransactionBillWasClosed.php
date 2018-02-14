@@ -70,11 +70,7 @@ class TransactionBillWasClosed extends Notification
         'notification' => [
           'title' => 'Pockeyt Pay',
           'body' => 'You have been charged $' . $total . ' by ' . $businessName . '. Please swipe down if payment options not visible.',
-          'sound' => 'default'
-        ],
-        'data' => [
-          'category' => $category,
-          'locKey' => $locKey,
+          'sound' => 'default',
           'actions' => [
             (object) [
               'title' => 'CONFIRM',
@@ -91,7 +87,11 @@ class TransactionBillWasClosed extends Notification
               'callback' => 'changeTip',
               'foreground' => true
             ]
-          ],
+          ]
+        ],
+        'data' => [
+          'category' => $category,
+          'locKey' => $locKey,
           'custom' => [
             'transactionId' => $transactionId,
             'businessId' => $businessId,
