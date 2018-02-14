@@ -66,7 +66,7 @@ class SendNotification
   }
 
   public function sendFcm($notification, $pushToken) {
-    $optionBuilder = new OptionsBuilder();
+    $optionsBuilder = new OptionsBuilder();
     $optionsBuilder->setPriority('normal');
 
     $notificationBuilder = new PayloadNotificationBuilder($notification->data['notification']['title']);
@@ -77,7 +77,7 @@ class SendNotification
     $dataBuilder = new PayloadDataBuilder();
     $dataBuilder->addData(['actions' => $notification->data['data']['actions']]);
 
-    $option = $optionBuilder->build();
+    $option = $optionsBuilder->build();
     $notification = $notificationBuilder->build();
     $data = $dataBuilder->build();
     $token = $pushToken->push_token;
