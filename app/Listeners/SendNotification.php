@@ -66,6 +66,9 @@ class SendNotification
   }
 
   public function sendFcm($notification, $pushToken) {
+    $optionBuilder = new OptionsBuilder();
+    $optionsBuilder->setPriority('normal');
+
     $notificationBuilder = new PayloadNotificationBuilder($notification->data['notification']['title']);
     $notificationBuilder
       ->setBody($notification->data['notification']['body'])
@@ -74,11 +77,12 @@ class SendNotification
     $dataBuilder = new PayloadDataBuilder();
     $dataBuilder->addData(['actions' => $notification->data['data']['actions']]);
 
+    $option = $optionBuilder->build();
     $notification = $notificationBuilder->build();
     $data = $dataBuilder->build();
     $token = $pushToken->push_token;
 
-    $downstreamResponse = FCM::sendTo($token, $notification, $data);
+    $downstreamResponse = FCM::sendTo($token, $option, $notification, $data);
 
     Log::info($downstreamResponse->numberSuccess());
     Log::info($downstreamResponse->numberFailure());
