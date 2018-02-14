@@ -90,6 +90,23 @@ class TransactionBillWasClosed extends Notification
           'sound' => 'default'
         ],
         'data' => [
+          'actions' => [
+            (object) [
+              'title' => 'CONFIRM',
+              'callback' => 'acceptCharge',
+              'foreground' => true
+            ],
+            (object) [
+              'title' => 'REJECT',
+              'callback' => 'declineCharge',
+              'foreground' => true
+            ],
+            (object) [
+              'title' => 'CUSTOM TIP',
+              'callback' => 'changeTip',
+              'foreground' => true
+            ]
+          ],
           'category' => $category,
           'locKey' => $locKey,
           'custom' => [
