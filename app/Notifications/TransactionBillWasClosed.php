@@ -78,17 +78,17 @@ class TransactionBillWasClosed extends Notification
           'actions' => [
             (object) [
               'title' => 'CONFIRM',
-              'callback' => 'acceptCharge',
+              'callback' => 'window.acceptCharge',
               'foreground' => true
             ],
             (object) [
               'title' => 'REJECT',
-              'callback' => 'declineCharge',
+              'callback' => 'window.declineCharge',
               'foreground' => true
             ],
             (object) [
               'title' => 'CUSTOM TIP',
-              'callback' => 'changeTip',
+              'callback' => 'window.changeTip',
               'foreground' => true
             ]
           ],
