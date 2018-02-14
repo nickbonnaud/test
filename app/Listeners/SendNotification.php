@@ -78,7 +78,7 @@ class SendNotification
     $data = $dataBuilder->build();
     $token = $pushToken->push_token;
 
-    $downstreamResponse = FCM::sendTo($token, $option, $notification, $data);
+    $downstreamResponse = FCM::sendTo($token, $notification, $data);
 
     Log::info($downstreamResponse->numberSuccess());
     Log::info($downstreamResponse->numberFailure());
