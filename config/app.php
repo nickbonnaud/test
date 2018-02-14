@@ -183,7 +183,8 @@ return [
         */
         Edujugon\PushNotification\Providers\PushNotificationServiceProvider::class,
         Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
-        \SocialiteProviders\Manager\ServiceProvider::class
+        \SocialiteProviders\Manager\ServiceProvider::class,
+        LaravelFCM\FCMServiceProvider::class
     ],
 
     /*
@@ -239,7 +240,8 @@ return [
         */
         'PushNotification' => Edujugon\PushNotification\Facades\PushNotification::class,
         'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
-        'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class
+        'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
+        'FCM'      => LaravelFCM\Facades\FCM::class
     ],
 
 ];

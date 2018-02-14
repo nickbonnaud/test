@@ -9,7 +9,7 @@ return [
   'fcm' => [
         'priority' => 'normal',
         'dry_run' => false,
-        'apiKey' => env('FCM_KEY'),
+        'apiKey' => env('FCM_SERVER_KEY'),
   ],
   'apn' => [
       'certificate' => __DIR__ . '/iosCertificates/pushcert.pem',

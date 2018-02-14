@@ -46,15 +46,12 @@ class SendNotification
   public function sendPush($notification, $pushToken) {
     $pushService = strtolower($pushToken->device) === 'ios' ? 'apn' : 'fcm';
 
-    Log::info('Start notif');
-    Log::info($notification);
-
     $push = \PushNotification::setService($pushService)
       ->setMessage($notification->data)
       ->setDevicesToken($pushToken->push_token);
 
       if ($pushService === 'fcm') {
-        $push->setApiKey(env('FCM_KEY'));
+        $push->setApiKey(env('FCM_SERVER_KEY'));
       }
       return $push->send()->getFeedback();
   }

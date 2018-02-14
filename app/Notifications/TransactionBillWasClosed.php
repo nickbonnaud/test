@@ -68,47 +68,30 @@ class TransactionBillWasClosed extends Notification
     } else {
       return [
         'notification' => [
-          'actions' => [
-            (object) [
-              'title' => 'CONFIRM',
-              'callback' => 'acceptCharge',
-              'foreground' => true
-            ],
-            (object) [
-              'title' => 'REJECT',
-              'callback' => 'declineCharge',
-              'foreground' => true
-            ],
-            (object) [
-              'title' => 'CUSTOM TIP',
-              'callback' => 'changeTip',
-              'foreground' => true
-            ]
-          ],
           'title' => 'Pockeyt Pay',
           'body' => 'You have been charged $' . $total . ' by ' . $businessName . '. Please swipe down if payment options not visible.',
           'sound' => 'default'
         ],
         'data' => [
+          'category' => $category,
+          'locKey' => $locKey,
           'actions' => [
             (object) [
               'title' => 'CONFIRM',
-              'callback' => 'acceptCharge',
+              'callback' => 'window.acceptCharge',
               'foreground' => true
             ],
             (object) [
               'title' => 'REJECT',
-              'callback' => 'declineCharge',
+              'callback' => 'window.declineCharge',
               'foreground' => true
             ],
             (object) [
               'title' => 'CUSTOM TIP',
-              'callback' => 'changeTip',
+              'callback' => 'window.changeTip',
               'foreground' => true
             ]
           ],
-          'category' => $category,
-          'locKey' => $locKey,
           'custom' => [
             'transactionId' => $transactionId,
             'businessId' => $businessId,
