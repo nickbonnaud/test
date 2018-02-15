@@ -15,7 +15,7 @@ use App\Http\Controllers\Controller;
 class TransactionsController extends Controller {
 
 	public function __construct() {
-		
+		$this->middleware('jwt.auth');
 	}
 
 	public function index(Request $request, TransactionFilters $filters) {
@@ -25,8 +25,8 @@ class TransactionsController extends Controller {
 	}
 
 	public function update(Profile $profile, Request $request) {
+		$user = JWTAuth::parseToken()->authenticate();
 		$transaction = Transaction::with('profile')->findOrFail($request->id);
-		$user = $transaction->user;
 		if (!($transaction->user_id == $user->id)) return response()->json(['error' => 'Unauthorized'], 401);
 		$transaction->update($request->all());
 		$transaction->transactionChangeEvent();
