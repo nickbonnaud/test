@@ -71,6 +71,8 @@ class TransactionBillWasClosed extends Notification
           'sound' => 'default',
           'category' => $category,
           "force-start" => 1,
+          'content-available' => 1,
+          'no-cache' => 1,
           'actions' => [
             (object) [
               'title' => 'CONFIRM',
