@@ -43,7 +43,7 @@ class TransactionBillWasClosed extends Notification
     $locKey = '1';
     $transactionId = $this->transaction->id;
     $businessId = $this->transaction->profile->id;
-    $inAppMessage = 'You have been charged $' . $total . ' by ' . $businessName . '.';
+    $businessSlug = $this->transaction->profile->slug;
     
     if (strtolower($notifiable->pushToken->device) == 'ios') {
       return [
@@ -56,12 +56,10 @@ class TransactionBillWasClosed extends Notification
         ],
         'extraPayLoad' => [
           'category' => $category,
-          'locKey' => $locKey,
           'custom' => [
             'transactionId' => $transactionId,
+            'businessSlug' => $businessSlug,
             'businessId' => $businessId,
-            'inAppMessage' => $inAppMessage,
-            'businessLogo'=> $businessLogo
           ]
         ]
       ];
@@ -76,7 +74,7 @@ class TransactionBillWasClosed extends Notification
             (object) [
               'title' => 'CONFIRM',
               'callback' => 'acceptCharge',
-              'foreground' => true
+              'foreground' => false
             ],
             (object) [
               'title' => 'REJECT',
@@ -91,6 +89,7 @@ class TransactionBillWasClosed extends Notification
           ],
           'custom' => [
             'transactionId' => $transactionId,
+            'businessSlug' => $businessSlug,
             'businessId' => $businessId,
           ]
         ]
