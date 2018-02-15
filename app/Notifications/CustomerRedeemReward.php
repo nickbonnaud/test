@@ -77,6 +77,7 @@ class CustomerRedeemReward extends Notification
           'body' => 'Please swipe down to show options for redeeming your loyalty reward from ' . $this->loyaltyProgram->profile->business_name . '.',
           'sound' => 'default',
           'category' => $category,
+          "force-start" => 1,
           'actions' => [
             (object) [
               'title' => 'REDEEM',

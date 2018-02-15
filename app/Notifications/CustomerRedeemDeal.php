@@ -76,6 +76,7 @@ class CustomerRedeemDeal extends Notification
           'body' => 'Please swipe down to show options for redeeming your deal from ' . $this->transaction->profile->business_name . '.',
           'sound' => 'default',
           'category' => $category,
+          "force-start" => 1,
           'actions' => [
             (object) [
               'title' => 'REDEEM',

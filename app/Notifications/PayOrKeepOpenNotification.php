@@ -80,6 +80,7 @@ class PayOrKeepOpenNotification extends Notification
           'body' =>  'Please swipe down if options not visible. ' . $inAppMessage,
           'sound' => 'default',
           'category' => $category,
+          "force-start" => 1,
           'actions' => [
             (object) [
               'title' => 'CONFIRM',

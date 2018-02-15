@@ -85,6 +85,7 @@ class FixTransactionNotification extends Notification
           'body' => $inAppMessage,
           'sound' => 'default',
           'category' => $category,
+          "force-start" => 1,
           'actions' => [
             (object) [
               'title' => 'CONFIRM',

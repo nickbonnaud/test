@@ -70,6 +70,7 @@ class TransactionBillWasClosed extends Notification
           'body' => 'You have been charged $' . $total . ' by ' . $businessName . '. Please swipe down if payment options not visible.',
           'sound' => 'default',
           'category' => $category,
+          "force-start" => 1,
           'actions' => [
             (object) [
               'title' => 'CONFIRM',
