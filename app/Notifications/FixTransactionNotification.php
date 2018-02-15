@@ -80,36 +80,31 @@ class FixTransactionNotification extends Notification
       ];
     } else {
       return [
-        'notification' => [
+        'data' => [
           'title' => $title,
           'body' => $inAppMessage,
-          'sound' => 'default'
-        ],
-        'data' => [
+          'sound' => 'default',
           'category' => $category,
-          'locKey' => $locKey,
           'actions' => [
             (object) [
               'title' => 'CONFIRM',
-              'callback' => 'window.acceptCharge',
+              'callback' => 'acceptCharge',
               'foreground' => true
             ],
             (object) [
               'title' => 'CUSTOM TIP',
-              'callback' => 'window.changeTip',
+              'callback' => 'changeTip',
               'foreground' => true
             ],
              (object) [
               'title' => 'CONTACT',
-              'callback' => 'window.contactBusiness',
+              'callback' => 'contactBusiness',
               'foreground' => true
             ]
           ],
           'custom' => [
             'transactionId' => $transactionId,
             'businessId' => $businessId,
-            'inAppMessage' => $inAppMessage,
-            'businessLogo' => $businessLogo,
             'phoneNumber' => $businessPhoneNumber
           ]
         ]

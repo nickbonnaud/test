@@ -62,17 +62,11 @@ class CustomerEnterGeoFence extends Notification
       ];
     } else {
       return [
-        'notification' => [
+        'data' => [
           'title' => $title,
           'body' => $body,
-          'sound' => 'default'
-        ],
-        'data' => [
+          'sound' => 'default',
           'category' => $category,
-          'locKey' => $locKey,
-          'custom' => [
-            'inAppMessage' => $body
-          ]
         ]
       ];
     }

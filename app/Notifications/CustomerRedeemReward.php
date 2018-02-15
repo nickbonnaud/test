@@ -72,30 +72,26 @@ class CustomerRedeemReward extends Notification
       ];
     } else {
       return [
-        'notification' => [
+        'data' => [
           'title' => $title,
           'body' => 'Please swipe down to show options for redeeming your loyalty reward from ' . $this->loyaltyProgram->profile->business_name . '.',
-          'sound' => 'default'
-        ],
-        'data' => [
+          'sound' => 'default',
           'category' => $category,
-          'locKey' => $locKey,
           'actions' => [
             (object) [
               'title' => 'REDEEM',
-              'callback' => 'window.redeemReward',
+              'callback' => 'redeemReward',
               'foreground' => true
             ],
             (object) [
               'title' => 'REJECT',
-              'callback' => 'window.declineRedeemReward',
+              'callback' => 'declineRedeemReward',
               'foreground' => true
             ]
           ],
           'custom' => [
             'loyaltyCardId' => $loyaltyCardId,
             'unredeemed_rewards' => $unredeemedRewards,
-            'inAppMessage' => $inAppMessage,
           ]
         ]
       ];

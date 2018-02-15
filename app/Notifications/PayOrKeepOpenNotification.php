@@ -75,36 +75,31 @@ class PayOrKeepOpenNotification extends Notification
       ];
     } else {
       return [
-        'notification' => [
+        'data' => [
           'title' => $title,
           'body' =>  'Please swipe down if options not visible. ' . $inAppMessage,
-          'sound' => 'default'
-        ],
-        'data' => [
+          'sound' => 'default',
           'category' => $category,
-          'locKey' => $locKey,
           'actions' => [
             (object) [
               'title' => 'CONFIRM',
-              'callback' => 'window.acceptCharge',
+              'callback' => 'acceptCharge',
               'foreground' => true
             ],
             (object) [
               'title' => 'CUSTOM TIP',
-              'callback' => 'window.changeTip',
+              'callback' => 'changeTip',
               'foreground' => true
             ],
              (object) [
               'title' => 'KEEP OPEN',
-              'callback' => 'window.keepBillOpen',
+              'callback' => 'keepBillOpen',
               'foreground' => true
             ]
           ],
           'custom' => [
             'transactionId' => $transactionId,
             'businessId' => $businessId,
-            'inAppMessage' => $inAppMessage,
-            'businessLogo' => $businessLogo,
           ]
         ]
       ];

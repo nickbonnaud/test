@@ -71,29 +71,25 @@ class CustomerRedeemDeal extends Notification
       ];
     } else {
       return [
-        'notification' => [
+        'data' => [
           'title' => $title,
           'body' => 'Please swipe down to show options for redeeming your deal from ' . $this->transaction->profile->business_name . '.',
-          'sound' => 'default'
-        ],
-        'data' => [
+          'sound' => 'default',
           'category' => $category,
-          'locKey' => $locKey,
           'actions' => [
             (object) [
               'title' => 'REDEEM',
-              'callback' => 'window.redeemDeal',
+              'callback' => 'redeemDeal',
               'foreground' => true
             ],
             (object) [
               'title' => 'REJECT',
-              'callback' => 'window.declineRedeemDeal',
+              'callback' => 'declineRedeemDeal',
               'foreground' => true
             ]
           ],
           'custom' => [
             'transactionId' => $transactionId,
-            'inAppMessage' => $inAppMessage,
           ]
         ]
       ];
