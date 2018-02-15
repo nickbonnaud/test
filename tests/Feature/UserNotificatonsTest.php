@@ -7,6 +7,11 @@ use App\Notifications\TransactionBillWasClosed;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
+use LaravelFCM\Message\OptionsBuilder;
+use LaravelFCM\Message\PayloadDataBuilder;
+use LaravelFCM\Message\PayloadNotificationBuilder;
+use FCM;
+
 class UserNotificatonsTest extends TestCase
 {
 	use RefreshDatabase;
@@ -107,5 +112,23 @@ class UserNotificatonsTest extends TestCase
     $this->assertCount(1, $user->fresh()->notifications);
     create('App\UserLocation', ['profile_id' => $profile->id, 'user_id' => $user->id]);
     $this->assertCount(1, $user->fresh()->notifications);
+  }
+
+  function test_bill_notif_old() {
+    $token = 'eFr0zsAYjuc:APA91bGui1Hr1RoulkLm0rH3VkFT5Rl_m8EFaPPqpgSHkVCBjkmov3gKAyMinU3JhqjEnUiqOU6awV-EdMsGA78NnzvPgz8LgRYPFryyJ6qIj-8_0uBxvOTkr7vjxDWGsl2WRNEj8CDs';
+    $push = \PushNotification::setService('fcm')
+      ->setMessage([
+         'title' => 'The test title Old!',
+         'body' => 'Test notification body Old',
+         'sound' => 'default',
+         'actions' => [
+            (object) ['title' => "BUTTON 1", 'callback' => 'test1Callback', 'foreground' => true],
+            (object) ['title' => "BUTTON 2", 'callback' => 'test2Callback', 'foreground' => true]
+          ]
+      ])
+      ->setApiKey(env('FCM_SERVER_KEY'))
+      ->setDevicesToken($token);
+    $feedback = $push->send()->getFeedback();
+    dd($feedback);
   }
 }

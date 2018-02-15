@@ -6,7 +6,6 @@
     "type": "project",
     "require": {
         "php": ">=7.0.0",
-        "brozot/laravel-fcm": "^1.2",
         "consolibyte/quickbooks": "^3.3",
         "doctrine/dbal": "^2.6",
         "edujugon/push-notification": "^2.2",

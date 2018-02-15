@@ -9,11 +9,6 @@ use Illuminate\Notifications\Events\NotificationSent;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-use LaravelFCM\Message\OptionsBuilder;
-use LaravelFCM\Message\PayloadDataBuilder;
-use LaravelFCM\Message\PayloadNotificationBuilder;
-use FCM;
-
 class SendNotification
 {
 
@@ -51,42 +46,14 @@ class SendNotification
   public function sendPush($notification, $pushToken) {
     $pushService = strtolower($pushToken->device) === 'ios' ? 'apn' : 'fcm';
 
+    $push = \PushNotification::setService($pushService)
+      ->setMessage($notification->data)
+      ->setDevicesToken($pushToken->push_token);
+
     if ($pushService === 'fcm') {
-      $this->sendFcm($notification, $pushToken);
-    } else {
-      $push = \PushNotification::setService($pushService)
-        ->setMessage($notification->data)
-        ->setDevicesToken($pushToken->push_token);
-
-      if ($pushService === 'fcm') {
-        $push->setApiKey(env('FCM_SERVER_KEY'));
-      }
-      return $push->send()->getFeedback();
+      $push->setApiKey(env('FCM_SERVER_KEY'));
     }
-  }
-
-  public function sendFcm($notification, $pushToken) {
-    $optionsBuilder = new OptionsBuilder();
-    $optionsBuilder->setPriority('normal');
-
-    $notificationBuilder = new PayloadNotificationBuilder($notification->data['notification']['title']);
-    $notificationBuilder
-      ->setBody($notification->data['notification']['body'])
-      ->setSound('default');
-
-    $dataBuilder = new PayloadDataBuilder();
-    $dataBuilder->addData(['actions' => $notification->data['data']['actions']]);
-
-    $option = $optionsBuilder->build();
-    $notification = $notificationBuilder->build();
-    $data = $dataBuilder->build();
-    $token = $pushToken->push_token;
-
-    $downstreamResponse = FCM::sendTo($token, $option, $notification, $data);
-
-    Log::info($downstreamResponse->numberSuccess());
-    Log::info($downstreamResponse->numberFailure());
-    Log::info($downstreamResponse->numberModification());
+    return $push->send()->getFeedback();
   }
 
   public function checkSuccess($response, $pushToken) {
