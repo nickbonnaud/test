@@ -58,6 +58,7 @@ class TransactionBillWasClosed extends Notification
           'category' => $category,
           'custom' => [
             'transactionId' => $transactionId,
+            'businessName' => $businessName,
             'businessSlug' => $businessSlug,
             'businessId' => $businessId,
           ]
@@ -74,6 +75,7 @@ class TransactionBillWasClosed extends Notification
           'no-cache' => 1,
           'custom' => [
             'transactionId' => $transactionId,
+            'businessName' => $businessName,
             'businessSlug' => $businessSlug,
             'businessId' => $businessId,
           ]
