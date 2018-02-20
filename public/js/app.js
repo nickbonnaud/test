@@ -90476,7 +90476,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     redeemDeal: function redeemDeal() {
       if (this.requestSent) return;
       this.requestSent = true;
-      axios.patch('/api/web/transactions/' + this.profileSlug + '/' + this.customerDeal.deal_data.id, {
+      axios.patch('/api/web/deals/' + this.profileSlug + '/' + this.customerDeal.deal_data.id, {
         'redeem_deal': true
       }).then(this.checkSuccess);
     },

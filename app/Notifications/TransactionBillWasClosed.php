@@ -38,9 +38,7 @@ class TransactionBillWasClosed extends Notification
   {
     $total = round($this->transaction->total / 100, 2);
     $businessName = $this->transaction->profile->business_name;
-    $businessLogo = $this->transaction->profile->logo->url;
     $category = 'payment';
-    $locKey = '1';
     $transactionId = $this->transaction->id;
     $businessId = $this->transaction->profile->id;
     $businessSlug = $this->transaction->profile->slug;

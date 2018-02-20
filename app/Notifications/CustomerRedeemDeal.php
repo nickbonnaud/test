@@ -46,51 +46,49 @@ class CustomerRedeemDeal extends Notification
   public function toArray($notifiable)
   {
     $category = 'redeem_deal';
-    $locKey = '1';
-    $title = 'Redeem your ' . $this->deal->deal_item . ' now?';
+    $businessName = $this->transaction->profile->business_name;
+    $businessSlug = $this->transaction->profile->slug;
+    $businessId = $this->transaction->profile->id;
+    $dealItem = $this->deal->deal_item;
+    $title = 'Redeem your ' . $dealItem . ' from ' . $businessName . ' now?';
     $transactionId = $this->transaction->id;
-    $inAppMessage = 'Redeem your ' . $this->deal->deal_item . ' from ' . $this->transaction->profile->business_name . ' now?';
     
     if (strtolower($notifiable->pushToken->device) == 'ios') {
       return [
         'aps' => [
           'alert' => [
             'title' => $title,
-            'body' => 'Please swipe left or down to show options for redeeming your deal from ' . $this->transaction->profile->business_name . '.'
+            'body' => 'Please swipe left or down to show options for redeeming your deal.'
           ],
           'sound' => 'default'
         ],
         'extraPayLoad' => [
           'category' => $category,
-          'locKey' => $locKey,
           'custom' => [
             'transactionId' => $transactionId,
-            'inAppMessage' => $inAppMessage,
+            'businessName' => $businessName,
+            'businessSlug' => $businessSlug,
+            'businessId' => $businessId,
+            'dealItem' => $dealItem
           ]
         ]
       ];
     } else {
       return [
         'data' => [
-          'title' => $title,
-          'body' => 'Please swipe down to show options for redeeming your deal from ' . $this->transaction->profile->business_name . '.',
+          'customTitle' => $title,
+          'customMessage' => 'Please swipe down to show options for redeeming your deal.',
           'sound' => 'default',
           'category' => $category,
           "force-start" => 1,
-          'actions' => [
-            (object) [
-              'title' => 'REDEEM',
-              'callback' => 'redeemDeal',
-              'foreground' => true
-            ],
-            (object) [
-              'title' => 'REJECT',
-              'callback' => 'declineRedeemDeal',
-              'foreground' => true
-            ]
-          ],
+          'content-available' => 1,
+          'no-cache' => 1,
           'custom' => [
             'transactionId' => $transactionId,
+            'businessName' => $businessName,
+            'businessSlug' => $businessSlug,
+            'businessId' => $businessId,
+            'dealItem' => $dealItem
           ]
         ]
       ];
