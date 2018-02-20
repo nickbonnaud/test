@@ -219,10 +219,10 @@ class Transaction extends Model
 
   public function calculateTransactionDetails($post) {
     $this->net_sales = $post->getOriginal('price');
-    $this->tax = ($this->profile->tax->total / 10000) * $this->net_sales;
+    $this->tax = round(($this->profile->tax->total / 10000) * $this->net_sales);
     $this->total = $this->net_sales + $this->tax;
     $this->deal_id = $post->id;
-    $this->products = json_encode(['name' => $post->deal_item, 'price' => $post->getOriginal('price'), 'quantity' => 1]);
+    $this->products = json_encode(['name' => $post->deal_item, 'price' => $post->getOriginal('price'), 'net_sales' => $this->net_sales, 'tax' => $this->tax, 'total' => $this->total, 'quantity' => 1]);
     $this->save();
   }
 

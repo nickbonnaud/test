@@ -164,4 +164,40 @@ class ApiDealTest extends TestCase
     $this->assertEquals(true, $response->success);
     $this->assertEquals(true, $transaction->fresh()->redeemed);
   }
+
+  function test_an_authorized_mobile_user_can_reject_deal_later() {
+    $this->expectsEvents(CustomerRedeemItem::class);
+    $profile = create('App\Profile');
+    $post = create('App\Post', ['profile_id' => $profile->id, 'is_redeemable' => true, 'deal_item' => 'free coffee', 'price' => 100, 'end_date' => Carbon::tomorrow()]);
+
+    $user = create('App\User');
+    $transaction = create('App\Transaction', ['profile_id' => $profile->id, 'user_id' => $user->id, 'paid' => true, 'refund_full' => false, 'status' => 20, 'deal_id' => $post->id, 'redeemed' => false]);
+
+    $data = [
+      'redeemed' => false,
+      'issue' => 'redeem_later_deal'
+    ];
+
+    $response = $this->json('PATCH', "/api/mobile/deals/{$transaction->id}", $data, $this->headers($user))->getData();
+    $this->assertEquals(true, $response->success);
+    $this->assertDatabaseHas('transactions', ['id' => $transaction->id, 'redeemed' => false]);
+  }
+
+  function test_an_authorized_mobile_user_can_reject_deal_not_theirs() {
+    $this->expectsEvents(CustomerRedeemItem::class);
+    $profile = create('App\Profile');
+    $post = create('App\Post', ['profile_id' => $profile->id, 'is_redeemable' => true, 'deal_item' => 'free coffee', 'price' => 100, 'end_date' => Carbon::tomorrow()]);
+
+    $user = create('App\User');
+    $transaction = create('App\Transaction', ['profile_id' => $profile->id, 'user_id' => $user->id, 'paid' => true, 'refund_full' => false, 'status' => 20, 'deal_id' => $post->id, 'redeemed' => false]);
+
+    $data = [
+      'redeemed' => false,
+      'issue' => 'wrong_deal'
+    ];
+
+    $response = $this->json('PATCH', "/api/mobile/deals/{$transaction->id}", $data, $this->headers($user))->getData();
+    $this->assertEquals(true, $response->success);
+    $this->assertDatabaseHas('transactions', ['id' => $transaction->id, 'redeemed' => false]);
+  }
 }

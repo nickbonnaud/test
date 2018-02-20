@@ -29,8 +29,7 @@ class UserPurchaseDealTest extends TestCase
     $profile = create('App\Profile', ['tax_id' => $tax->id]);
     $account = create('App\Account', ['profile_id' => $profile->id, 'splash_id' => 't1_mer_5a10dfa09f4b06f5e326d8b']);
   	$user = create('App\User', ['customer_id' => 'c793a464b8d3085506e1e82378656dbb']);
-  	$post = create('App\Post', ['is_redeemable' => true, 'deal_item' => 'Coffee', 'price' => 300]);
-
+  	$post = create('App\Post', ['is_redeemable' => true, 'deal_item' => 'Coffee', 'price' => 5]);
   	$data = [
   		'deal_id' => $post->id
   	];

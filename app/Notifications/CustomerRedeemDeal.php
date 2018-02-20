@@ -69,7 +69,6 @@ class CustomerRedeemDeal extends Notification
             'businessName' => $businessName,
             'businessSlug' => $businessSlug,
             'businessId' => $businessId,
-            'dealItem' => $dealItem
           ]
         ]
       ];
@@ -88,7 +87,6 @@ class CustomerRedeemDeal extends Notification
             'businessName' => $businessName,
             'businessSlug' => $businessSlug,
             'businessId' => $businessId,
-            'dealItem' => $dealItem
           ]
         ]
       ];

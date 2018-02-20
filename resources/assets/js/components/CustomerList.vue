@@ -241,13 +241,16 @@
       },
 
       setItemRedeemed(event) {
-      	if (event.type == 'loyalty_card') {
-      		this.redeemRewardRequestSent = false;
-      	} else {
-      		this.redeemDealRequestSent = false;
-      	}
+      	this.redeemRewardRequestSent = false;
+      	this.redeemDealRequestSent = false;
       	this.replaceUser(event.user);
-      	this.flashRedeemSuccess(event.user, event.type);
+      	if ((event.type == 'redeem_later_deal') || (event.type == 'wrong_deal')) {
+      		this.flashRedeemDealDeclined(event.user, event.type);
+      	} else if ((event.type == 'redeem_later_loyalty') || (event.type == 'wrong_loyalty')) {
+      		this.flashRedeemLoyaltyDeclined(event.user, event.type);
+      	} else {
+      		this.flashRedeemSuccess(event.user, event.type);
+      	}
       },
 
       replaceUser(user) {
@@ -273,9 +276,29 @@
 					function() {},
 					function(dismiss) {
 					}.bind(this)
-				)
+				);
+      },
+
+      flashRedeemDealDeclined(user, type) {
+      	var reason = type == 'redeem_later_deal' ? user.first_name + ' wishes to redeem their deal at a later time.' : user.first_name + ' claims this is not their deal.';
+
+      	toastr["error"](user.first_name + " has declined to redeem their deal.<br /><br /><button type='button' class='btn btn-default'>Ok</button>", reason, {
+            "newestOnTop": true,
+            "timeOut": 0,
+            "extendedTimeOut": 0,
+          });
+      },
+
+      flashRedeemLoyaltyDeclined(user, type) {
+      	var reason = type == 'redeem_later_loyalty' ? user.first_name + ' wishes to redeem their loyalty reward at a later time.' : user.first_name + ' claims this is not their loyalty reward.';
+
+      	toastr["error"](user.first_name + " has declined to redeem their loyalty reward.<br /><br /><button type='button' class='btn btn-default'>Ok</button>", reason, {
+            "newestOnTop": true,
+            "timeOut": 0,
+            "extendedTimeOut": 0,
+          });
       }
 		}
-	}
+	};
 
 </script>

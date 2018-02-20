@@ -18,9 +18,14 @@ class DealsController extends Controller {
 	public function update(Transaction $transaction, Request $request) {
 		$user = JWTAuth::parseToken()->authenticate();
 		if (!($transaction->user->id == $user->id)) return response()->json(['error' => 'unauthorized'], 401);
-		$transaction->update($request->all());
+		if ($request->redeemed) {
+			$transaction->update($request->all());
+			$type = 'deal_redeemed';
+		} else {
+			$type = $request->issue;
+		}
 		$user = new UserLocationResource($user);
-		event(new CustomerRedeemItem($user, $transaction->profile, $type='deal'));
+		event(new CustomerRedeemItem($user, $transaction->profile, $type));
 		return response()->json(['success' => true], 200);
 	}
 }
