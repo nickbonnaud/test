@@ -22,11 +22,9 @@ class Product extends Model
   }
 
   public function setNameAttribute($name) {
-    if ($this->name != $name) {
-      $slug = str_slug($name, '-');
-      $count = Product::raw("slug RLIKE '^{$slug}(-[0-9]+)?$'")->count();
-      $this->attributes['slug'] = $count ? "{$slug}-{$count}" : $slug;
-    }
+    $slug = str_slug($name, '-');
+    $count = Product::where('name', '=', $name)->count();
+    $this->attributes['slug'] = $count > 0 ? "{$slug}-{$count}" : $slug;
     $this->attributes['name'] = $name;
   }
 

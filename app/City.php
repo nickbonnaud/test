@@ -19,9 +19,8 @@ class City extends Model
 	}
 
 	public function setNameAttribute($name) {
-		$name = strtolower($name);
 		$slug = str_slug($name, '-');
-		$count = City::where('name', $name)->count();
+		$count = City::where('name', '=', $name)->count();
 		$this->attributes['slug'] = $count > 0 ? "{$slug}-{$count}" : $slug;
 		$this->attributes['name'] = $name;
 	}

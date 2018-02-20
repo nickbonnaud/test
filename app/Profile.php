@@ -144,11 +144,9 @@ class Profile extends Model
   }
 
   public function setBusinessNameAttribute($businessName) {
-    if ($this->business_name != $businessName) {
-      $slug = str_slug($businessName, '-');
-      $count = Profile::raw("slug RLIKE '^{$slug}(-[0-9]+)?$'")->count();
-      $this->attributes['slug'] = $count ? "{$slug}-{$count}" : $slug;
-    }
+    $slug = str_slug($businessName, '-');
+    $count = Profile::where('business_name', '=', $businessName)->count();
+    $this->attributes['slug'] = $count > 0 ? "{$slug}-{$count}" : $slug;
     $this->attributes['business_name'] = $businessName;
   }
 

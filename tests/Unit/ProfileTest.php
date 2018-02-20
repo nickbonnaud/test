@@ -4,20 +4,11 @@ namespace Tests\Unit;
 
 use Tests\TestCase;
 use App\City;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ProfileTest extends TestCase
 {
-  use DatabaseMigrations;
-
-  protected $profile;
-
-  public function setUp() {
-  	parent::setUp();
-
-  	$this->profile = create('App\Profile');
-  }
+  use RefreshDatabase;
 
   function test_a_profile_has_an_owner() {
   	$this->assertInstanceOf('App\User', $this->profile->user);
@@ -112,8 +103,7 @@ class ProfileTest extends TestCase
 
   function test_a_profile_slug_is_unique() {
     $profileFirst = create('App\Profile');
-    $profileSecond = make('App\Profile', ['business_name' => $profileFirst->business_name]);
-
+    $profileSecond = create('App\Profile', ['business_name' => $profileFirst->business_name]);
     $this->assertNotEquals($profileFirst->slug, $profileSecond->slug);
   }
 

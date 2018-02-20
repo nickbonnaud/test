@@ -81,11 +81,9 @@ class Account extends Model
  	}
 
  	public function setLegalBizNameAttribute($businessName) {
-    if ($this->legal_biz_name != $businessName) {
-      $slug = str_slug($businessName, '-');
-      $count = Account::raw("slug RLIKE '^{$slug}(-[0-9]+)?$'")->count();
-      $this->attributes['slug'] = $count ? "{$slug}-{$count}" : $slug;
-    }
+    $slug = str_slug($businessName, '-');
+    $count = Account::where('legal_biz_name', '=', $businessName)->count();
+    $this->attributes['slug'] = $count > 0 ? "{$slug}-{$count}" : $slug;
     $this->attributes['legal_biz_name'] = $businessName;
   }
 

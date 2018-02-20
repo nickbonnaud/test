@@ -26,13 +26,11 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
 
 $factory->define(App\Profile::class, function ($faker) {
   $name = $faker->company;
-  $slug = str_slug($name, '-');
 
   return [
     'business_name' => $name,
     'website' => $faker->domainName,
     'description' => $faker->paragraph,
-    'slug' => $slug,
     'user_id' => function() {
     	return factory('App\User')->create()->id;
     }
