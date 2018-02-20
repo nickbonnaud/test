@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Event;
 use App\Notifications\CustomerRedeemDeal;
 use App\Events\CustomerRedeemItem;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -149,11 +150,12 @@ class ApiDealTest extends TestCase
   }
 
   function test_an_authorized_mobile_user_can_redeem_deal() {
-  	$this->expectsEvents(CustomerRedeemItem::class);
+    Event::fake();
     $profile = create('App\Profile');
     $post = create('App\Post', ['profile_id' => $profile->id, 'is_redeemable' => true, 'deal_item' => 'free coffee', 'price' => 100, 'end_date' => Carbon::tomorrow()]);
 
 		$user = create('App\User');
+    $userLocation = create('App\UserLocation', ['user_id' => $user->id, 'profile_id' => $profile->id]);
 		$transaction = create('App\Transaction', ['profile_id' => $profile->id, 'user_id' => $user->id, 'paid' => true, 'refund_full' => false, 'status' => 20, 'deal_id' => $post->id, 'redeemed' => false]);
 
     $data = [
