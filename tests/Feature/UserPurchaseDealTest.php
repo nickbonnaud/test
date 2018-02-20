@@ -37,9 +37,9 @@ class UserPurchaseDealTest extends TestCase
   	$response = $this->post("/api/mobile/transactions/{$profile->slug}", $data, $this->headers($user))->getData();
     $this->assertEquals(true, $response->success);
     $this->assertEquals('user_deal', $response->type);
-  	$tax = round(($profile->tax->total / 10000) * $post->price);
-  	$total = $tax + $post->price;
-  	$this->assertDatabaseHas('transactions', ['user_id' => $user->id, 'profile_id' => $profile->id, 'deal_id' => $post->id, 'tax' => $tax, 'net_sales' => $post->price, 'total' => $total, 'paid' => true]);
+
+    $total = round($post->price * 100 + ($post->price * 100 * ($profile->tax->total / 10000)));
+  	$this->assertDatabaseHas('transactions', ['user_id' => $user->id, 'deal_id' => $post->id, 'paid' => true, 'total' => $total]);
 	}
 
   function test_a_purchased_deal_that_fails_sends_fail_email_to_admin() {
