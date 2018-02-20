@@ -14,12 +14,13 @@ class UserLocationResource extends Resource
    */
   public function toArray($request) {
     $user = $this->user;
+    $profile = $this->profile;
 
-    $lastTransaction = $this->getLastTransaction();
-    $openBill = $this->getOpenBill();
-    $deal = $this->getDeal();
-    $lastPostInteractions = $this->getLastPostInteractions();
-    $loyaltyCard = $this->getLoyaltyCard();
+    $lastTransaction = $this->getLastTransaction($user, $profile);
+    $openBill = $this->getOpenBill($user, $profile);
+    $deal = $this->getDeal($user, $profile);
+    $lastPostInteractions = $this->getLastPostInteractions($user, $profile);
+    $loyaltyCard = $this->getLoyaltyCard($user, $profile);
 
     return [
       'id' => $user->id,
@@ -34,31 +35,31 @@ class UserLocationResource extends Resource
     ];
   }
 
-  public function getLastTransaction() {
-    return $this->user->transactions()->where('profile_id', '=', $this->profile_id)
+  public function getLastTransaction($user, $profile) {
+    return $user->transactions()->where('profile_id', '=', $profile->id)
       ->where('paid', '=', true)
       ->where('refund_full', '=', false)
       ->whereNull('deal_id')
       ->latest('updated_at')->first();
   }
 
-  public function getOpenBill() {
-    return $this->user->transactions()->where('profile_id', '=', $this->profile_id)
+  public function getOpenBill($user, $profile) {
+    return $user->transactions()->where('profile_id', '=', $profile->id)
       ->where('paid', '=', false)
       ->latest('updated_at')->first();
   }
 
-  public function getDeal() {
-    return $this->user->transactions()->where('profile_id', '=', $this->profile_id)
+  public function getDeal($user, $profile) {
+    return $user->transactions()->where('profile_id', '=', $profile->id)
       ->where('paid', '=', true)
       ->whereNotNull('deal_id')
       ->where('redeemed', '=', false)
       ->where('refund_full', '=', false)->first();
   }
 
-  public function getLoyaltyCard() {
-    if ($loyaltyProgram = $this->profile->loyaltyProgram) {
-      $loyaltyCard = $this->user->loyaltyCards()->where('loyalty_program_id', '=', $loyaltyProgram->id)->first();
+  public function getLoyaltyCard($user, $profile) {
+    if ($loyaltyProgram = $profile->loyaltyProgram) {
+      $loyaltyCard = $user->loyaltyCards()->where('loyalty_program_id', '=', $loyaltyProgram->id)->first();
       $loyaltyCard['reward'] = $loyaltyProgram->reward;
       return $loyaltyCard;
     } else {
@@ -66,8 +67,8 @@ class UserLocationResource extends Resource
     }
   }
 
-  public function getLastPostInteractions() {
-    return $this->user->postAnalytics()->where('profile_id', '=', $this->profile_id)
+  public function getLastPostInteractions($user, $profile) {
+    return $user->postAnalytics()->where('profile_id', '=', $profile->id)
       ->latest('updated_at')
       ->with('post.photo')->first();
   }

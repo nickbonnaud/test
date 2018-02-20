@@ -24,7 +24,7 @@ class DealsController extends Controller {
 		} else {
 			$type = $request->issue;
 		}
-		$user = new UserLocationResource($user);
+		$user = new UserLocationResource($user, $transaction->profile);
 		event(new CustomerRedeemItem($user, $transaction->profile, $type));
 		return response()->json(['success' => true], 200);
 	}
