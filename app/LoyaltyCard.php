@@ -43,7 +43,7 @@ class LoyaltyCard extends Model
   }
 
   public static function createLoyaltyCard($user, $loyaltyProgram) {
-    $loyaltyCard = new LoyaltyCard(['program_id' => $loyaltyProgram->id]);
+    $loyaltyCard = new LoyaltyCard(['loyalty_program_id' => $loyaltyProgram->id]);
     $user->loyaltyCards()->save($loyaltyCard);
     return $loyaltyCard;
   }

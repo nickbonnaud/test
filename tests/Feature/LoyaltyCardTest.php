@@ -16,6 +16,24 @@ class LoyaltyCardTest extends TestCase
 {
   use RefreshDatabase;
 
+  function test_a_loyalty_card_is_created_if_user_does_not_have_one() {
+    Mail::fake();
+    Notification::fake();
+    $photo = create('App\Photo');
+    $profile = create('App\Profile', ['logo_photo_id' => $photo->id, 'hero_photo_id' => $photo->id]);
+    $loyaltyProgram = create('App\LoyaltyProgram', ['profile_id' => $profile->id, 'reward' => 'free coffee', 'is_increment' => true, 'purchases_required' => 2]);
+    $account = create('App\Account', ['profile_id' => $profile->id, 'splash_id' => 't1_mer_5a10dfa09f4b06f5e326d8b']);
+    $user = create('App\User', ['default_tip_rate' => 20, 'customer_id' => 'c793a464b8d3085506e1e82378656dbb']);
+    create('App\PushToken', ['user_id' => $user->id]);
+    $transaction = create('App\Transaction', ['profile_id' => $profile->id, 'user_id' => $user->id, 'bill_closed' => true, 'is_refund' => false]);
+
+    $data = [
+      'id' => $transaction->id
+    ];
+    $response = $this->patch("/api/mobile/transactions/{$profile->slug}", $data, $this->headers($user));
+    $this->assertDatabaseHas('loyalty_cards', ['user_id' => $user->id, 'loyalty_program_id' => $loyaltyProgram->id]);
+  }
+
   function test_a_notification_is_not_sent_if_reward_not_earned() {
 		Mail::fake();
 		Notification::fake();
