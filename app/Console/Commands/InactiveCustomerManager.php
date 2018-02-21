@@ -28,6 +28,7 @@ class InactiveCustomerManager extends Command
    */
   public function handle()
   {
+    $userLocations = UserLocation::get();
 
     foreach ($userLocations as $userLocation) {
       if ($transaction = $userLocation->checkForUnpaidTransactionOnDelete()) {
