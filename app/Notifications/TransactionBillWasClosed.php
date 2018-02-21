@@ -17,23 +17,11 @@ class TransactionBillWasClosed extends Notification
     $this->transaction = $transaction;
   }
 
-  /**
-   * Get the notification's delivery channels.
-   *
-   * @param  mixed  $notifiable
-   * @return array
-   */
   public function via($notifiable)
   {
     return ['database'];
   }
 
-  /**
-   * Get the array representation of the notification.
-   *
-   * @param  mixed  $notifiable
-   * @return array
-   */
   public function toArray($notifiable)
   {
     $total = round($this->transaction->total / 100, 2);
@@ -42,6 +30,7 @@ class TransactionBillWasClosed extends Notification
     $transactionId = $this->transaction->id;
     $businessId = $this->transaction->profile->id;
     $businessSlug = $this->transaction->profile->slug;
+    $inAppBody = 'You have been charged $' . $total . ' by ' . $businessName . '.';
     
     if (strtolower($notifiable->pushToken->device) == 'ios') {
       return [
@@ -59,6 +48,7 @@ class TransactionBillWasClosed extends Notification
             'businessName' => $businessName,
             'businessSlug' => $businessSlug,
             'businessId' => $businessId,
+            'inAppBody' => $$inAppBody
           ]
         ]
       ];
@@ -76,6 +66,7 @@ class TransactionBillWasClosed extends Notification
             'businessName' => $businessName,
             'businessSlug' => $businessSlug,
             'businessId' => $businessId,
+            'inAppBody' => $$inAppBody
           ]
         ]
       ];

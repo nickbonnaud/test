@@ -52,6 +52,7 @@ class CustomerRedeemDeal extends Notification
     $dealItem = $this->deal->deal_item;
     $title = 'Redeem your ' . $dealItem . ' from ' . $businessName . ' now?';
     $transactionId = $this->transaction->id;
+    $inAppBody = 'Please redeem your purchased deal from ' . $businessName . '.';
     
     if (strtolower($notifiable->pushToken->device) == 'ios') {
       return [
@@ -87,6 +88,7 @@ class CustomerRedeemDeal extends Notification
             'businessName' => $businessName,
             'businessSlug' => $businessSlug,
             'businessId' => $businessId,
+            'inAppBody' => $inAppBody
           ]
         ]
       ];

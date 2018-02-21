@@ -62,7 +62,7 @@ class LoyaltyRewardEarned extends Notification
         'extraPayLoad' => [
           'category' => $category,
           'custom' => [
-            'inAppMessage' => $body
+            'inAppBody' => $body
           ]
         ]
       ];
@@ -78,6 +78,7 @@ class LoyaltyRewardEarned extends Notification
           'no-cache' => 1,
           'custom' => [
             'businessName' => $businessName,
+            'inAppBody' => $body
           ]
         ]
       ];

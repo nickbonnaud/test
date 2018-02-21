@@ -56,7 +56,7 @@ class CustomerEnterGeoFence extends Notification
           'category' => $category,
           'locKey' => $locKey,
           'custom' => [
-            'inAppMessage' => $body
+            'inAppBody' => $body
           ]
         ]
       ];
@@ -72,6 +72,7 @@ class CustomerEnterGeoFence extends Notification
           'no-cache' => 1,
           'custom' => [
             'businessName' => $businessName,
+            'inAppBody' => $body
           ]
         ]
       ];

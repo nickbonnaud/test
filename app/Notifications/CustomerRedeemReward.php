@@ -48,6 +48,7 @@ class CustomerRedeemReward extends Notification
     $title = 'Redeem your ' . $this->loyaltyProgram->reward . ' now?';
     $loyaltyCardId = $this->loyaltyCard->id;
     $businessName = $this->loyaltyProgram->profile->business_name;
+    $inAppBody = 'Please redeem your loyalty reward from ' . $businessName . '.';
     
     if (strtolower($notifiable->pushToken->device) == 'ios') {
       return [
@@ -77,7 +78,8 @@ class CustomerRedeemReward extends Notification
           'no-cache' => 1,
           'custom' => [
             'loyaltyCardId' => $loyaltyCardId,
-            'businessName' => $businessName
+            'businessName' => $businessName,
+            'inAppBody' => $inAppBody
           ]
         ]
       ];
