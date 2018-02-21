@@ -47,13 +47,14 @@ class CustomerRedeemReward extends Notification
     $category = 'redeem_reward';
     $title = 'Redeem your ' . $this->loyaltyProgram->reward . ' now?';
     $loyaltyCardId = $this->loyaltyCard->id;
+    $businessName = $this->loyaltyProgram->profile->business_name;
     
     if (strtolower($notifiable->pushToken->device) == 'ios') {
       return [
         'aps' => [
           'alert' => [
             'title' => $title,
-            'body' => 'Please swipe left or down to show options for redeeming your loyalty reward from ' . $this->loyaltyProgram->profile->business_name . '.'
+            'body' => 'Please swipe left or down to show options for redeeming your loyalty reward from ' . $businessName . '.'
           ],
           'sound' => 'default'
         ],
@@ -68,14 +69,15 @@ class CustomerRedeemReward extends Notification
       return [
         'data' => [
           'customTitle' => $title,
-          'customMessage' => 'Please swipe down to show options for redeeming your loyalty reward from ' . $this->loyaltyProgram->profile->business_name . '.',
+          'customMessage' => 'Please swipe down to show options for redeeming your loyalty reward from ' . $businessName . '.',
           'sound' => 'default',
           'category' => $category,
           "force-start" => 1,
           'content-available' => 1,
           'no-cache' => 1,
           'custom' => [
-            'loyaltyCardId' => $loyaltyCardId
+            'loyaltyCardId' => $loyaltyCardId,
+            'businessName' => $businessName
           ]
         ]
       ];
