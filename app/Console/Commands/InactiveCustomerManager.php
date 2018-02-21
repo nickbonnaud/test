@@ -39,8 +39,8 @@ class InactiveCustomerManager extends Command
             $transaction->sendFixTransactionNotification(0);
           } else {
             $transaction = self::updateTransaction($transaction);
-            $transaction->updateCustomerEvent();
             $transaction->sendPayOrKeepOpenNotification();
+            $transaction->updateCustomerEvent();
           }
         }
       } else {
