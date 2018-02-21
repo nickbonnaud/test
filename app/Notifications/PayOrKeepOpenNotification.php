@@ -60,23 +60,6 @@ class PayOrKeepOpenNotification extends Notification
           "force-start" => 1,
           'content-available' => 1,
           'no-cache' => 1,
-          'actions' => [
-            (object) [
-              'title' => 'CONFIRM',
-              'callback' => 'acceptCharge',
-              'foreground' => true
-            ],
-            (object) [
-              'title' => 'CUSTOM TIP',
-              'callback' => 'changeTip',
-              'foreground' => true
-            ],
-             (object) [
-              'title' => 'KEEP OPEN',
-              'callback' => 'keepBillOpen',
-              'foreground' => true
-            ]
-          ],
           'custom' => [
             'transactionId' => $transactionId,
             'businessName' => $businessName,

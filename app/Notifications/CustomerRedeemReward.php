@@ -63,6 +63,7 @@ class CustomerRedeemReward extends Notification
           'category' => $category,
           'custom' => [
             'loyaltyCardId' => $loyaltyCardId,
+            'transactionId' => null
           ]
         ]
       ];
@@ -79,7 +80,8 @@ class CustomerRedeemReward extends Notification
           'custom' => [
             'loyaltyCardId' => $loyaltyCardId,
             'businessName' => $businessName,
-            'inAppBody' => $inAppBody
+            'inAppBody' => $inAppBody,
+            'transactionId' => null
           ]
         ]
       ];
