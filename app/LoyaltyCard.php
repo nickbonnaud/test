@@ -98,7 +98,8 @@ class LoyaltyCard extends Model
     $this->user->notify(new CustomerRedeemReward($this, $this->loyaltyProgram));
   }
 
-  public function testUpdate() {
-    $loyaltyCard->update(['unredeemed_rewards' => 0]);
+  public function subtractUnredeemedRewards() {
+    $this->unredeemed_rewards = $this->unredeemed_rewards - 1;
+    $this->save();
   }
 }

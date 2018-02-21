@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Mobile;
 use JWTAuth;
 use App\LoyaltyCard;
 use App\Profile;
+use App\UserLocation;
 use App\Http\Resources\UserLocationResource;
 use App\Events\CustomerRedeemItem;
 use Illuminate\Http\Request;
@@ -27,9 +28,16 @@ class LoyaltyCardsController extends Controller {
 	public function update(LoyaltyCard $loyaltyCard, Request $request) {
 		$user = JWTAuth::parseToken()->authenticate();
 		if (!($loyaltyCard->user->id == $user->id)) return response()->json(['error' => 'unauthorized'], 401);
-		$loyaltyCard->update($request->all());
-		$user = new UserLocationResource($user);
-		event(new CustomerRedeemItem($user, $loyaltyCard->loyaltyProgram->profile, $type='loyalty_card'));
+
+		if ($request->redeemed) {
+			$loyaltyCard->subtractUnredeemedRewards();
+			$type = 'loyalty_redeemed';
+		} else {
+			$type = $request->issue;
+		}
+		$userLocation = UserLocation::where('user_id', $user->id)->where('profile_id', $loyaltyCard->loyaltyProgram->profile->id)->first();
+		$user = new UserLocationResource($userLocation);
+		event(new CustomerRedeemItem($user, $loyaltyCard->loyaltyProgram->profile, $type));
 		return response()->json(['success' => true], 200);
 	}
 }

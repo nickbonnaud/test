@@ -99,9 +99,6 @@ class Transaction extends Model
       }
     }
 
-
-
-
     foreach ($notifications as $notification) {
       $notification->delete();
     }
@@ -125,9 +122,6 @@ class Transaction extends Model
         }
       }
     }
-
-
-
 
     $notifications->markAsRead();
   }

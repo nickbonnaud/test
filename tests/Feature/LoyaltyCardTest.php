@@ -187,7 +187,8 @@ class LoyaltyCardTest extends TestCase
     $loyaltyCard = create('App\LoyaltyCard', ['user_id' => $user->id, 'loyalty_program_id' => $loyaltyProgram->id, 'current_amount' => 0, 'unredeemed_rewards' => 1]);
 
     $data = [
-      'unredeemed_rewards' => 0
+      'redeemed' => true,
+      'issue' => null
     ];
 
     $this->json('PATCH', "/api/mobile/loyalty/{$loyaltyCard->id}", $data)->assertStatus(401);
@@ -201,7 +202,8 @@ class LoyaltyCardTest extends TestCase
     $loyaltyCard = create('App\LoyaltyCard', ['user_id' => $user->id, 'loyalty_program_id' => $loyaltyProgram->id, 'current_amount' => 0, 'unredeemed_rewards' => 1]);
 
     $data = [
-      'unredeemed_rewards' => 0
+      'redeemed' => true,
+      'issue' => null
     ];
 
     $unAuthUser = create('App\User');
@@ -216,12 +218,49 @@ class LoyaltyCardTest extends TestCase
     $loyaltyCard = create('App\LoyaltyCard', ['user_id' => $user->id, 'loyalty_program_id' => $loyaltyProgram->id, 'current_amount' => 0, 'unredeemed_rewards' => 1]);
 
     $data = [
-      'unredeemed_rewards' => 0
+      'redeemed' => true,
+      'issue' => null
     ];
 
     $response = $this->json('PATCH', "/api/mobile/loyalty/{$loyaltyCard->id}", $data, $this->headers($user))->getData();
 
     $this->assertEquals(true, $response->success);
     $this->assertEquals(0, $loyaltyCard->fresh()->unredeemed_rewards);
+  }
+
+  function test_an_authorized_mobile_user_can_reject_reward_later() {
+    $this->expectsEvents(CustomerRedeemItem::class);
+    $profile = create('App\Profile');
+    $loyaltyProgram = create('App\LoyaltyProgram', ['profile_id' => $profile->id, 'reward' => 'free coffee', 'is_increment' => true, 'purchases_required' => 20]);
+    $user = create('App\User');
+    $loyaltyCard = create('App\LoyaltyCard', ['user_id' => $user->id, 'loyalty_program_id' => $loyaltyProgram->id, 'current_amount' => 0, 'unredeemed_rewards' => 1]);
+
+    $data = [
+      'redeemed' => false,
+      'issue' => 'redeem_later_reward'
+    ];
+
+    $response = $this->json('PATCH', "/api/mobile/loyalty/{$loyaltyCard->id}", $data, $this->headers($user))->getData();
+
+    $this->assertEquals(true, $response->success);
+    $this->assertEquals(1, $loyaltyCard->fresh()->unredeemed_rewards);
+  }
+
+  function test_an_authorized_mobile_user_can_reject_reward_not_theirs() {
+    $this->expectsEvents(CustomerRedeemItem::class);
+    $profile = create('App\Profile');
+    $loyaltyProgram = create('App\LoyaltyProgram', ['profile_id' => $profile->id, 'reward' => 'free coffee', 'is_increment' => true, 'purchases_required' => 20]);
+    $user = create('App\User');
+    $loyaltyCard = create('App\LoyaltyCard', ['user_id' => $user->id, 'loyalty_program_id' => $loyaltyProgram->id, 'current_amount' => 0, 'unredeemed_rewards' => 1]);
+
+    $data = [
+      'redeemed' => false,
+      'issue' => 'not_earned_reward'
+    ];
+
+    $response = $this->json('PATCH', "/api/mobile/loyalty/{$loyaltyCard->id}", $data, $this->headers($user))->getData();
+
+    $this->assertEquals(true, $response->success);
+    $this->assertEquals(1, $loyaltyCard->fresh()->unredeemed_rewards);
   }
 }

@@ -47,7 +47,6 @@ class LoyaltyRewardEarned extends Notification
     }
     $body = 'Redeem your ' . $this->loyaltyProgram->reward . ' at ' . $this->loyaltyProgram->profile->business_name . ' now or save your reward for later!';
     $category = 'default';
-    $locKey = '1';
 
     if (strtolower($notifiable->pushToken->device) == 'ios') {
       return [
@@ -60,7 +59,6 @@ class LoyaltyRewardEarned extends Notification
         ],
         'extraPayLoad' => [
           'category' => $category,
-          'locKey' => $locKey,
           'custom' => [
             'inAppMessage' => $body
           ]

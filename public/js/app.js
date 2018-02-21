@@ -89345,7 +89345,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       this.replaceUser(event.user);
       if (event.type == 'redeem_later_deal' || event.type == 'wrong_deal') {
         this.flashRedeemDealDeclined(event.user, event.type);
-      } else if (event.type == 'redeem_later_loyalty' || event.type == 'wrong_loyalty') {
+      } else if (event.type == 'redeem_later_reward' || event.type == 'not_earned_reward') {
         this.flashRedeemLoyaltyDeclined(event.user, event.type);
       } else {
         this.flashRedeemSuccess(event.user, event.type);
@@ -89362,7 +89362,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       }
     },
     flashRedeemSuccess: function flashRedeemSuccess(user, type) {
-      var item = type == 'loyalty_card' ? 'loyalty reward' : 'deal';
+      var item = type == 'loyalty_redeemed' ? 'loyalty reward' : 'deal';
       __WEBPACK_IMPORTED_MODULE_0_sweetalert2___default()({
         title: 'Success',
         text: user.first_name + ' has accepted to redeem their ' + item,
@@ -89381,7 +89381,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       });
     },
     flashRedeemLoyaltyDeclined: function flashRedeemLoyaltyDeclined(user, type) {
-      var reason = type == 'redeem_later_loyalty' ? user.first_name + ' wishes to redeem their loyalty reward at a later time.' : user.first_name + ' claims this is not their loyalty reward.';
+      var reason = type == 'redeem_later_reward' ? user.first_name + ' wishes to redeem their loyalty reward at a later time.' : user.first_name + ' claims they did not earn this loyalty reward.';
 
       toastr["error"](user.first_name + " has declined to redeem their loyalty reward.<br /><br /><button type='button' class='btn btn-default'>Ok</button>", reason, {
         "newestOnTop": true,
