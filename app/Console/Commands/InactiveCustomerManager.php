@@ -32,6 +32,7 @@ class InactiveCustomerManager extends Command
 
     foreach ($userLocations as $userLocation) {
       if ($transaction = $userLocation->checkForUnpaidTransactionOnDelete()) {
+        $transaction = self::updateTransaction($transaction);
         if ($lastNotification = self::getLastNotification($transaction)) {
           self::sendNotificationOrPay($lastNotification, $transaction, $userLocation);
         } else {
@@ -49,18 +50,14 @@ class InactiveCustomerManager extends Command
 
   public static function getLastNotification($transaction) {
     $notification = $transaction->user->notifications()->where('data->data->custom->transactionId', $transaction->id)->first();
-
-
-    // Testing Remove Before Production
-    if (!$notification) {
-      $notificationLast = $transaction->user->notifications()->first();
-      if ($notificationLast) {
-        if ($notificationLast->data['data']['custom']['transactionId'] == $transaction->id) {
-          $notification = $notificationLast;
-        }
-      }
-    }
     return $notification;
+  }
+
+  public function updateTransaction($transaction) {
+    $transaction->bill_closed = true;
+    $transaction->status = 11;
+    $transaction->save();
+    return $transaction;
   }
 
   public static function sendNotificationOrPay($lastNotification, $transaction, $userLocation) {
