@@ -59,13 +59,13 @@ class LoyaltyCard extends Model
   public static function addIncrementAmount($loyaltyCard, $loyaltyProgram) {
     if ($loyaltyCard->current_amount + 1 == $loyaltyProgram->purchases_required) {
       $loyaltyCard->current_amount = 0;
-      $loyaltyCard->rewards_achieved = $loyaltyCard->rewards_achieved++;
-      $loyaltyCard->unredeemed_rewards = $loyaltyCard->unredeemed_rewards++;
+      $loyaltyCard->rewards_achieved = $loyaltyCard->rewards_achieved + 1;
+      $loyaltyCard->unredeemed_rewards = $loyaltyCard->unredeemed_rewards + 1;
       $loyaltyCard->save();
       $rewardsQuantity = 1;
       self::customerRewardEvent($loyaltyCard->user, $loyaltyProgram, $rewardsQuantity);
     } else {
-      $loyaltyCard->current_amount = $loyaltyCard->current_amount++;
+      $loyaltyCard->current_amount = $loyaltyCard->current_amount + 1;
       $loyaltyCard->save();
     }
   }
