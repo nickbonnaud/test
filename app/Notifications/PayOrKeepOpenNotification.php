@@ -13,45 +13,25 @@ class PayOrKeepOpenNotification extends Notification
 
   public $transaction;
 
-  /**
-   * Create a new notification instance.
-   *
-   * @return void
-   */
   public function __construct($transaction)
   {
     $this->transaction = $transaction;
   }
 
-  /**
-   * Get the notification's delivery channels.
-   *
-   * @param  mixed  $notifiable
-   * @return array
-   */
   public function via($notifiable)
   {
     return ['database'];
   }
 
-
-  /**
-   * Get the array representation of the notification.
-   *
-   * @param  mixed  $notifiable
-   * @return array
-   */
   public function toArray($notifiable)
   {
     $total = round($this->transaction->total / 100, 2);
     $businessName = $this->transaction->profile->business_name;
-    $businessLogo = $this->transaction->profile->logo->url;
+    $businessSlug = $this->transaction->profile->slug;
     $category = 'pay_or_keep';
-    $locKey = '1';
     $transactionId = $this->transaction->id;
-    $businessId = $this->transaction->profile->id;
     $title = 'Pay bill or keep open?';
-    $inAppMessage = 'Either you have left ' . $businessName . ' or you have closed the Pockeyt app and Pockeyt cannot determine your location. Please pay your bill of $' . $total . ', reopen the Pockeyt app, or keep this bill open. You will be automatically charged if you do not respond to this notification.';
+    $inAppBody = 'Either you have left ' . $businessName . ' or you have force closed the Pockeyt app and Pockeyt cannot determine your location. Please pay your bill of $' . $total . ' or reopen the Pockeyt app while at ' . $businessName . '. You will be automatically charged if your bill is not paid or Pockeyt is not reopened.';
     
     if (strtolower($notifiable->pushToken->device) == 'ios') {
       return [
@@ -64,23 +44,22 @@ class PayOrKeepOpenNotification extends Notification
         ],
         'extraPayLoad' => [
           'category' => $category,
-          'locKey' => $locKey,
           'custom' => [
             'transactionId' => $transactionId,
-            'businessId' => $businessId,
-            'inAppMessage' => $inAppMessage,
-            'businessLogo'=> $businessLogo,
+            'inAppBody' => $inAppBody,
           ]
         ]
       ];
     } else {
       return [
         'data' => [
-          'title' => $title,
-          'body' =>  'Please swipe down if options not visible. ' . $inAppMessage,
+          'customTitle' => $title,
+          'customMessage' =>  'Please swipe down if options not visible. ' . $inAppBody,
           'sound' => 'default',
           'category' => $category,
           "force-start" => 1,
+          'content-available' => 1,
+          'no-cache' => 1,
           'actions' => [
             (object) [
               'title' => 'CONFIRM',
@@ -100,7 +79,9 @@ class PayOrKeepOpenNotification extends Notification
           ],
           'custom' => [
             'transactionId' => $transactionId,
-            'businessId' => $businessId,
+            'businessName' => $businessName,
+            'businessSlug' => $businessSlug,
+            'inAppBody' => $inAppBody
           ]
         ]
       ];
