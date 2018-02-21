@@ -67,8 +67,8 @@ class LoyaltyRewardEarned extends Notification
     } else {
       return [
         'data' => [
-          'title' => $title,
-          'body' => $body,
+          'customTitle' => $title,
+          'customMessage' => $body,
           'sound' => 'default',
           'category' => $category,
         ]
