@@ -48,7 +48,6 @@ class CustomerRedeemDeal extends Notification
     $category = 'redeem_deal';
     $businessName = $this->transaction->profile->business_name;
     $businessSlug = $this->transaction->profile->slug;
-    $businessId = $this->transaction->profile->id;
     $dealItem = $this->deal->deal_item;
     $title = 'Redeem your ' . $dealItem . ' from ' . $businessName . ' now?';
     $transactionId = $this->transaction->id;
@@ -69,7 +68,6 @@ class CustomerRedeemDeal extends Notification
             'transactionId' => $transactionId,
             'businessName' => $businessName,
             'businessSlug' => $businessSlug,
-            'businessId' => $businessId,
           ]
         ]
       ];
@@ -87,7 +85,6 @@ class CustomerRedeemDeal extends Notification
             'transactionId' => $transactionId,
             'businessName' => $businessName,
             'businessSlug' => $businessSlug,
-            'businessId' => $businessId,
             'inAppBody' => $inAppBody
           ]
         ]

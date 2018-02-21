@@ -28,7 +28,6 @@ class TransactionBillWasClosed extends Notification
     $businessName = $this->transaction->profile->business_name;
     $category = 'payment';
     $transactionId = $this->transaction->id;
-    $businessId = $this->transaction->profile->id;
     $businessSlug = $this->transaction->profile->slug;
     $inAppBody = 'You have been charged $' . $total . ' by ' . $businessName . '.';
     
@@ -47,8 +46,7 @@ class TransactionBillWasClosed extends Notification
             'transactionId' => $transactionId,
             'businessName' => $businessName,
             'businessSlug' => $businessSlug,
-            'businessId' => $businessId,
-            'inAppBody' => $$inAppBody
+            'inAppBody' => $inAppBody
           ]
         ]
       ];
@@ -65,8 +63,7 @@ class TransactionBillWasClosed extends Notification
             'transactionId' => $transactionId,
             'businessName' => $businessName,
             'businessSlug' => $businessSlug,
-            'businessId' => $businessId,
-            'inAppBody' => $$inAppBody
+            'inAppBody' => $inAppBody
           ]
         ]
       ];
