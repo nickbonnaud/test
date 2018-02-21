@@ -40,12 +40,14 @@ class LoyaltyRewardEarned extends Notification
    */
   public function toArray($notifiable)
   {
+    $businessName = $this->loyaltyProgram->profile->business_name;
+
     if ($this->rewardsQuantity > 1) {
       $title = 'You just earned ' . $this->rewardsQuantity . ' ' . str_plural($this->loyaltyProgram->reward) . '!';
     } else {
       $title = 'You just earned a ' . $this->loyaltyProgram->reward . '!';
     }
-    $body = 'Redeem your ' . $this->loyaltyProgram->reward . ' at ' . $this->loyaltyProgram->profile->business_name . ' now or save your reward for later!';
+    $body = 'Redeem your ' . $this->loyaltyProgram->reward . ' at ' . $businessName . ' now or save your reward for later!';
     $category = 'default';
 
     if (strtolower($notifiable->pushToken->device) == 'ios') {
@@ -71,6 +73,12 @@ class LoyaltyRewardEarned extends Notification
           'customMessage' => $body,
           'sound' => 'default',
           'category' => $category,
+          "force-start" => 1,
+          'content-available' => 1,
+          'no-cache' => 1,
+          'custom' => [
+            'businessName' => $businessName,
+          ]
         ]
       ];
     }

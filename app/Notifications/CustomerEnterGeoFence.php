@@ -38,11 +38,11 @@ class CustomerEnterGeoFence extends Notification
    */
   public function toArray($notifiable)
   {
+    
+    $businessName = $this->profile->business_name;
     $title = 'Pockeyt Pay Available';
-    $body = 'Pockeyt Pay available for ' . $this->profile->business_name . '. Just say you are paying with Pockeyt!';
+    $body = 'Pockeyt Pay available for ' . $businessName . '. Just say you are paying with Pockeyt!';
     $category = 'default';
-    $locKey = '1';
-
     if (strtolower($notifiable->pushToken->device) == 'ios') {
       return [
         'aps' => [
@@ -63,10 +63,16 @@ class CustomerEnterGeoFence extends Notification
     } else {
       return [
         'data' => [
-          'title' => $title,
-          'body' => $body,
+          'customTitle' => $title,
+          'customMessage' => $body,
           'sound' => 'default',
           'category' => $category,
+          "force-start" => 1,
+          'content-available' => 1,
+          'no-cache' => 1,
+          'custom' => [
+            'businessName' => $businessName,
+          ]
         ]
       ];
     }
