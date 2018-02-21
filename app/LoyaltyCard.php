@@ -23,7 +23,7 @@ class LoyaltyCard extends Model
   }
 
   public function loyaltyProgram() {
-    return $this->belongsTo('App\loyaltyProgram');
+    return $this->belongsTo('App\LoyaltyProgram');
   }
 
   public static function updateWithTransactions($user, $profile, $transaction) {
