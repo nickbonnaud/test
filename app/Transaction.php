@@ -372,7 +372,7 @@ class Transaction extends Model
 
   public function sendFixTransactionNotification($previousNotifCount = null) {
     if (!$previousNotifCount) {
-      $previousNotifCount = $this->user->notifications()->where('data->data->custom->transactionId', $this->id)->count();
+      $previousNotifCount = $this->user->notifications()->where('data->data->custom->transactionId', $this->id)->where('type', 'App\Notifications\FixTransactionNotification')->count();
     }
     dd($previousNotifCount);
     $this->updateTransactionBeforeNotification();
