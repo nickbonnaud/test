@@ -25,8 +25,6 @@ class TransactionBillWasClosed extends Notification
   public function toArray($notifiable)
   {
     dd($this->transaction->total);
-
-    $total = number_format(round($this->transaction->total / 100, 2), 2);
     $businessName = $this->transaction->profile->business_name;
     $category = 'payment';
     $transactionId = $this->transaction->id;
