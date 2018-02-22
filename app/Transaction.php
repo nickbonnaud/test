@@ -68,8 +68,8 @@ class Transaction extends Model
   }
 
   public function setBillClosedAttribute($billClosed) {
-    if (($this->bill_closed == false && !is_null($this->bill_closed)) && $billClosed && !$this->is_refund && !$this->paid) {
-      
+    if (($this->bill_closed == false && !is_null($this->bill_closed)) && $billClosed && !$this->is_refund) {
+      $this->sendBillClosedNotification();
     }
     $this->attributes['bill_closed'] = $billClosed;
   }
