@@ -54,7 +54,7 @@ class InactiveCustomerManager extends Command
   }
 
   public function updateTransaction($transaction) {
-    $transaction->attributes['bill_closed'] = true;
+    $transaction['bill_closed'] = true;
     $transaction->status = 11;
     $transaction->save();
     return $transaction;
