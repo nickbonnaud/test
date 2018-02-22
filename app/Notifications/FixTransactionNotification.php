@@ -46,14 +46,14 @@ class FixTransactionNotification extends Notification
   public function toArray($notifiable)
   {
     $pluralizedTerm = $this->previousNotifCount > 1 ? 'notifications' : 'notification';
-    $total = round($this->transaction->total / 100, 2);
+    $total = number_format(round($this->transaction->total / 100, 2), 2);
     $businessName = $this->transaction->profile->business_name;
     $businessSlug = $this->transaction->profile->slug;
     $businessPhoneNumber = $this->transaction->profile->account->phone;
     $category = 'payment_rejected';
     $transactionId = $this->transaction->id;
-    $title = 'Please settle your $' . $total . ' bill with ' . $businessName . '.';
-    $inAppBody = 'Please resolve your bill dispute with ' . $businessName . ' and pay your bill. Failure to resolve your dispute will result in the automatic charge of $' . $total . ' after failing to respond to 3 Bill Notifications. You have been sent ' . $this->previousNotifCount . ' ' . $pluralizedTerm . '.';
+    $title = 'Please settle your bill with ' . $businessName . '.';
+    $inAppBody = 'Please resolve your bill dispute with ' . $businessName . '. Failure to resolve your dispute will result in the automatic charge of your total bill, $' . $total . ' plus your default tip. You will be sent ' . (2 - $this->previousNotifCount) . ' ' . $pluralizedTerm . '.';
     
     if (strtolower($notifiable->pushToken->device) == 'ios') {
       return [

@@ -94,10 +94,9 @@ class InactiveCustomerManager extends Command
     switch ($previousNotifCount) {
       case 1:
       case 2:
-      case 3:
         $transaction->sendFixTransactionNotification($previousNotifCount);
         break;
-      case 4:
+      case 3:
         $transaction->processCharge();
         $userLocation->delete();
     }
