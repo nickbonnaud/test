@@ -10,6 +10,7 @@ use App\Notifications\TransactionBillWasClosed;
 use App\Notifications\PayOrKeepOpenNotification;
 use App\Notifications\CustomerRedeemDeal;
 use App\Notifications\FixTransactionNotification;
+use App\Notifications\AutoPayNotification;
 use App\Events\TransactionError;
 use App\Events\TransactionSuccess;
 use App\Events\TransactionsChange;
@@ -378,6 +379,10 @@ class Transaction extends Model
 
   public function sendPayOrKeepOpenNotification() {
     $this->user->notify(new PayOrKeepOpenNotification($this));
+  }
+
+  public function sendAutoPayNotification($reason) {
+    $this->user->notify(new AutoPayNotification($this, $reason));
   }
 
   public function checkRecentSentNotification($classType = null) {

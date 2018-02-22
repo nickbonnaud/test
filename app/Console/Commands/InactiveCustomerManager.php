@@ -98,7 +98,9 @@ class InactiveCustomerManager extends Command
         break;
       case 3:
         $transaction->processCharge();
+        $transaction->sendAutoPayNotification('no_response_error');
         $userLocation->delete();
+        break;
     }
   }
 }
