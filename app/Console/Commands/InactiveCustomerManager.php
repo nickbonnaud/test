@@ -53,7 +53,7 @@ class InactiveCustomerManager extends Command
   }
 
   public static function sendNotificationOrPay($lastNotification, $transaction, $userLocation) {
-    dd(str_replace_first("App\\Notifications\\",'', $lastNotification->type));
+    dd($transaction->status);
     switch (str_replace_first("App\\Notifications\\",'', $lastNotification->type)) {
       case 'FixTransactionNotification':
         self::fixTransactionOrPay($lastNotification, $transaction, $userLocation);
