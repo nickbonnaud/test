@@ -32,6 +32,7 @@ class InactiveCustomerManager extends Command
 
     foreach ($userLocations as $userLocation) {
       if ($transaction = $userLocation->checkForUnpaidTransactionOnDelete()) {
+        dd($transaction);
         if ($lastNotification = self::getLastNotification($transaction)) {
           self::sendNotificationOrPay($lastNotification, $transaction, $userLocation);
         } else {
@@ -53,7 +54,6 @@ class InactiveCustomerManager extends Command
   }
 
   public static function sendNotificationOrPay($lastNotification, $transaction, $userLocation) {
-    dd($transaction->status);
     switch (str_replace_first("App\\Notifications\\",'', $lastNotification->type)) {
       case 'FixTransactionNotification':
         self::fixTransactionOrPay($lastNotification, $transaction, $userLocation);
