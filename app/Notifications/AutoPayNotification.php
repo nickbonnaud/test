@@ -26,9 +26,7 @@ class AutoPayNotification extends Notification
 
   public function toArray($notifiable)
   {
-    $unFormattedTotal = round($this->transaction->total / 100, 2);
-    $total = number_format($unFormattedTotal, 2);
-    dd($total);
+    $total = number_format(round($this->transaction->total / 100, 2), 2);
     $businessName = $this->transaction->profile->business_name;
     $businessSlug = $this->transaction->profile->slug;
     $transactionId = $this->transaction->id;
