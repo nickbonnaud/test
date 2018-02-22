@@ -51,7 +51,6 @@ class InactiveCustomerManager extends Command
 
   public static function getLastNotification($transaction) {
     $notification = $transaction->user->notifications()->where('data->data->custom->transactionId', $transaction->id)->first();
-    dd($notification);
     return $notification;
   }
 
@@ -62,6 +61,7 @@ class InactiveCustomerManager extends Command
   }
 
   public static function sendNotificationOrPay($lastNotification, $transaction, $userLocation) {
+    dd(str_replace_first("App\\Notifications\\",'', $lastNotification->type));
     switch (str_replace_first("App\\Notifications\\",'', $lastNotification->type)) {
       case 'FixTransactionNotification':
         self::fixTransactionOrPay($lastNotification, $transaction, $userLocation);
@@ -71,6 +71,7 @@ class InactiveCustomerManager extends Command
         $userLocation->delete();
         break;
       case 'TransactionBillWasClosed':
+        dd('here');
         $transaction->sendPayOrKeepOpenNotification();
         break;
     }
