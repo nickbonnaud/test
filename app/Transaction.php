@@ -378,6 +378,7 @@ class Transaction extends Model
   }
 
   public function sendPayOrKeepOpenNotification() {
+    dd('inside trans');
     $this->user->notify(new PayOrKeepOpenNotification($this));
   }
 

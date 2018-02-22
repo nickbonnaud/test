@@ -70,7 +70,6 @@ class InactiveCustomerManager extends Command
         $userLocation->delete();
         break;
       case 'TransactionBillWasClosed':
-        dd('here');
         $transaction->sendPayOrKeepOpenNotification();
         break;
     }
