@@ -25,7 +25,8 @@ class PayOrKeepOpenNotification extends Notification
 
   public function toArray($notifiable)
   {
-    $total = numberFormat(round($this->transaction->total / 100, 2), 2);
+    dd('here');
+    $total = number_format(round($this->transaction->total / 100, 2), 2);
     $businessName = $this->transaction->profile->business_name;
     $businessSlug = $this->transaction->profile->slug;
     $category = 'pay_or_keep';
