@@ -32,6 +32,7 @@ class InactiveCustomerManager extends Command
 
     foreach ($userLocations as $userLocation) {
       if ($transaction = $userLocation->checkForUnpaidTransactionOnDelete()) {
+        dd($transaction);
         if ($lastNotification = self::getLastNotification($transaction)) {
           self::sendNotificationOrPay($lastNotification, $transaction, $userLocation);
         } else {
