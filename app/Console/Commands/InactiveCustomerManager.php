@@ -68,7 +68,7 @@ class InactiveCustomerManager extends Command
         break;
       case 'TransactionBillWasClosed':
         if (($transaction->status == 2) || ($transaction->status == 3) || ($transaction->status == 4)) {
-          $transaction->sendFixTransactionNotification(0);
+          $transaction->sendFixTransactionNotification();
         } else {
           $transaction->sendPayOrKeepOpenNotification();
         }
