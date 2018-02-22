@@ -36,7 +36,7 @@ class InactiveCustomerManager extends Command
           self::sendNotificationOrPay($lastNotification, $transaction, $userLocation);
         } else {
           if (($transaction->status == 2) || ($transaction->status == 3) || ($transaction->status == 4)) {
-            $transaction->sendFixTransactionNotification(0);
+            self::fixTransactionOrPay($transaction, $userLocation);
           } else {
             $transaction->sendPayOrKeepOpenNotification();
           }
@@ -55,11 +55,11 @@ class InactiveCustomerManager extends Command
   public static function sendNotificationOrPay($lastNotification, $transaction, $userLocation) {
     switch (str_replace_first("App\\Notifications\\",'', $lastNotification->type)) {
       case 'FixTransactionNotification':
-        self::fixTransactionOrPay($lastNotification, $transaction, $userLocation);
+        self::fixTransactionOrPay($transaction, $userLocation);
         break;
       case 'PayOrKeepOpenNotification':
         if (($transaction->status == 2) || ($transaction->status == 3) || ($transaction->status == 4)) {
-          $transaction->sendFixTransactionNotification();
+          self::fixTransactionOrPay($transaction, $userLocation);
         } else {
           $transaction->processCharge();
           $transaction->sendAutoPayNotification('no_response_exit');
@@ -68,7 +68,7 @@ class InactiveCustomerManager extends Command
         break;
       case 'TransactionBillWasClosed':
         if (($transaction->status == 2) || ($transaction->status == 3) || ($transaction->status == 4)) {
-          $transaction->sendFixTransactionNotification();
+          self::fixTransactionOrPay($transaction, $userLocation);
         } else {
           $transaction->sendPayOrKeepOpenNotification();
         }
@@ -76,24 +76,13 @@ class InactiveCustomerManager extends Command
     }
   }
 
-  public static function fixTransactionOrPay($lastNotification, $transaction, $userLocation) {
-
+  public static function fixTransactionOrPay($transaction, $userLocation) {
     $previousNotifCount = $transaction->user->notifications()
       ->where('data->data->custom->transactionId', $transaction->id)
-      ->where('type', $lastNotification->type)->count();
+      ->where('type', 'App\Notifications\FixTransactionNotification')->count();
 
-
-    if ($previousNotifCount == 0) {
-      $previousNotifs = $transaction->user->notifications()
-        ->where('type', $lastNotification->type)->get();
-      $previousNotifCount = 0;
-      foreach ($previousNotifs as $previousNotif) {
-        if ($previousNotif->data['data']['custom']['transactionId'] == $transaction->id) {
-          $previousNotifCount = $previousNotifCount + 1;
-        }
-      }
-    }
     switch ($previousNotifCount) {
+      case 0:
       case 1:
       case 2:
         $transaction->sendFixTransactionNotification($previousNotifCount);

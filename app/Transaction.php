@@ -370,10 +370,7 @@ class Transaction extends Model
     $this->user->notify(new TransactionBillWasClosed($this));
   }
 
-  public function sendFixTransactionNotification($previousNotifCount = null) {
-    if (!$previousNotifCount) {
-      $previousNotifCount = $this->user->notifications()->where('data->data->custom->transactionId', $this->id)->where('type', 'App\Notifications\FixTransactionNotification')->count();
-    }
+  public function sendFixTransactionNotification($previousNotifCount) {
     $this->updateTransactionBeforeNotification();
     $this->user->notify(new FixTransactionNotification($this, $previousNotifCount));
   }
