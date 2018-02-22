@@ -60,7 +60,7 @@ class InactiveCustomerManager extends Command
         break;
       case 'PayOrKeepOpenNotification':
         if (($transaction->status == 2) || ($transaction->status == 3) || ($transaction->status == 4)) {
-          $transaction->sendFixTransactionNotification(0);
+          $transaction->sendFixTransactionNotification();
         } else {
           $transaction->processCharge();
           $transaction->sendAutoPayNotification('no_response_exit');
