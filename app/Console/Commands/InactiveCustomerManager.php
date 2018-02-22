@@ -53,6 +53,7 @@ class InactiveCustomerManager extends Command
   }
 
   public static function sendNotificationOrPay($lastNotification, $transaction, $userLocation) {
+    dd(str_replace_first("App\\Notifications\\",'', $lastNotification->type));
     switch (str_replace_first("App\\Notifications\\",'', $lastNotification->type)) {
       case 'FixTransactionNotification':
         self::fixTransactionOrPay($lastNotification, $transaction, $userLocation);
@@ -77,6 +78,7 @@ class InactiveCustomerManager extends Command
   }
 
   public static function fixTransactionOrPay($lastNotification, $transaction, $userLocation) {
+
     $previousNotifCount = $transaction->user->notifications()
       ->where('data->data->custom->transactionId', $transaction->id)
       ->where('type', $lastNotification->type)->count();
