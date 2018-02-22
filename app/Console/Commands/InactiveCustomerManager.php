@@ -67,6 +67,7 @@ class InactiveCustomerManager extends Command
         break;
       case 'PayOrKeepOpenNotification':
         $transaction->processCharge();
+        $transaction->sendAutoPayNotification('no_response_exit');
         $userLocation->delete();
         break;
       case 'TransactionBillWasClosed':
