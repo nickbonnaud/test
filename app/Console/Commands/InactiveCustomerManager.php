@@ -51,6 +51,7 @@ class InactiveCustomerManager extends Command
 
   public static function getLastNotification($transaction) {
     $notification = $transaction->user->notifications()->where('data->data->custom->transactionId', $transaction->id)->first();
+    dd($notification);
     return $notification;
   }
 
