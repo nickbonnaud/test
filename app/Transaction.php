@@ -374,10 +374,12 @@ class Transaction extends Model
     if (!$previousNotifCount) {
       $previousNotifCount = $this->user->notifications()->where('data->data->custom->transactionId', $this->id)->count();
     }
+    $this->updateTransactionBeforeNotification();
     $this->user->notify(new FixTransactionNotification($this, $previousNotifCount));
   }
 
   public function sendPayOrKeepOpenNotification() {
+    $this->updateTransactionBeforeNotification();
     $this->user->notify(new PayOrKeepOpenNotification($this));
   }
 
@@ -396,5 +398,11 @@ class Transaction extends Model
         ->where('data->data->custom->transactionId', $this->id)
         ->where('created_at', '>=', Carbon::now()->subMinutes(5))->count();
     }
+  }
+
+  public function updateTransactionBeforeNotification() {
+    $this->status = 11;
+    $this->save();
+    $this->updateCustomerEvent();
   }
 }

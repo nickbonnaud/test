@@ -36,10 +36,8 @@ class InactiveCustomerManager extends Command
           self::sendNotificationOrPay($lastNotification, $transaction, $userLocation);
         } else {
           if (($transaction->status == 2) || ($transaction->status == 3) || ($transaction->status == 4)) {
-            $transaction = self::updateTransaction($transaction);
             $transaction->sendFixTransactionNotification(0);
           } else {
-            $transaction = self::updateTransaction($transaction);
             $transaction->sendPayOrKeepOpenNotification();
           }
         }
@@ -52,12 +50,6 @@ class InactiveCustomerManager extends Command
   public static function getLastNotification($transaction) {
     $notification = $transaction->user->notifications()->where('data->data->custom->transactionId', $transaction->id)->first();
     return $notification;
-  }
-
-  public function updateTransaction($transaction) {
-    $transaction->status = 11;
-    $transaction->save();
-    return $transaction;
   }
 
   public static function sendNotificationOrPay($lastNotification, $transaction, $userLocation) {
