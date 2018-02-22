@@ -35,7 +35,8 @@ class InactiveCustomerManager extends Command
         if ($lastNotification = self::getLastNotification($transaction)) {
           self::sendNotificationOrPay($lastNotification, $transaction, $userLocation);
         } else {
-          if ($transaction->status == 2) {
+          if (($transaction->status == 2) || ($transaction->status == 3) || ($transaction->status == 4)) {
+            $transaction = self::updateTransaction($transaction);
             $transaction->sendFixTransactionNotification(0);
           } else {
             $transaction = self::updateTransaction($transaction);

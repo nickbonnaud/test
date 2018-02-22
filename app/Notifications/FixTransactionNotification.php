@@ -48,21 +48,19 @@ class FixTransactionNotification extends Notification
     $pluralizedTerm = $this->previousNotifCount > 1 ? 'notifications' : 'notification';
     $total = round($this->transaction->total / 100, 2);
     $businessName = $this->transaction->profile->business_name;
-    $businessLogo = $this->transaction->profile->logo->url;
+    $businessSlug = $this->transaction->profile->slug;
     $businessPhoneNumber = $this->transaction->profile->account->phone;
     $category = 'payment_rejected';
-    $locKey = '1';
     $transactionId = $this->transaction->id;
-    $businessId = $this->transaction->profile->id;
     $title = 'Please settle your $' . $total . ' bill with ' . $businessName . '.';
-    $inAppMessage = 'Please resolve your bill dispute with ' . $businessName . ' and pay your bill. Failure to resolve your dispute will result in the automatic charge of $' . $total . ' after failing to respond to 3 Bill Notifications. You have been sent ' . $this->previousNotifCount . ' ' . $pluralizedTerm . '.';
+    $inAppBody = 'Please resolve your bill dispute with ' . $businessName . ' and pay your bill. Failure to resolve your dispute will result in the automatic charge of $' . $total . ' after failing to respond to 3 Bill Notifications. You have been sent ' . $this->previousNotifCount . ' ' . $pluralizedTerm . '.';
     
     if (strtolower($notifiable->pushToken->device) == 'ios') {
       return [
         'aps' => [
           'alert' => [
             'title' => $title,
-            'body' => $inAppMessage
+            'body' => $inAppBody
           ],
           'sound' => 'default'
         ],
@@ -71,9 +69,7 @@ class FixTransactionNotification extends Notification
           'locKey' => $locKey,
           'custom' => [
             'transactionId' => $transactionId,
-            'businessId' => $businessId,
-            'inAppMessage' => $inAppMessage,
-            'businessLogo'=> $businessLogo,
+            'inAppMessage' => $inAppBody,
             'phoneNumber' => $businessPhoneNumber
           ]
         ]
@@ -81,32 +77,19 @@ class FixTransactionNotification extends Notification
     } else {
       return [
         'data' => [
-          'title' => $title,
-          'body' => $inAppMessage,
+          'customTitle' => $title,
+          'customMessage' => $inAppBody,
           'sound' => 'default',
           'category' => $category,
           "force-start" => 1,
-          'actions' => [
-            (object) [
-              'title' => 'CONFIRM',
-              'callback' => 'acceptCharge',
-              'foreground' => true
-            ],
-            (object) [
-              'title' => 'CUSTOM TIP',
-              'callback' => 'changeTip',
-              'foreground' => true
-            ],
-             (object) [
-              'title' => 'CONTACT',
-              'callback' => 'contactBusiness',
-              'foreground' => true
-            ]
-          ],
+          'content-available' => 1,
+          'no-cache' => 1,
           'custom' => [
             'transactionId' => $transactionId,
-            'businessId' => $businessId,
-            'phoneNumber' => $businessPhoneNumber
+            'businessName' => $businessName,
+            'businessSlug' => $businessSlug,
+            'phoneNumber' => $businessPhoneNumber,
+            'inAppBody' => $inAppBody
           ]
         ]
       ];
