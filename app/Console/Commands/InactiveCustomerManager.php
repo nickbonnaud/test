@@ -32,7 +32,6 @@ class InactiveCustomerManager extends Command
 
     foreach ($userLocations as $userLocation) {
       if ($transaction = $userLocation->checkForUnpaidTransactionOnDelete()) {
-        dd($transaction);
         if ($lastNotification = self::getLastNotification($transaction)) {
           self::sendNotificationOrPay($lastNotification, $transaction, $userLocation);
         } else {
@@ -67,12 +66,20 @@ class InactiveCustomerManager extends Command
         self::fixTransactionOrPay($lastNotification, $transaction, $userLocation);
         break;
       case 'PayOrKeepOpenNotification':
-        $transaction->processCharge();
-        $transaction->sendAutoPayNotification('no_response_exit');
-        $userLocation->delete();
+        if (($transaction->status == 2) || ($transaction->status == 3) || ($transaction->status == 4)) {
+          $transaction->sendFixTransactionNotification(0);
+        } else {
+          $transaction->processCharge();
+          $transaction->sendAutoPayNotification('no_response_exit');
+          $userLocation->delete();
+        }
         break;
       case 'TransactionBillWasClosed':
-        $transaction->sendPayOrKeepOpenNotification();
+        if (($transaction->status == 2) || ($transaction->status == 3) || ($transaction->status == 4)) {
+          $transaction->sendFixTransactionNotification(0);
+        } else {
+          $transaction->sendPayOrKeepOpenNotification();
+        }
         break;
     }
   }
