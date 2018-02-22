@@ -374,8 +374,6 @@ class Transaction extends Model
     if (!$previousNotifCount) {
       $previousNotifCount = $this->user->notifications()->where('data->data->custom->transactionId', $this->id)->count();
     }
-    $this->status = 11;
-    $this->save();
     $this->user->notify(new FixTransactionNotification($this, $previousNotifCount));
   }
 
