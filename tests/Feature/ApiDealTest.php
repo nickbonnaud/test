@@ -45,7 +45,7 @@ class ApiDealTest extends TestCase
 		$user = create('App\User');
 		$photo = create('App\Photo');
 		$profile = create('App\Profile', ['logo_photo_id' => $photo->id]);
-		$post = create('App\Post', ['profile_id' => $profile->id, 'is_redeemable' => true, 'deal_item' => 'Coffee', 'price' => 1000, 'end_date' => Carbon::tomorrow(), 'photo_id' => $photo->id]);
+		$post = create('App\Post', ['profile_id' => $profile->id, 'is_redeemable' => true, 'deal_item' => 'Coffee', 'price' => 1000, 'end_date' => Carbon::tomorrow(), 'photo_id' => $photo->id, 'message' => 'Get this awesome deal now!']);
 
 		$transaction = create('App\Transaction', ['profile_id' => $profile->id, 'user_id' => $user->id, 'paid' => true, 'refund_full' => false, 'status' => 20, 'deal_id' => $post->id, 'redeemed' => false]);
 
@@ -57,6 +57,7 @@ class ApiDealTest extends TestCase
 
 
 		$response = $this->get('/api/mobile/transactions?deals=1', $this->headers($user))->getData();
+    dd($response);
 		$this->assertCount(2, $response->data);
 	}
 

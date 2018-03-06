@@ -11,19 +11,19 @@ class ApiTransactionResource extends Resource
     if ($request->has('deals')) {
       return [
         'id' => $this->id,
-        'business_name' => $this->profile->business_name,
-        'business_slug' => $this->profile->slug,
-        'logo' => $this->profile->logo->apiUrl,
-        'tax' => $this->tax,
-        'net_sales' => $this->net_sales,
-        'total' => $this->total,
         'redeemed' => $this->redeemed,
         'purchased_on' => $this->created_at,
         'post' => [
-          'message' => $this->deal->messge,
+          'id' => $this->deal->id,
+          'message' => $this->deal->message,
           'deal_item' => $this->deal->deal_item,
-          'photo' => $this->deal->photo->apiUrl,
-          
+          'photo_thumb_url' => $this->deal->photo->apiThumbnailUrl,
+          'price' => $this->deal->price,
+          'logo' => $this->profile->logo->apiUrl,
+          'business_name' => $this->profile->business_name,
+          'published_at' => $this->deal->published_at,
+          'end_date' => $this->deal->end_date,
+          'is_redeemable' => $this->deal->is_redeemable,
         ]
       ];
     } else {
