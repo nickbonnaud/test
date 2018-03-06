@@ -20,8 +20,13 @@ class TransactionsController extends Controller {
 
 	public function index(Request $request, TransactionFilters $filters) {
 		$user = JWTAuth::parseToken()->authenticate();
-		$transactions = Transaction::apiFilter($filters, $user)->paginate(10)->appends(Input::except('page'));
-		return ApiTransactionResource::collection($transactions);
+		if ($request->has('dealsAll')) {
+			$transactions = Transaction::apiFilter($filters, $user)->get();
+			return response()->json(['data' => $transactions]);
+		} else {
+			$transactions = Transaction::apiFilter($filters, $user)->paginate(10)->appends(Input::except('page'));
+			return ApiTransactionResource::collection($transactions);
+		}
 	}
 
 	public function update(Profile $profile, Request $request) {
