@@ -28,6 +28,12 @@ class DealsController extends Controller {
 		$userLocation = UserLocation::where('user_id', $user->id)->where('profile_id', $transaction->profile->id)->first();
 		$user = new UserLocationResource($userLocation);
 		event(new CustomerRedeemItem($user, $transaction->profile, $type));
-		return response()->json(['success' => true], 200);
+		$transaction = $transaction->fresh();
+		$dealId = [
+			'deal_id' => $transaction->deal_id,
+			'redeemed' => $transaction->redeemed,
+			'created_at' => $transaction->created_at
+		];
+		return response()->json(['success' => true, 'dealId' => $dealId], 200);
 	}
 }

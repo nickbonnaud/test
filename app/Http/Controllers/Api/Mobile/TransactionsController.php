@@ -58,7 +58,13 @@ class TransactionsController extends Controller {
 		if ($request->deal_id) {
 			$success = $transaction->processDeal($request->deal_id);
 			$type = 'user_deal';
-			return response()->json(['success' => $success, 'type' => $type], 200);
+			$transaction = $transaction->fresh();
+			$dealId = [
+				'deal_id' => $transaction->deal_id,
+				'redeemed' => $transaction->redeemed,
+				'created_at' => $transaction->created_at
+			];
+			return response()->json(['success' => $success, 'type' => $type, 'dealId' => $dealId], 200);
 		}
 	}
 }
