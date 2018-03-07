@@ -7,7 +7,7 @@ use Carbon\Carbon;
 class TransactionFilters extends Filters
 {
 
-  protected $filters = ['defaultDate', 'customDate', 'pending', 'finalized', 'recent', 'deals', 'customerPending', 'dealsAll'];
+  protected $filters = ['defaultDate', 'customDate', 'pending', 'finalized', 'recent', 'redeemedDeals', 'unRedeemedDeals', 'customerPending', 'dealsAll'];
 
   protected function defaultDate() {
   	$currentDate = Carbon::now();
@@ -48,12 +48,22 @@ class TransactionFilters extends Filters
       ->orderBy('created_at', 'desc');
   }
 
-  protected function deals() {
-   return $this->builder->with('deal')->where('status', '=', '20')
-    ->where('paid', '=', true)
-    ->whereNotNull('deal_id')
-    ->where('refund_full', '=', false)
-    ->orderBy('created_at', 'desc');
+  protected function redeemedDeals() {
+    return $this->builder->with('deal')->where('status', '=', '20')
+      ->where('paid', '=', true)
+      ->whereNotNull('deal_id')
+      ->where('refund_full', '=', false)
+      ->where('redeemed', '=', true)
+      ->orderBy('created_at', 'desc');
+  }
+
+  protected function unRedeemedDeals() {
+    return $this->builder->with('deal')->where('status', '=', '20')
+      ->where('paid', '=', true)
+      ->whereNotNull('deal_id')
+      ->where('refund_full', '=', false)
+      ->where('redeemed', '=', false)
+      ->orderBy('created_at', 'desc');
   }
 
   protected function dealsAll() {

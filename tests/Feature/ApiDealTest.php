@@ -23,7 +23,7 @@ class ApiDealTest extends TestCase
 
 		$transaction = create('App\Transaction', ['profile_id' => $profile->id, 'user_id' => $user->id, 'paid' => true, 'refund_full' => false, 'status' => 20, 'deal_id' => $post->id, 'redeemed' => false]);
 
-		$this->json('GET', '/api/mobile/transactions?deals=1')->assertStatus(401);
+		$this->json('GET', '/api/mobile/transactions?redeemedDeals=1')->assertStatus(401);
 	}
 
 	function test_a_user_not_owning_deals_cannot_retrieve_deals() {
@@ -36,29 +36,53 @@ class ApiDealTest extends TestCase
 
 		$transaction = create('App\Transaction', ['profile_id' => $profile->id, 'user_id' => $user->id, 'paid' => true, 'refund_full' => false, 'status' => 20, 'deal_id' => $post->id, 'redeemed' => false]);
 
-		$response = $this->get('/api/mobile/transactions?deals=1', $this->headers($unAuthorizedUser))->getData();
+		$response = $this->get('/api/mobile/transactions?redeemedDeals=1', $this->headers($unAuthorizedUser))->getData();
 		$this->assertCount(0, $response->data);
 	}
 
-	function test_a_user_owning_deals_can_retrieve_deals() {
+	function test_a_user_owning_deals_can_retrieve_redeemedDeals() {
 		Notification::fake();
 		$user = create('App\User');
 		$photo = create('App\Photo');
 		$profile = create('App\Profile', ['logo_photo_id' => $photo->id]);
 		$post = create('App\Post', ['profile_id' => $profile->id, 'is_redeemable' => true, 'deal_item' => 'Coffee', 'price' => 1000, 'end_date' => Carbon::tomorrow(), 'photo_id' => $photo->id, 'message' => 'Get this awesome deal now!']);
 
-		$transaction = create('App\Transaction', ['profile_id' => $profile->id, 'user_id' => $user->id, 'paid' => true, 'refund_full' => false, 'status' => 20, 'deal_id' => $post->id, 'redeemed' => false]);
+		$transaction = create('App\Transaction', ['profile_id' => $profile->id, 'user_id' => $user->id, 'paid' => true, 'refund_full' => false, 'status' => 20, 'deal_id' => $post->id, 'redeemed' => true]);
 
 		$profileOne = create('App\Profile', ['logo_photo_id' => $photo->id]);
 		$transaction = create('App\Transaction', ['profile_id' => $profileOne->id, 'user_id' => $user->id, 'paid' => true, 'refund_full' => false, 'status' => 20, 'deal_id' => $post->id, 'redeemed' => true]);
+
+    $transaction = create('App\Transaction', ['profile_id' => $profileOne->id, 'user_id' => $user->id, 'paid' => true, 'refund_full' => false, 'status' => 20, 'deal_id' => $post->id, 'redeemed' => false]);
 
 		$notUser = create('App\User');
 		$transactionNotUser = create('App\Transaction', ['profile_id' => $profileOne->id, 'user_id' => $notUser->id, 'paid' => true, 'refund_full' => false, 'status' => 20, 'deal_id' => $post->id, 'redeemed' => true]);
 
 
-		$response = $this->get('/api/mobile/transactions?deals=1', $this->headers($user))->getData();
+		$response = $this->get('/api/mobile/transactions?redeemedDeals=1', $this->headers($user))->getData();
 		$this->assertCount(2, $response->data);
 	}
+
+  function test_a_user_owning_deals_can_retrieve_unredeemedDeals() {
+    Notification::fake();
+    $user = create('App\User');
+    $photo = create('App\Photo');
+    $profile = create('App\Profile', ['logo_photo_id' => $photo->id]);
+    $post = create('App\Post', ['profile_id' => $profile->id, 'is_redeemable' => true, 'deal_item' => 'Coffee', 'price' => 1000, 'end_date' => Carbon::tomorrow(), 'photo_id' => $photo->id, 'message' => 'Get this awesome deal now!']);
+
+    $transaction = create('App\Transaction', ['profile_id' => $profile->id, 'user_id' => $user->id, 'paid' => true, 'refund_full' => false, 'status' => 20, 'deal_id' => $post->id, 'redeemed' => true]);
+
+    $profileOne = create('App\Profile', ['logo_photo_id' => $photo->id]);
+    $transaction = create('App\Transaction', ['profile_id' => $profileOne->id, 'user_id' => $user->id, 'paid' => true, 'refund_full' => false, 'status' => 20, 'deal_id' => $post->id, 'redeemed' => true]);
+
+    $transaction = create('App\Transaction', ['profile_id' => $profileOne->id, 'user_id' => $user->id, 'paid' => true, 'refund_full' => false, 'status' => 20, 'deal_id' => $post->id, 'redeemed' => false]);
+
+    $notUser = create('App\User');
+    $transactionNotUser = create('App\Transaction', ['profile_id' => $profileOne->id, 'user_id' => $notUser->id, 'paid' => true, 'refund_full' => false, 'status' => 20, 'deal_id' => $post->id, 'redeemed' => false]);
+
+
+    $response = $this->get('/api/mobile/transactions?unRedeemedDeals=1', $this->headers($user))->getData();
+    $this->assertCount(1, $response->data);
+  }
 
   function test_an_unauthorized_user_cannot_retrieve_all_users_purchased_deals() {
     $this->withExceptionHandling();

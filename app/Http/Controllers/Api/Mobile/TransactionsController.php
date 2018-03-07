@@ -24,7 +24,11 @@ class TransactionsController extends Controller {
 			$transactions = Transaction::apiFilter($filters, $user)->get();
 			return response()->json(['data' => $transactions]);
 		} else {
-			$transactions = Transaction::apiFilter($filters, $user)->paginate(10)->appends(Input::except('page'));
+			if ($request->has('unRedeemedDeals')) {
+				$transactions = Transaction::apiFilter($filters, $user)->get();
+			} else {
+				$transactions = Transaction::apiFilter($filters, $user)->paginate(10)->appends(Input::except('page'));
+			}
 			return ApiTransactionResource::collection($transactions);
 		}
 	}

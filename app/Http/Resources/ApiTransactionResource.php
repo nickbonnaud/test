@@ -8,7 +8,7 @@ class ApiTransactionResource extends Resource
 {
   
   public function toArray($request) {
-    if ($request->has('deals')) {
+    if ($request->has('unRedeemedDeals') || $request->has('redeemedDeals')) {
       return [
         'id' => $this->id,
         'redeemed' => $this->redeemed,
