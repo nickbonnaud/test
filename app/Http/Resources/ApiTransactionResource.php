@@ -40,7 +40,8 @@ class ApiTransactionResource extends Resource
         'purchased_on' => $this->created_at,
         'status' => $this->status,
         'paid' => $this->paid,
-        'bill_closed' => $this->bill_closed
+        'bill_closed' => $this->bill_closed,
+        'updated_at' => $this->updated_at
       ];
     }
   }
