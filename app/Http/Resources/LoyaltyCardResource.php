@@ -15,7 +15,7 @@ class LoyaltyCardResource extends Resource
       'rewards_achieved' => $this->rewards_achieved,
       'is_increment' => $this->loyaltyProgram->is_increment,
       'purchases_required' => $this->loyaltyProgram->purchases_required,
-      'amount_required' => $this->loyaltyProgram->amount_required,
+      'amount_required' => $this->loyaltyProgram->getOriginal('amount_required'),
       'reward' => $this->loyaltyProgram->reward,
       'business_name' => $this->loyaltyProgram->profile->business_name,
       'logo' => $this->loyaltyProgram->profile->logo->apiThumbnailUrl,
