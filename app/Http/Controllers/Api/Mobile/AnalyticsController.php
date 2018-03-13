@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Mobile;
 
 use Validator;
+use JWTAuth;
 use App\PostAnalytics;
 use App\Post;
 use Illuminate\Http\Request;
@@ -24,7 +25,7 @@ class AnalyticsController extends Controller {
 		]);
 
 		if ($validator->fails()) {
-			return response()->json(['error' => 'unauthorized'], 401);
+			return response()->json(['success' => false], 401);
 		}
 
 		foreach ($request->analytics as $postAnalytic) {
