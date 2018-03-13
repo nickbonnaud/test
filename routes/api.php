@@ -72,5 +72,6 @@ Route::post('push-token', 'PushTokenController@store');
 // Pusher Auth
 Route::post('pusher/{user}', 'PusherController@authenticate');
 
-
+// Post Analytics routes
+Route::post('analytics/posts', 'AnalyticsController@store');
 

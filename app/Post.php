@@ -86,6 +86,20 @@ class Post extends Model {
     return $filters->apply($query);
   }
 
+  public function updateAnalytics($analytics) {
+    if (array_has($analytics, 'viewed')) {
+      $this->views = $this->views + 1;
+    }
+    if (array_has($analytics, 'bookmarked')) {
+      $this->bookmarks = $this->bookmarks + 1;
+    }
+    if (array_has($analytics, 'shared')) {
+      $this->shares = $this->shares + 1;
+    }
+    $this->total_interactions = $this->views + $this->bookmarks + $this->shares;
+    $this->save();
+  }
+
   public static function processSubscription($postData, $isFacebook) {
     if ($isFacebook) {
       self::getProfileOfPost($postData);
