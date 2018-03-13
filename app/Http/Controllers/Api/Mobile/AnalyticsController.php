@@ -25,7 +25,7 @@ class AnalyticsController extends Controller {
 		]);
 
 		if ($validator->fails()) {
-			return response()->json(['success' => false], 401);
+			return response()->json(['success' => false, 'errors' => $validator->errors()], 401);
 		}
 
 		foreach ($request->analytics as $postAnalytic) {
