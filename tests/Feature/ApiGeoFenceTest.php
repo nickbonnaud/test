@@ -57,6 +57,24 @@ class ApiGeoFenceTest extends TestCase
 		$this->assertCount(2, $response->data);
 	}
 
+	function test_an_authorized_user_is_returned_geofences_with_beacon_data() {
+		$user = create('App\User');
+		$logo = create('App\Photo');
+		$city = create('App\City');
+
+		$profile = create('App\Profile', ['logo_photo_id' => $logo->id, 'city_id' => $city->id]);
+		$beacon = create('App\Beacon', ['profile_id' => $profile->id]);
+		$account = create('App\Account', ['profile_id' => $profile->id, 'status' => 'boarded']);
+		$geoLocation = create('App\GeoLocation', ['profile_id' => $profile->id]);
+
+		$lat = $geoLocation->latitude;
+		$lng = $geoLocation->longitude;
+
+		$response = $this->get("/api/mobile/geofences?city={$city->slug}&lat={$lat}&lng=${lng}", $this->headers($user))->getData();
+
+		$this->assertEquals($beacon->identifier, $response->data[0]->beacon->identifier);
+	}
+
 	function test_an_unauthorized_user_in_geofence_is_not_stored_in_the_database() {
 		$this->withExceptionHandling();
 		$user = create('App\User');

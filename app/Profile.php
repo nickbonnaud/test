@@ -107,6 +107,10 @@ class Profile extends Model
     return $this->hasOne(GeoLocation::class);
   }
 
+  public function beacon() {
+    return $this->hasOne(Beacon::class);
+  }
+
   public function loyaltyProgram() {
     return $this->hasOne(LoyaltyProgram::class);
   }
