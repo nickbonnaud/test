@@ -14,10 +14,6 @@ class GeoLocationResource extends Resource
       'longitude' => $this->longitude,
       'logo' => $this->profile->logo->apiThumbnailUrl,
       'business_name' => $this->profile->business_name,
-      'beacon' => [
-        'uuid' => $this->profile->beacon->uuid,
-        'identifier' => $this->profile->beacon->identifier
-      ]
     ];
   }
 }
