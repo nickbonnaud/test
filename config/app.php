@@ -184,6 +184,7 @@ return [
         Edujugon\PushNotification\Providers\PushNotificationServiceProvider::class,
         Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
         \SocialiteProviders\Manager\ServiceProvider::class,
+        Barryvdh\Cors\ServiceProvider::class,
     ],
 
     /*
