@@ -21,7 +21,7 @@ class Post extends Model {
 	public static function boot() {
     parent::boot();
 
-    static::saving(function(Post $post) {
+    static::creating(function(Post $post) {
       $post->published_at = Carbon::now(new DateTimeZone(config('app.timezone')));
       if ($post->price) {
         $post->is_redeemable = true;
