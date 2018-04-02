@@ -11,6 +11,8 @@ use Illuminate\Http\Request;
 use App\Http\Resources\UserResource;
 use App\Http\Controllers\Controller;
 
+use Illuminate\Support\Facades\Log;
+
 class UsersController extends Controller {
 
 	public function __construct() {
@@ -28,6 +30,9 @@ class UsersController extends Controller {
 
 	public function update(Request $request) {
 		$user = JWTAuth::parseToken()->authenticate();
+		Log::info('~~~~~~~~~~~~~~~~~~~~~~');
+		Log::info($request->all());
+		Log::info($request->file('photo'));
 		$this->validateUserInfo($request, $user);
 		$user = $user->updateData($request->except('photo'), $request->file('photo'));
 
