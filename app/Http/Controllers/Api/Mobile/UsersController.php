@@ -11,8 +11,6 @@ use Illuminate\Http\Request;
 use App\Http\Resources\UserResource;
 use App\Http\Controllers\Controller;
 
-use Illuminate\Support\Facades\Log;
-
 class UsersController extends Controller {
 
 	public function __construct() {
@@ -30,10 +28,7 @@ class UsersController extends Controller {
 
 	public function update(Request $request) {
 		$user = JWTAuth::parseToken()->authenticate();
-		Log::info('before validate user info');
 		$this->validateUserInfo($request, $user);
-		Log::info('after validation');
-		Log::info($request->file('photo'));
 		$user = $user->updateData($request->except('photo'), $request->file('photo'));
 
     $user['token'] = JWTAuth::fromUser($user);
@@ -44,12 +39,9 @@ class UsersController extends Controller {
 	
 	// Validations for user
 	public function validateUserInfo($request, $user) {
-		Log::info('inside validate user info');
-		Log::info($request->file('photo'));
 		if ($request->input('email')) {
 			$this->validateEmailNameData($request, $user);
 		} elseif($request->file('photo')){
-			Log::info('validate photo');
 			$this->validatePhoto($request);
 		} elseif ($request->input('password')) {
 			$this->validatePassword($request, $user);
@@ -71,11 +63,6 @@ class UsersController extends Controller {
 	}
 
 	public function validatePhoto($request) {
-		Log::info('valide photo function');
-		Log::info($request);
-		Log::info($request->validate([
-      'photo' => 'mimes:jpg,jpeg,png,bmp',
-		]));
 		$request->validate([
       'photo' => 'mimes:jpg,jpeg,png,bmp',
 		]);
