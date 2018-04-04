@@ -23,18 +23,17 @@ class UserLocation extends Model {
     });
   }
 
-  public static function addUserLocations($locations, $user) {
-    foreach ($locations as $location) {
-      self::updateOrCreate(
-        ['profile_id' => $location['location_id'], 'user_id' => $user->id, 'exit_notification_sent' => false],
-        ['updated_at' => Carbon::now()]
-      );
-    }
-  }
-
-  public static function removeUserLocations($locations, $user) {
-    foreach ($locations as $location) {
-      $userLocation = self::where('user_id', '=', $user->id)->where('profile_id', '=', $location['location_id'])->first();
+  public static function addRemoveLocation($profileSlug, $action, $user) {
+    $profile = Profile::where('slug', $profileSlug)->first();
+    $userLocation = UserLocation::where('profile_id', $profile->id)->where('user_id', $user->id)->first();
+    if (!$userLocation && ($action == 'enter')) {
+      UserLocation::create([
+        'profile_id' => $profile->id,
+        'user_id' => $user->id
+      ]);
+    } elseif ($userLocation && ($action == 'enter')) {
+      $userLocation->touch();
+    } elseif ($userLocation && ($action == 'exit')) {
       $userLocation->removeLocation();
     }
   }

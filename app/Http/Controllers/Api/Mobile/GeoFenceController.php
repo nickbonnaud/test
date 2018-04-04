@@ -27,13 +27,7 @@ class GeoFenceController extends Controller {
 
 	public function update(Request $request) {
 		$user = JWTAuth::parseToken()->authenticate();
-		if (count($request->current) > 0) {
-			UserLocation::addUserLocations($request->current, $user);
-		}
-
-		if (count($request->remove) > 0) {
-			UserLocation::removeUserLocations($request->remove, $user);
-		}
+		UserLocation::addRemoveLocation($request->identifier, $request->action, $user);
 		return response()->json(['success' => true]);
 	}
 }

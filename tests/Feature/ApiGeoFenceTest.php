@@ -86,16 +86,15 @@ class ApiGeoFenceTest extends TestCase
 		$geoLocation = create('App\GeoLocation', ['profile_id' => $profile->id]);
 
 		$data = [
-			'current' => [
-				['location_id' => $profile->id, 'action' => 'enter']
-			],
-			'remove' => []
+			'identifier' => $profile->slug,
+			'action' => 'enter'
 		];
 
 		$this->json('POST', '/api/mobile/geofences', $data)->assertStatus(401);
 	}
 
 	function test_an_authorized_user_in_geofence_is_stored_in_the_database() {
+		Notification::fake();
 		$user = create('App\User');
 		$logo = create('App\Photo');
 		$city = create('App\City');
@@ -105,10 +104,8 @@ class ApiGeoFenceTest extends TestCase
 		$geoLocation = create('App\GeoLocation', ['profile_id' => $profile->id]);
 
 		$data = [
-			'current' => [
-				['location_id' => $profile->id, 'action' => 'enter']
-			],
-			'remove' => []
+			'identifier' => $profile->slug,
+			'action' => 'enter'
 		];
 
 		$this->json('POST', '/api/mobile/geofences', $data, $this->headers($user));
@@ -127,10 +124,8 @@ class ApiGeoFenceTest extends TestCase
 		$geoLocation = create('App\GeoLocation', ['profile_id' => $profile->id]);
 
 		$data = [
-			'current' => [
-				['location_id' => $profile->id, 'action' => 'enter']
-			],
-			'remove' => []
+			'identifier' => $profile->slug,
+			'action' => 'enter'
 		];
 
 		$this->json('POST', '/api/mobile/geofences', $data, $this->headers($user));
@@ -148,10 +143,8 @@ class ApiGeoFenceTest extends TestCase
 		$geoLocation = create('App\GeoLocation', ['profile_id' => $profile->id]);
 
 		$data = [
-			'current' => [
-				['location_id' => $profile->id, 'action' => 'enter']
-			],
-			'remove' => []
+			'identifier' => $profile->slug,
+			'action' => 'enter'
 		];
 
 		$this->json('POST', '/api/mobile/geofences', $data, $this->headers($user));
@@ -160,5 +153,44 @@ class ApiGeoFenceTest extends TestCase
       [$user],
       CustomerEnterGeoFence::class
     );
+	}
+
+	function test_an_authorized_user_exiting_geofence_is_removed_from_db() {
+		Notification::fake();
+		$user = create('App\User');
+		$logo = create('App\Photo');
+		$city = create('App\City');
+
+		$profile = create('App\Profile', ['logo_photo_id' => $logo->id, 'city_id' => $city->id]);
+		$account = create('App\Account', ['profile_id' => $profile->id]);
+		$geoLocation = create('App\GeoLocation', ['profile_id' => $profile->id]);
+		$userLocation = create('App\UserLocation', ['profile_id' => $profile->id, 'user_id' => $user->id]);
+		$this->assertDatabaseHas('user_locations', ['user_id' => $user->id, 'profile_id' => $profile->id]);
+		$data = [
+			'identifier' => $profile->slug,
+			'action' => 'exit'
+		];
+
+		$this->json('POST', '/api/mobile/geofences', $data, $this->headers($user));
+		$this->assertDatabaseMissing('user_locations', ['user_id' => $user->id, 'profile_id' => $profile->id]);
+	}
+
+	function test_an_authorized_user_in_geofence_update_model() {
+		Notification::fake();
+		$user = create('App\User');
+		$logo = create('App\Photo');
+		$city = create('App\City');
+
+		$profile = create('App\Profile', ['logo_photo_id' => $logo->id, 'city_id' => $city->id]);
+		$account = create('App\Account', ['profile_id' => $profile->id]);
+		$geoLocation = create('App\GeoLocation', ['profile_id' => $profile->id]);
+		$userLocation = create('App\UserLocation', ['profile_id' => $profile->id, 'user_id' => $user->id]);
+		$data = [
+			'identifier' => $profile->slug,
+			'action' => 'enter'
+		];
+
+		$this->json('POST', '/api/mobile/geofences', $data, $this->headers($user));
+		$this->assertNotEquals($userLocation->updated_at, $userLocation->fresh()->updated_at);
 	}
 }
