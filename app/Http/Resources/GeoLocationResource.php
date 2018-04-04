@@ -16,7 +16,7 @@ class GeoLocationResource extends Resource
       'business_name' => $this->profile->business_name,
       'beacon' => [
         'uuid' => $this->profile->beacon->uuid,
-        'identifier' => $this->profile->beacon->identifier
+        'identifier' => $this->profile_id
       ]
     ];
   }
