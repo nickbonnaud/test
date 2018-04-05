@@ -12,9 +12,9 @@ return [
         'apiKey' => env('FCM_SERVER_KEY'),
   ],
   'apn' => [
-      'certificate' => __DIR__ . '/iosCertificates/pushcert.pem',
+      'certificate' => __DIR__ . '/iosCertificates/devcert.pem',
       'passPhrase' => env('APN_PASSWORD'), //Optional
       // 'passFile' => __DIR__ . '/iosCertificates/yourKey.pem', //Optional
-      'dry_run' => true
+      'dry_run' => false
   ]
 ];
