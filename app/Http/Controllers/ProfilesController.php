@@ -8,9 +8,6 @@ use Illuminate\Http\Request;
 use App\Http\Requests\CreateProfileRequest;
 use App\Http\Requests\UpdateProfileRequest;
 
-use App\UserLocation;
-use App\User;
-
 class ProfilesController extends Controller
 {
     
@@ -95,12 +92,5 @@ class ProfilesController extends Controller
         $this->authorize('update', $profile);
         $profile->update($request->all());
         return redirect()->route('profiles.edit', ['profiles' => $profile->slug]);
-    }
-
-    public function test() {
-        $identifier = 'caffe-driade-with-an-incredibly-long-name-and-then-some-11';
-        $action = 'enter';
-        $user = User::where('id', 172)->first();
-        UserLocation::addRemoveLocation($identifier, $action, $user);
     }
 }
