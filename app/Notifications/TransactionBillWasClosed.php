@@ -36,12 +36,14 @@ class TransactionBillWasClosed extends Notification
         'aps' => [
           'alert' => [
             'title' => 'Pockeyt Pay',
-            'body' => 'Please swipe left or down to view bill and pay. You have been charged $' . $total . ' by ' . $businessName . '.'
+            'body' => 'Please swipe left or down to view bill and pay. You have been charged $' . $total . ' by ' . $businessName . '.',
+            'content-available' => 1,
+            'category' => $category,
           ],
           'sound' => 'default'
         ],
         'extraPayLoad' => [
-          'category' => $category,
+          'notId' => 1,
           'custom' => [
             'transactionId' => $transactionId,
             'businessName' => $businessName,

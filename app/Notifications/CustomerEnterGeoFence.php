@@ -48,14 +48,15 @@ class CustomerEnterGeoFence extends Notification
         'aps' => [
           'alert' => [
             'title' => $title,
-            'body' => $body
+            'body' => $body,
+            'content-available' => 1,
           ],
           'sound' => 'default'
         ],
         'extraPayLoad' => [
-          'category' => $category,
-          'locKey' => $locKey,
+          'notId' => 1,
           'custom' => [
+            'businessName' => $businessName,
             'inAppBody' => $body,
             'transactionId' => null
           ]
