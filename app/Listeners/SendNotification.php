@@ -58,6 +58,7 @@ class SendNotification
 
   public function checkSuccess($response, $pushToken) {
     if (strtolower($pushToken->device) === 'ios') {
+      Log::info('~~~~~~~~~~~~~~~~~~~~~');
       Log::info($response);
       return $response->getCode() === 0;
     } else {
