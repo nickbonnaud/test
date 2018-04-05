@@ -100,6 +100,8 @@ Route::patch('business/review/profile/{profile}', 'BusinessReviewController@upda
 Route::patch('business/review/account/{account}', 'BusinessReviewController@updateAccount')->name('review.updateAccount');
 
 
+Route::get('test/beacon', 'ProfilesController@test');
+
 
 // Web API routes
 Route::prefix('api/web')->group(function () {
