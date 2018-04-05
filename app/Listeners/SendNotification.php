@@ -33,7 +33,7 @@ class SendNotification
     $notification = $this->getNotification($event);
     $pushToken = $event->notifiable->pushToken;
     $response = $this->sendPush($notification, $pushToken);
-    $success = $this->checkSuccess($response, $pushToken);
+    $success = $this->checkSuccess($response);
     $type = str_replace_first("App\\Notifications\\",'', $notification->type);
     
     foreach ($this->notificationTypes as $notificationType) {
@@ -56,13 +56,8 @@ class SendNotification
     return $push->send()->getFeedback();
   }
 
-  public function checkSuccess($response, $pushToken) {
-    if (strtolower($pushToken->device) === 'ios') {
-      dd($response);
-      return $response->getCode() === 0;
-    } else {
-      return $response->success === 1;
-    }
+  public function checkSuccess($response) {
+    return $response->success === 1;
   }
 
   public function getNotification($event) {
