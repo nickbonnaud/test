@@ -39,7 +39,7 @@ class CustomerEnterGeoFence extends Notification
   public function toArray($notifiable)
   {
     
-    dd($notifiable);
+    dd($notifiable->pushToken);
 
     $businessName = $this->profile->business_name;
     $title = 'Pockeyt Pay Available';
