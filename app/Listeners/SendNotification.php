@@ -46,6 +46,7 @@ class SendNotification
   public function sendPush($notification, $pushToken) {
     $pushService = strtolower($pushToken->device) === 'ios' ? 'apn' : 'fcm';
 
+    dd($notification);
     $push = \PushNotification::setService($pushService)
       ->setMessage($notification->data)
       ->setDevicesToken($pushToken->push_token);
