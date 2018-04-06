@@ -98,7 +98,7 @@ class ProfilesController extends Controller
     }
 
     public function test() {
-        $user = User::where('id', 124)->first();
+        $user = User::where('id', 172)->first();
         $action = 'enter';
         $identifier = 'caffe-driade-with-an-incredibly-long-name-and-then-some-11';
         UserLocation::addRemoveLocation($identifier, $action, $user);
