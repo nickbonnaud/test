@@ -45,6 +45,7 @@ class TransactionBillWasClosed extends Notification
           'businessSlug' => $businessSlug,
           'inAppBody' => $inAppBody,
           'category' => $category,
+          'notId' => 1
         ]
       ];
     } else {
