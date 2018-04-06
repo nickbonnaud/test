@@ -47,8 +47,8 @@ class CustomerEnterGeoFence extends Notification
       return [
         'aps' => [
           'alert' => [
-            'title' => $title,
-            'body' => $body,
+            'shit' => $title,
+            'nothing' => $body,
           ],
           'sound' => 'default'
         ]
