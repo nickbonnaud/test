@@ -36,8 +36,9 @@ class TransactionBillWasClosed extends Notification
       return [
         'notification' => [
           'title' => $title,
-          'body' => 'Please swipe left or down to view bill and pay. You have been charged $' . $total . ' by ' . $businessName . '.',
-          'click-action' => $category
+          'body' => 'Please swipe this notification left and tap VIEW to see options. You have been charged $' . $total . ' by ' . $businessName . '.',
+          'click-action' => $category,
+          'sound' => 'default'
         ],
         'data' => [
           'transactionId' => $transactionId,
