@@ -30,32 +30,27 @@ class TransactionBillWasClosed extends Notification
     $transactionId = $this->transaction->id;
     $businessSlug = $this->transaction->profile->slug;
     $inAppBody = 'You have been charged $' . $total . ' by ' . $businessName . '.';
+    $title = 'Pockeyt Pay';
     
     if (strtolower($notifiable->pushToken->device) == 'ios') {
       return [
-        'aps' => [
-          'alert' => [
-            'title' => 'Pockeyt Pay',
-            'body' => 'Please swipe left or down to view bill and pay. You have been charged $' . $total . ' by ' . $businessName . '.',
-            'content-available' => 1,
-            'category' => $category,
-          ],
-          'sound' => 'default'
+        'notification' => [
+          'title' => $title,
+          'body' => 'Please swipe left or down to view bill and pay. You have been charged $' . $total . ' by ' . $businessName . '.',
+          'click-action' => $category
         ],
-        'extraPayLoad' => [
-          'notId' => 1,
-          'custom' => [
-            'transactionId' => $transactionId,
-            'businessName' => $businessName,
-            'businessSlug' => $businessSlug,
-            'inAppBody' => $inAppBody
-          ]
+        'data' => [
+          'transactionId' => $transactionId,
+          'businessName' => $businessName,
+          'businessSlug' => $businessSlug,
+          'inAppBody' => $inAppBody,
+          'category' => $category,
         ]
       ];
     } else {
       return [
         'data' => [
-          'customTitle' => 'Pockeyt Pay',
+          'customTitle' => $title,
           'customMessage' => 'You have been charged $' . $total . ' by ' . $businessName . '. Please swipe down if payment options not visible.',
           'sound' => 'default',
           'category' => $category,
