@@ -39,6 +39,8 @@ class CustomerEnterGeoFence extends Notification
   public function toArray($notifiable)
   {
     
+    dd($notifiable);
+
     $businessName = $this->profile->business_name;
     $title = 'Pockeyt Pay Available';
     $body = 'Pockeyt Pay available for ' . $businessName . '. Just say you are paying with Pockeyt!';
