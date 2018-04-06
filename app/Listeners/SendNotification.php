@@ -57,6 +57,7 @@ class SendNotification
   }
 
   public function checkSuccess($response) {
+    dd($response);
     return $response->success === 1;
   }
 
