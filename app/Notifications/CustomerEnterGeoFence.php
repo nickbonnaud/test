@@ -49,6 +49,12 @@ class CustomerEnterGeoFence extends Notification
           'title' => $title,
           'body' => $body
         ],
+        'data' => [
+          'businessName' => $businessName,
+          'inAppBody' => $body,
+          'transactionId' => null,
+          'category' => 'default'
+        ],
         'priority' => 'high'
       ];
     } else {
