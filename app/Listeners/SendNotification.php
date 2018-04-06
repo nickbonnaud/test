@@ -49,15 +49,11 @@ class SendNotification
     $push = \PushNotification::setService($pushService)
       ->setMessage($notification->data)
       ->setDevicesToken($pushToken->push_token);
-
-    if ($pushService === 'fcm') {
-      $push->setApiKey(env('FCM_SERVER_KEY'));
-    }
+    $push->setApiKey(env('FCM_SERVER_KEY'));
     return $push->send()->getFeedback();
   }
 
   public function checkSuccess($response) {
-    dd($response);
     return $response->success === 1;
   }
 
