@@ -47,7 +47,8 @@ class CustomerEnterGeoFence extends Notification
       return [
         'notification' => [
           'title' => $title,
-          'body' => $body
+          'body' => $body,
+          'sound' => 'default'
         ],
         'data' => [
           'businessName' => $businessName,
