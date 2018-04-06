@@ -45,11 +45,11 @@ class CustomerEnterGeoFence extends Notification
     $category = 'default';
     if (strtolower($notifiable->pushToken->device) == 'ios') {
       return [
-        'aps' => [
-          'alert' => $body,
-          'content-available' => 1
+        'notification' => [
+          'title' => $title,
+          'body' => $body
         ],
-        'notId' => 1
+        'priority' => 'high'
       ];
     } else {
       return [
