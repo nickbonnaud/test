@@ -46,7 +46,10 @@ class CustomerEnterGeoFence extends Notification
     if (strtolower($notifiable->pushToken->device) == 'ios') {
       return [
         'aps' => [
-          'alert' => $body,
+          'alert' => [
+            'title' => $title,
+            'body' => $body,
+          ],
           'sound' => 'default'
         ]
       ];
