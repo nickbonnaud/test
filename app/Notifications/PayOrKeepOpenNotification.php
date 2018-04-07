@@ -37,7 +37,7 @@ class PayOrKeepOpenNotification extends Notification
       return [
         'notification' => [
           'title' => $title,
-          'body' => 'Please swipe left or down to view options. ' . $inAppMessage,
+          'body' => 'Please swipe left or down to view options. ' . $inAppBody,
           'sound' => 'default',
           'click-action' => $category,
         ],
