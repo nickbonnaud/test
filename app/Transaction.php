@@ -83,21 +83,14 @@ class Transaction extends Model
   }
 
   public function removeNotifications() {
-    $notifications = $this->user->notifications()
-      ->where('data->data->custom->transactionId', $this->id)
-      ->get();
-
-    // Testing Remove Before Production
-    if (count($notifications) == 0) {
-      $notifications = $this->user->notifications()->get();
-      $index = 0;
-      foreach ($notifications as $notification) {
-        $index = $index++;
-        $test = $this->user->pushToken->device === 'android' ? $notification->data['data']['custom']['transactionId'] : $notification->data['data']['transactionId'];
-        if ($test != $this->id) {
-          array_slice($notifications, $index);
-        }
-      }
+    if ($this->user->pushToken->device === 'android') {
+      $notifications = $this->user->notifications()
+        ->where('data->data->custom->transactionId', $this->id)
+        ->get();
+    } else {
+      $notifications = $this->user->notifications()
+        ->where('data->data->transactionId', $this->id)
+        ->get();
     }
 
     foreach ($notifications as $notification) {
