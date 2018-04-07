@@ -93,7 +93,7 @@ class Transaction extends Model
       $index = 0;
       foreach ($notifications as $notification) {
         $index = $index++;
-        $test = $notification->data['data']['custom']['transactionId'];
+        $test = $this->user->pushToken->device === 'android' ? $notification->data['data']['custom']['transactionId'] : $notification->data['data']['transactionId'];
         if ($test != $this->id) {
           array_slice($notifications, $index);
         }
