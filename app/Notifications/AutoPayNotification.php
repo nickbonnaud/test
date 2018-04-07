@@ -37,20 +37,20 @@ class AutoPayNotification extends Notification
     
     if (strtolower($notifiable->pushToken->device) == 'ios') {
       return [
-        'aps' => [
-          'alert' => [
-            'title' => $title,
-            'body' => $inAppBody
-          ],
+        'notification' => [
+          'title' => $title,
+          'body' => $inAppBody,
           'sound' => 'default'
         ],
-        'extraPayLoad' => [
+        'data' => [
+          'transactionId' => $transactionId,
+          'businessName' => $businessName,
+          'businessSlug' => $businessSlug,
+          'inAppBody' => $inAppBody,
+          'notId' => 1,
           'category' => $category,
-          'custom' => [
-            'transactionId' => $transactionId,
-            'inAppBody' => $inAppBody,
-          ]
-        ]
+        ],
+        'priority' => 'high'
       ];
     } else {
       return [

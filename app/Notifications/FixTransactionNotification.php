@@ -53,26 +53,26 @@ class FixTransactionNotification extends Notification
     $category = 'payment_rejected';
     $transactionId = $this->transaction->id;
     $title = 'Please settle your bill with ' . $businessName . '.';
-    $inAppBody = 'Please resolve your bill dispute with ' . $businessName . '. Failure to resolve your dispute will result in the automatic charge of your total bill, $' . $total . ' plus your default tip. You will be sent ' . (2 - $this->previousNotifCount) . ' more ' . $pluralizedTerm . ' before you are charged.';
+    $inAppBody = 'Please resolve your bill dispute with ' . $businessName . '. Swipe left or down to view options. Failure to resolve your dispute will result in the automatic charge of your total bill, $' . $total . ' plus your default tip. You will be sent ' . (2 - $this->previousNotifCount) . ' more ' . $pluralizedTerm . ' before you are charged.';
     
     if (strtolower($notifiable->pushToken->device) == 'ios') {
       return [
-        'aps' => [
-          'alert' => [
-            'title' => $title,
-            'body' => $inAppBody
-          ],
-          'sound' => 'default'
+        'notification' => [
+          'title' => $title,
+          'body' => $inAppBody,
+          'sound' => 'default',
+          'click-action' => $category,
         ],
-        'extraPayLoad' => [
+        'data' => [
+          'transactionId' => $transactionId,
+          'businessName' => $businessName,
+          'businessSlug' => $businessSlug,
+          'phoneNumber' => $businessPhoneNumber,
+          'inAppBody' => $inAppBody,
           'category' => $category,
-          'locKey' => $locKey,
-          'custom' => [
-            'transactionId' => $transactionId,
-            'inAppMessage' => $inAppBody,
-            'phoneNumber' => $businessPhoneNumber
-          ]
-        ]
+          'notId' => 1
+        ],
+        'priority' => 'high'
       ];
     } else {
       return [

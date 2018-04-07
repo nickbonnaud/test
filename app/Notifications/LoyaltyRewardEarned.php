@@ -52,20 +52,19 @@ class LoyaltyRewardEarned extends Notification
 
     if (strtolower($notifiable->pushToken->device) == 'ios') {
       return [
-        'aps' => [
-          'alert' => [
-            'title' => $title,
-            'body' => $body
-          ],
-          'sound' => 'default'
+        'notification' => [
+          'title' => $title,
+          'body' => $body,
+          'sound' => 'default',
         ],
-        'extraPayLoad' => [
-          'category' => $category,
-          'custom' => [
-            'inAppBody' => $body,
-            'transactionId' => null
-          ]
-        ]
+        'data' => [
+          'businessName' => $businessName,
+          'inAppBody' => $body,
+          'transactionId' => null,
+          'notId' => 1,
+          'category' => 'default'
+        ],
+        'priority' => 'high'
       ];
     } else {
       return [

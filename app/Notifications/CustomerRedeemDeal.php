@@ -55,21 +55,21 @@ class CustomerRedeemDeal extends Notification
     
     if (strtolower($notifiable->pushToken->device) == 'ios') {
       return [
-        'aps' => [
-          'alert' => [
-            'title' => $title,
-            'body' => 'Please swipe left or down to show options for redeeming your deal.'
-          ],
+        'notification' => [
+          'title' => $title,
+          'body' => 'Please swipe left or down to show options for redeeming your deal.',
+          'click-action' => $category,
           'sound' => 'default'
         ],
-        'extraPayLoad' => [
+        'data' => [
+          'transactionId' => $transactionId,
+          'businessName' => $businessName,
+          'businessSlug' => $businessSlug,
+          'inAppBody' => $inAppBody,
+          'notId' => 1,
           'category' => $category,
-          'custom' => [
-            'transactionId' => $transactionId,
-            'businessName' => $businessName,
-            'businessSlug' => $businessSlug,
-          ]
-        ]
+        ],
+        'priority' => 'high'
       ];
     } else {
       return [

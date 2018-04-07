@@ -47,7 +47,8 @@ class TransactionBillWasClosed extends Notification
           'inAppBody' => $inAppBody,
           'category' => $category,
           'notId' => 1
-        ]
+        ],
+        'priority' => 'high'
       ];
     } else {
       return [

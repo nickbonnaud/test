@@ -35,20 +35,21 @@ class PayOrKeepOpenNotification extends Notification
     
     if (strtolower($notifiable->pushToken->device) == 'ios') {
       return [
-        'aps' => [
-          'alert' => [
-            'title' => $title,
-            'body' => 'Please swipe left or down to view options. ' . $inAppMessage
-          ],
-          'sound' => 'default'
+        'notification' => [
+          'title' => $title,
+          'body' => 'Please swipe left or down to view options. ' . $inAppMessage,
+          'sound' => 'default',
+          'click-action' => $category,
         ],
-        'extraPayLoad' => [
+        'data' => [
+          'transactionId' => $transactionId,
+          'businessName' => $businessName,
+          'businessSlug' => $businessSlug,
+          'inAppBody' => $inAppBody,
           'category' => $category,
-          'custom' => [
-            'transactionId' => $transactionId,
-            'inAppBody' => $inAppBody,
-          ]
-        ]
+          'notId' => 1
+        ],
+        'priority' => 'high'
       ];
     } else {
       return [

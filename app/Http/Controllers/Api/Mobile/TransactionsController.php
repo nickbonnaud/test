@@ -47,6 +47,9 @@ class TransactionsController extends Controller {
 			$transaction->customerRequestBillEvent();
 			$success = true;
 			$type = 'request_bill';
+		} elseif ($request->status == 10) {
+			$success = true;
+			$type = 'keep_open';
 		} else {
 			$success = $transaction->processCharge($request->tip);
 			$type = 'user_pay';

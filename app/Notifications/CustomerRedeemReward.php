@@ -52,20 +52,21 @@ class CustomerRedeemReward extends Notification
     
     if (strtolower($notifiable->pushToken->device) == 'ios') {
       return [
-        'aps' => [
-          'alert' => [
-            'title' => $title,
-            'body' => 'Please swipe left or down to show options for redeeming your loyalty reward from ' . $businessName . '.'
-          ],
+        'notification' => [
+          'title' => $title,
+          'body' => 'Please swipe left or down to show options for redeeming your loyalty reward from ' . $businessName . '.',
+          'click-action' => $category,
           'sound' => 'default'
         ],
-        'extraPayLoad' => [
+        'data' => [
+          'loyaltyCardId' => $loyaltyCardId,
+          'businessName' => $businessName,
+          'inAppBody' => $inAppBody,
+          'transactionId' => null,
+          'notId' => 1,
           'category' => $category,
-          'custom' => [
-            'loyaltyCardId' => $loyaltyCardId,
-            'transactionId' => null
-          ]
-        ]
+        ],
+        'priority' => 'high'
       ];
     } else {
       return [
