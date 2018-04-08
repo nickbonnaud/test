@@ -94,10 +94,10 @@ class UserLocation extends Model {
 
   public function sendPaymentNotificationByType($transaction) {
     if ($transaction->checkRecentSentNotification() == 0) {
-      dd($transaction->status !== 0);
       if ($transaction->bill_closed && ($transaction->status != 0)) {
         $transaction->sendBillClosedNotification();
       } elseif($transaction->status !== 0) {
+        dd(($transaction->status == 2) || ($transaction->status == 3) || ($transaction->status == 4));
         if (($transaction->status == 2) || ($transaction->status == 3) || ($transaction->status == 4)) {
           $transaction->sendFixTransactionNotification();
         } else {
