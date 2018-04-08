@@ -101,6 +101,8 @@ Route::patch('business/review/account/{account}', 'BusinessReviewController@upda
 
 
 
+Route::get('test/notifs', 'ProfilesController@test');
+
 // Web API routes
 Route::prefix('api/web')->group(function () {
 
