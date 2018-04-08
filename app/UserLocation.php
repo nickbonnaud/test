@@ -97,10 +97,10 @@ class UserLocation extends Model {
       if ($transaction->bill_closed && ($transaction->status != 0)) {
         $transaction->sendBillClosedNotification();
       } elseif($transaction->status !== 0) {
-        dd(($transaction->status == 2) || ($transaction->status == 3) || ($transaction->status == 4));
         if (($transaction->status == 2) || ($transaction->status == 3) || ($transaction->status == 4)) {
           $transaction->sendFixTransactionNotification();
         } else {
+          dd('correct path');
           $transaction->sendPayOrKeepOpenNotification();
         }
       }
