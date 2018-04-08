@@ -100,7 +100,6 @@ class UserLocation extends Model {
         if (($transaction->status == 2) || ($transaction->status == 3) || ($transaction->status == 4)) {
           $transaction->sendFixTransactionNotification();
         } else {
-          dd('correct path');
           $transaction->sendPayOrKeepOpenNotification();
         }
       }
