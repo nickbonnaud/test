@@ -72,7 +72,6 @@ class UserLocation extends Model {
 
   public function removeLocation() {
     if ($transaction = $this->checkForUnpaidTransactionOnDelete()) {
-      dd(!$this->exit_notification_sent);
       if (!$this->exit_notification_sent) {
         $this->sendPaymentNotificationByType($transaction);
         $this->exit_notification_sent = true;
@@ -94,6 +93,7 @@ class UserLocation extends Model {
   }
 
   public function sendPaymentNotificationByType($transaction) {
+    dd($transaction->checkRecentSentNotification());
     if ($transaction->checkRecentSentNotification() == 0) {
       if ($transaction->bill_closed && ($transaction->status != 0)) {
         $transaction->sendBillClosedNotification();
