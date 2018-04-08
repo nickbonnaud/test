@@ -71,7 +71,7 @@ class UserLocation extends Model {
   }
 
   public function removeLocation() {
-    dd('Inside remove location');
+    dd($this->checkForUnpaidTransactionOnDelete());
     if ($transaction = $this->checkForUnpaidTransactionOnDelete()) {
       if (!$this->exit_notification_sent) {
         $this->sendPaymentNotificationByType($transaction);
