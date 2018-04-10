@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\Mobile;
 use JWTAuth;
 use App\Profile;
 use App\Transaction;
-use app\UserLocation;
+use App\UserLocation;
 use App\Filters\TransactionFilters;
 use Illuminate\Support\Facades\Input;
 use Tymon\JWTAuth\Exceptions\JWTException;
