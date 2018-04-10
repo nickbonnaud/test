@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Mobile;
 use JWTAuth;
 use App\Profile;
 use App\Transaction;
+use app\UserLocation;
 use App\Filters\TransactionFilters;
 use Illuminate\Support\Facades\Input;
 use Tymon\JWTAuth\Exceptions\JWTException;
@@ -48,6 +49,22 @@ class TransactionsController extends Controller {
 			$success = true;
 			$type = 'request_bill';
 		} elseif ($request->status == 10) {
+			$userLocation = UserLocation::where('user_id', $user->id)->where('profile_id', $profile->id)->first();
+			$userLocation->touch();
+
+
+			if ($user->pushToken->device === 'android') {
+				$notifications = $user->notifications()->where('data->data->custom->transactionId', $transaction->id)->where('type', 'App\Notifications\PayOrKeepOpenNotification')->get();
+			} else {
+				$notifications = $user->notifications()->where('data->data->transactionId', $transaction->id)->where('type', 'App\Notifications\PayOrKeepOpenNotification')->get();
+			}
+
+			foreach ($notifications as $notification) {
+				$notification->delete();
+			}
+
+
+
 			$success = true;
 			$type = 'keep_open';
 		} else {
