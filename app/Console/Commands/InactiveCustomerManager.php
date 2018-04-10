@@ -62,19 +62,27 @@ class InactiveCustomerManager extends Command
         if (($transaction->status == 2) || ($transaction->status == 3) || ($transaction->status == 4)) {
           self::fixTransactionOrPay($transaction, $userLocation);
         } else {
-          $transaction->processCharge();
-          $transaction->sendAutoPayNotification('no_response_exit');
-          $userLocation->delete();
+          self::chargeCustomer($transaction, $userLocation);
         }
         break;
       case 'TransactionBillWasClosed':
         if (($transaction->status == 2) || ($transaction->status == 3) || ($transaction->status == 4)) {
           self::fixTransactionOrPay($transaction, $userLocation);
         } else {
-          $transaction->sendPayOrKeepOpenNotification();
+          if ($userLocation->exit_notification_sent) {
+            self::chargeCustomer($transaction, $userLocation);
+          } else {
+            $transaction->sendPayOrKeepOpenNotification();
+          }
         }
         break;
     }
+  }
+
+  public static function chargeCustomer($transaction, $userLocation) {
+    $transaction->processCharge();
+    $transaction->sendAutoPayNotification('no_response_exit');
+    $userLocation->delete();
   }
 
   public static function fixTransactionOrPay($transaction, $userLocation) {
