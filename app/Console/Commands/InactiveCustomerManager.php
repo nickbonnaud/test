@@ -32,7 +32,7 @@ class InactiveCustomerManager extends Command
     // $userLocations = UserLocation::where('updated_at', '<=', Carbon::now()->subMinutes(20))->get();
 
     foreach ($userLocations as $userLocation) {
-      dd('here');
+      dd($userLocation->checkForUnpaidTransactionOnDelete());
       if ($transaction = $userLocation->checkForUnpaidTransactionOnDelete()) {
         if ($lastNotification = self::getLastNotification($transaction)) {
           self::sendNotificationOrPay($lastNotification, $transaction, $userLocation);
