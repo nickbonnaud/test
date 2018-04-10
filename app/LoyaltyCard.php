@@ -71,13 +71,13 @@ class LoyaltyCard extends Model
   }
 
   public static function addMonetaryAmount($loyaltyCard, $loyaltyProgram, $transaction) {
-    if ($loyaltyCard->current_amount + $transaction->total >= $loyaltyProgram->amount_required) {
+    if ($loyaltyCard->current_amount + $transaction->total >= $loyaltyProgram->getOriginal('amount_required')) {
       $previousRewardsAchieved = $loyaltyCard->rewards_achieved;
       $loyaltyCard->current_amount = $loyaltyCard->current_amount + $transaction->total;
       
-      while($loyaltyCard->current_amount >= $loyaltyProgram->amount_required) {
+      while($loyaltyCard->current_amount >= $loyaltyProgram->getOriginal('amount_required')) {
         $loyaltyCard->rewards_achieved = $loyaltyCard->rewards_achieved + 1;
-        $loyaltyCard->current_amount = $loyaltyCard->current_amount - $loyaltyProgram->amount_required;
+        $loyaltyCard->current_amount = $loyaltyCard->current_amount - $loyaltyProgram->getOriginal('amount_required');
       }
       $rewardsQuantity = $loyaltyCard->rewards_achieved - $previousRewardsAchieved;
       $loyaltyCard->unredeemed_rewards = $loyaltyCard->unredeemed_rewards + $rewardsQuantity;
