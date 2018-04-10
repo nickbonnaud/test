@@ -32,8 +32,8 @@ class InactiveCustomerManager extends Command
     // $userLocations = UserLocation::where('updated_at', '<=', Carbon::now()->subMinutes(20))->get();
 
     foreach ($userLocations as $userLocation) {
-      dd($userLocation->checkForUnpaidTransactionOnDelete());
       if ($transaction = $userLocation->checkForUnpaidTransactionOnDelete()) {
+        dd(self::getLastNotification($transaction));
         if ($lastNotification = self::getLastNotification($transaction)) {
           self::sendNotificationOrPay($lastNotification, $transaction, $userLocation);
         } else {
@@ -50,7 +50,11 @@ class InactiveCustomerManager extends Command
   }
 
   public static function getLastNotification($transaction) {
-    $notification = $transaction->user->notifications()->where('data->data->custom->transactionId', $transaction->id)->first();
+    if ($transaction->user->pushToken->device == 'android') {
+      $notification = $transaction->user->notifications()->where('data->data->custom->transactionId', $transaction->id)->first();
+    } else {
+      $notification = $transaction->user->notifications()->where('data->data->transactionId', $transaction->id)->first();
+    }
     return $notification;
   }
 
