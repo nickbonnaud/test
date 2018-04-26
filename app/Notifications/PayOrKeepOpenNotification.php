@@ -31,7 +31,7 @@ class PayOrKeepOpenNotification extends Notification
     $category = 'pay_or_keep';
     $transactionId = $this->transaction->id;
     $title = 'Pay bill or keep open?';
-    $inAppBody = 'Either you have left ' . $businessName . ' or you have force closed the Pockeyt app and Pockeyt cannot determine your location. Please pay your bill of $' . $total . ' or reopen the Pockeyt app while at ' . $businessName . '. You will be automatically charged if your bill is not paid or Pockeyt is not reopened.';
+    $inAppBody = 'All done at ' . $businessName . '? Pay your total of $' . $total . ' by tapping the Pay button on this notification or let Pockeyt automatically pay for you. Not done? Tap the Keep Open button to avoid Pockeyt automatically closing your bill.';
     
     if (strtolower($notifiable->pushToken->device) == 'ios') {
       return [
