@@ -15,8 +15,9 @@ class CloverCustomersTest extends TestCase
 
   	$profile = create('App\Profile');
   	$account = create('App\Account', ['profile_id' => $profile->id]);
-  	$user1 = create('App\User');
-  	$user2 = create('App\User');
+  	$photo = create('App\Photo');
+  	$user1 = create('App\User', ["photo_id" => $photo->id]);
+  	$user2 = create('App\User', ["photo_id" => $photo->id]);
 
   	create('App\UserLocation', ['profile_id' => $profile->id, 'user_id' => $user1->id]);
   	create('App\UserLocation', ['profile_id' => $profile->id, 'user_id' => $user2->id]);
