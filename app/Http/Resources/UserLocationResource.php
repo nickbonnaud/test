@@ -27,6 +27,7 @@ class UserLocationResource extends Resource
       'first_name' => $user->first_name,
       'last_name' => $user->last_name,
       'photo_path' => $user->photo->api_thumbnail_url,
+      'large_photo_path' => $user->photo->api_url,
       'last_transaction' => $lastTransaction,
       'open_bill' => $openBill,
       'last_post_interactions' => $lastPostInteractions,
