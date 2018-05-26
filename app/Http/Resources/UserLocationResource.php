@@ -64,7 +64,9 @@ class UserLocationResource extends Resource
   public function getLoyaltyCard($user, $profile) {
     if ($loyaltyProgram = $profile->loyaltyProgram) {
       $loyaltyCard = $user->loyaltyCards()->where('loyalty_program_id', '=', $loyaltyProgram->id)->first();
-      $loyaltyCard['reward'] = $loyaltyProgram->reward;
+      if ($loyaltyCard) {
+        $loyaltyCard['reward'] = $loyaltyProgram->reward;
+      }
       return $loyaltyCard;
     } else {
       return null;
