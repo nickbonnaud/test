@@ -20,7 +20,7 @@ class UserLocationResource extends Resource
     $openBill = $this->getOpenBill($user, $profile);
     $deal = $this->getDeal($user, $profile);
     if ($deal) {
-      $deal['deal_item'] = $deal->deal->deal_item
+      $deal['deal_item'] = $deal->deal->deal_item;
     }
     $lastPostInteractions = $this->getLastPostInteractions($user, $profile);
     $loyaltyCard = $this->getLoyaltyCard($user, $profile);
