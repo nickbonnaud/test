@@ -26,7 +26,9 @@ class UserLocationResource extends Resource
       $deal['deal_item'] = $deal->deal->deal_item;
     }
     $lastPostInteractions = $this->getLastPostInteractions($user, $profile);
-    $lastPostInteractions->post->photo['api_thumbnail_url'] = $lastPostInteractions->post->api_thumbnail_url;
+    if ( $lastPostInteractions) {
+      $lastPostInteractions->post->photo['api_thumbnail_url'] = $lastPostInteractions->post->api_thumbnail_url;
+    }
     $loyaltyCard = $this->getLoyaltyCard($user, $profile);
 
     return [
