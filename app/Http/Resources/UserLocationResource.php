@@ -17,6 +17,9 @@ class UserLocationResource extends Resource
     $profile = $this->profile;
 
     $lastTransaction = $this->getLastTransaction($user, $profile);
+    if ($lastTransaction) {
+      $lastTransaction->products = json_decode($lastTransaction->products);
+    }
     $openBill = $this->getOpenBill($user, $profile);
     $deal = $this->getDeal($user, $profile);
     if ($deal) {
