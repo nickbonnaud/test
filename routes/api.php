@@ -78,6 +78,7 @@ Route::post('analytics/posts', 'AnalyticsController@store');
 
 // Pay Clover Routes
 Route::prefix('pay')->group(function() {
-	Route::get('customers', 'PayCloverCustomers@index');
+	Route::get('customers', 'PayCustomersController@index');
+	Route::get('me', 'PayAuthenticateController@me');
 });
 

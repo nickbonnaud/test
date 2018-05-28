@@ -11,7 +11,7 @@ use App\Http\Controllers\Controller;
 // For Setup need to get from jwt
 use App\Profile;
 
-class PayCloverCustomers extends Controller {
+class PayCustomersController extends Controller {
 
 	public function index(UserLocationFilters $userLocationFilters, Request $request) {
 		// For Setup need to get from jwt
