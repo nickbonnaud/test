@@ -11,7 +11,7 @@ class PayAuthenticateController extends Controller {
 
 	public function me(Request $request) {
 		// For Setup need to get from jwt
-		$profile = Profile::where('id', 1);
+		$profile = Profile::where('id', 1)->first();
   	return new ProfileResource($profile);
 	}
 }
