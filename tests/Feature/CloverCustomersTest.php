@@ -23,7 +23,6 @@ class CloverCustomersTest extends TestCase
   	create('App\UserLocation', ['profile_id' => $profile->id, 'user_id' => $user2->id]);
 
   	$response = $this->get("/api/mobile/pay/customers")->getData();
-  	dd($response);
   	$this->assertCount(2, $response->data);
   }
 }

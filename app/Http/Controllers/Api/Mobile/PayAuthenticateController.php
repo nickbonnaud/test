@@ -9,7 +9,7 @@ use App\Http\Controllers\Controller;
 // For Setup need to get from jwt
 use App\Profile;
 
-class PayCustomersController extends Controller {
+class PayAuthenticateController extends Controller {
 
 	public function me(Request $request) {
 		// For Setup need to get from jwt
