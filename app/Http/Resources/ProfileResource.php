@@ -6,6 +6,7 @@ use Illuminate\Http\Resources\Json\Resource;
 
 class ProfileResource extends Resource
 {
+
   public function toArray($request)
   {
     return [

@@ -2,18 +2,16 @@
 
 namespace App\Http\Controllers\Api\Mobile;
 
-use App\Http\Resources\UserLocationResource;
+use App\Profile;
+use App\Http\Resources\ProfileResource;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
-// For Setup need to get from jwt
-use App\Profile;
 
 class PayAuthenticateController extends Controller {
 
 	public function me(Request $request) {
 		// For Setup need to get from jwt
-		$profile = Profile::where('id', 1)->first();
-  	return response()->json(['business' => $profile]);
+		$profile = Profile::where('id', 1)->get();
+  	return ProfileResource::collection($profile);
 	}
 }
