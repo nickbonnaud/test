@@ -6,7 +6,7 @@ use App\Profile;
 use App\User;
 use JWTAuth;
 use Tymon\JWTAuth\Exceptions;
-use App\Http\Resources\ProfileResource;
+use App\Http\Resources\PayProfileResource;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -24,12 +24,12 @@ class PayAuthenticateController extends Controller {
 		$user = User::where('email', $request->input('email'))->first();
 		$profile = $user->profile;
 		$profile['token'] = $token;
-		return new ProfileResource($profile);
+		return new PayProfileResource($profile);
 	}
 
 	public function me(Request $request) {
 		// For Setup need to get from jwt
 		$profile = Profile::where('id', 1)->first();
-  	return new ProfileResource($profile);
+  	return new PayProfileResource($profile);
 	}
 }
