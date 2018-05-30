@@ -80,5 +80,6 @@ Route::post('analytics/posts', 'AnalyticsController@store');
 Route::prefix('pay')->group(function() {
 	Route::get('customers', 'PayCustomersController@index');
 	Route::get('me', 'PayAuthenticateController@me');
+	Route::post('login', 'PayAuthenticateController@login');
 });
 
