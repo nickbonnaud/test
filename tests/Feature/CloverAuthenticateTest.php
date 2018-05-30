@@ -38,12 +38,33 @@ class CloverAuthenticateTest extends TestCase
   	$this->assertNotEmpty($response->data->token);
   }
 
-  function test_a_clover_client_can_retrieve_their_data() {
+  function test_an_authenticated_clover_client_can_retrieve_their_data() {
+  	$user = create('App\User');
   	$photo = create('App\Photo');
-  	$profile = create('App\Profile', ['logo_photo_id' => $photo->id, 'hero_photo_id' => $photo->id]);
+  	$profile = create('App\Profile', ['logo_photo_id' => $photo->id, 'hero_photo_id' => $photo->id, 'user_id' => $user->id]);
+
+  	$response = $this->get("/api/mobile/pay/me", $this->headers($user))->getData();
+  	$this->assertEquals($profile->business_name, $response->data->business_name);
+  	$this->assertNotEmpty($response->data->token);
+  }
+
+  function test_an_unathorized_user_cannot_get_data() {
+  	$user = create('App\User');
+  	$photo = create('App\Photo');
+  	$profile = create('App\Profile', ['logo_photo_id' => $photo->id, 'hero_photo_id' => $photo->id, 'user_id' => $user->id]);
 
   	$response = $this->get("/api/mobile/pay/me")->getData();
-  	dd($response);
-  	$this->assertCount(2, $response->data);
+  	$this->assertEquals('token_absent', $response->error);
+  }
+
+  function test_a_user_whose_token_is_invalid_cannot_get_data() {
+  	$user = create('App\User');
+  	$photo = create('App\Photo');
+  	$profile = create('App\Profile', ['logo_photo_id' => $photo->id, 'hero_photo_id' => $photo->id, 'user_id' => $user->id]);
+
+  	$headers = $this->headers($user);
+  	$headers['Authorization'] = str_replace_first(substr($headers['Authorization'], -1), '', $headers['Authorization']);
+  	$response = $this->get("/api/mobile/pay/me", $headers)->getData();
+  	$this->assertEquals('token_invalid', $response->error);
   }
 }

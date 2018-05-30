@@ -28,8 +28,19 @@ class PayAuthenticateController extends Controller {
 	}
 
 	public function me(Request $request) {
-		// For Setup need to get from jwt
-		$profile = Profile::where('id', 1)->first();
+		try {
+			if (!$user = JWTAuth::parseToken()->authenticate()) {
+				return response()->json(['error' => 'user_not_found'], 404);
+			}
+		} catch (Exceptions\TokenExpiredException $e) {
+			return response()->json(['error' => 'token_expired']);
+		} catch (Exceptions\TokenInvalidException $e) {
+			return response()->json(['error' => 'token_invalid']);
+		} catch (Exceptions\JWTException $e) {
+			return response()->json(['error' => 'token_absent']);
+		}
+		$profile = $user->profile;
+		$profile['token'] = JWTAuth::parseToken()->refresh();
   	return new PayProfileResource($profile);
 	}
 }
