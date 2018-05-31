@@ -17,15 +17,8 @@ class PayCustomerResource extends Resource
     $profile = $this->profile;
 
     $lastTransaction = $this->getLastTransaction($user, $profile);
-    if ($lastTransaction) {
-      $lastTransaction->products = json_decode($lastTransaction->products);
-    }
     $deal = $this->getDeal($user, $profile);
     $lastPostInteractions = $this->getLastPostInteractions($user, $profile);
-    if ($lastPostInteractions) {
-    	dd($lastPostInteractions);
-      $lastPostInteractions->post['post_image_url'] = $lastPostInteractions->post->api_thumbnail_url;
-    }
     $loyaltyCard = $this->getLoyaltyCard($user, $profile);
 
     return [
@@ -34,7 +27,7 @@ class PayCustomerResource extends Resource
       'last_name' => $user->last_name,
       'photo_path' => $user->photo->api_thumbnail_url,
       'large_photo_path' => $user->photo->api_url,
-
+      'recent_transaction' => $lastTransaction,
       'last_post_interactions' => $lastPostInteractions,
       'deal_data' => $deal,
       'loyalty_card' => $loyaltyCard
@@ -42,52 +35,95 @@ class PayCustomerResource extends Resource
   }
 
   public function getLastTransaction($user, $profile) {
-    return $user->transactions()->where('profile_id', '=', $profile->id)
+    $transaction = $user->transactions()->where('profile_id', '=', $profile->id)
       ->where('paid', '=', true)
       ->where('refund_full', '=', false)
       ->whereNull('deal_id')
-      ->latest('updated_at')
-      ->select('products', 'updated_at as purchased_on', 'tax', 'tips', 'total')->first();
-  }
-
-  public function getOpenBill($user, $profile) {
-    return $user->transactions()->where('profile_id', '=', $profile->id)
-      ->where('paid', '=', false)
       ->latest('updated_at')->first();
+
+    if ($transaction) {
+    	$lastTransaction = (object) [
+    		'has_recent' => true,
+    		'purchased_items' => json_decode($transaction->products),
+    		'purchased_on' => $transaction->updated_at,
+    		'tax' => $transaction->tax,
+    		'tip' => $transaction->tips,
+    		'total' => $transaction->total
+    	];
+    } else {
+    	$lastTransaction = (object) [
+    		'has_recent' => false
+    	];
+    }
+    return $lastTransaction;
   }
 
   public function getDeal($user, $profile) {
-    return $user->transactions()->where('profile_id', '=', $profile->id)
+    $deal = $user->transactions()->where('profile_id', '=', $profile->id)
       ->where('paid', '=', true)
       ->whereNotNull('deal_id')
       ->where('redeemed', '=', false)
-      ->where('refund_full', '=', false)
-      ->with(['deal' => function($query) {
-      	$query->select('deal_item');
-      }])
-      ->select('id as deal_id')->first();
+      ->where('refund_full', '=', false)->first();
+
+    if ($deal) {
+    	$formattedDeal = (object) [
+    		'has_deal' => true,
+    		'deal_id' => $deal->id,
+    		'deal_item' => $deal->deal->deal_item
+    	];
+    } else {
+    	$formattedDeal = (object) [
+    		'has_deal' => false
+    	];
+    }
+    return $formattedDeal;
+  }
+
+  public function getLastPostInteractions($user, $profile) {
+    $postInteractions = $user->postAnalytics()->where('profile_id', '=', $profile->id)
+      ->latest('updated_at')
+      ->with('post.photo')->first();
+
+    if ($postInteractions) {
+    	$formattedPostInteractions = (object) [
+    		'has_recent' => true,
+    		'viewed_on' => $postInteractions->updated_at,
+    		'is_redeemable' => $postInteractions->post->is_redeemable,
+    		'is_event' => $postInteractions->post->event_date ? true : false,
+    		'message' => $postInteractions->post->message,
+    		'body' => $postInteractions->post->body,
+    		'title' => $postInteractions->post->title,
+    		'postImageUrl' => $postInteractions->post->api_thumbnail_url
+    	];
+    } else {
+    	$formattedPostInteractions = (object) [
+    		'has_recent' => false
+    	];
+    }
+    return $formattedPostInteractions;
   }
 
   public function getLoyaltyCard($user, $profile) {
     if ($loyaltyProgram = $profile->loyaltyProgram) {
-      $loyaltyCard = $user->loyaltyCards()
-      ->where('loyalty_program_id', '=', $loyaltyProgram->id)
-      ->select('id as loyalty_card_id', 'unredeemed_rewards', 'rewards_achieved')->first();
+      $loyaltyCard = $user->loyaltyCards()->where('loyalty_program_id', '=', $loyaltyProgram->id)->first();
       if ($loyaltyCard) {
-        $loyaltyCard['loyalty_reward'] = $loyaltyProgram->reward;
+        $formattedLoyaltyCard = (object) [
+        	'has_reward' => true,
+        	'loyalty_card_id' => $loyaltyCard->id,
+        	'unredeemed_count' => $loyaltyCard->unredeemed_rewards,
+        	'total_rewards_earned' => $loyaltyCard->rewards_achieved,
+        	'loyalty_reward' => $loyaltyProgram->reward
+        ];
+      } else {
+      	$formattedLoyaltyCard = (object) [
+      		'has_reward' => false
+      	];
       }
-      return $loyaltyCard;
     } else {
-      return null;
+      $formattedLoyaltyCard = (object) [
+      	'has_reward' => false
+      ];
     }
-  }
-
-  public function getLastPostInteractions($user, $profile) {
-    return $user->postAnalytics()->where('profile_id', '=', $profile->id)
-      ->latest('updated_at')
-      ->select('updated_at as viewed_on')
-      ->with(['post' => function($query) {
-      	$query->select('is_redeemable', 'event_date', 'message', 'title', 'body');
-      }])->first();
+    return $formattedLoyaltyCard;
   }
 }
