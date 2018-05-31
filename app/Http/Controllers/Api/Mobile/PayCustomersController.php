@@ -5,21 +5,17 @@ namespace App\Http\Controllers\Api\Mobile;
 use JWTAuth;
 use App\Filters\UserLocationFilters;
 use App\UserLocation;
-use App\Http\Resources\UserLocationResource;
+use App\Http\Resources\PayCustomerResource;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Profile;
 
 class PayCustomersController extends Controller {
 
-	public function __construct() {
-		$this->middleware('jwt.auth');
-	}
-
 	public function index(UserLocationFilters $userLocationFilters, Request $request) {
-		$user = JWTAuth::parseToken()->authenticate();
-		$profile = $user->profile;
+		$profile = Profile::where('id', 1)->first();
 
 		$userLocations = UserLocation::filter($userLocationFilters, $profile)->with('user')->get();
-  	return UserLocationResource::collection($userLocations);
+  	return PayCustomerResource::collection($userLocations);
 	}
 }
