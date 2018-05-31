@@ -65,6 +65,9 @@ class PayCustomerResource extends Resource
       ->whereNotNull('deal_id')
       ->where('redeemed', '=', false)
       ->where('refund_full', '=', false)
+      ->with(['deal' => function($query) {
+      	$query->select('deal_item');
+      }])
       ->select('id as deal_id')->first();
   }
 
