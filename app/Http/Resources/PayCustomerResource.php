@@ -22,6 +22,7 @@ class PayCustomerResource extends Resource
     }
     $deal = $this->getDeal($user, $profile);
     if ($deal) {
+    	dd($deal);
       $deal['deal_item'] = $deal->deal->deal_item;
     }
     $lastPostInteractions = $this->getLastPostInteractions($user, $profile);
