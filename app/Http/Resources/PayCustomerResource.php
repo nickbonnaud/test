@@ -21,10 +21,6 @@ class PayCustomerResource extends Resource
       $lastTransaction->products = json_decode($lastTransaction->products);
     }
     $deal = $this->getDeal($user, $profile);
-    if ($deal) {
-    	dd($deal);
-      $deal['deal_item'] = $deal->deal->deal_item;
-    }
     $lastPostInteractions = $this->getLastPostInteractions($user, $profile);
     if ( $lastPostInteractions) {
       $lastPostInteractions->post['post_image_url'] = $lastPostInteractions->post->api_thumbnail_url;
