@@ -22,7 +22,8 @@ class PayCustomerResource extends Resource
     }
     $deal = $this->getDeal($user, $profile);
     $lastPostInteractions = $this->getLastPostInteractions($user, $profile);
-    if ( $lastPostInteractions) {
+    if ($lastPostInteractions) {
+    	dd($lastPostInteractions);
       $lastPostInteractions->post['post_image_url'] = $lastPostInteractions->post->api_thumbnail_url;
     }
     $loyaltyCard = $this->getLoyaltyCard($user, $profile);
