@@ -93,7 +93,7 @@ class PayCustomerResource extends Resource
     		'message' => $postInteractions->post->message,
     		'body' => $postInteractions->post->body,
     		'title' => $postInteractions->post->title,
-    		'postImageUrl' => $postInteractions->post->api_thumbnail_url
+    		'postImageUrl' => $postInteractions->post->photo->api_thumbnail_url
     	];
     } else {
     	$formattedPostInteractions = (object) [
