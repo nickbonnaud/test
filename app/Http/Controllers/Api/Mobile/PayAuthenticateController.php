@@ -33,11 +33,11 @@ class PayAuthenticateController extends Controller {
 				return response()->json(['error' => 'user_not_found'], 404);
 			}
 		} catch (Exceptions\TokenExpiredException $e) {
-			return response()->json(['error' => 'token_expired']);
+			return response()->json(['error' => 'token_expired'], 401);
 		} catch (Exceptions\TokenInvalidException $e) {
-			return response()->json(['error' => 'token_invalid']);
+			return response()->json(['error' => 'token_invalid'], 401);
 		} catch (Exceptions\JWTException $e) {
-			return response()->json(['error' => 'token_absent']);
+			return response()->json(['error' => 'token_absent'], 401);
 		}
 		$profile = $user->profile;
 		$profile['token'] = JWTAuth::parseToken()->refresh();
