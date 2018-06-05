@@ -18,10 +18,18 @@ class CloverAuthenticateTest extends TestCase
 
   	$data = [
 			'email' => 'another@pockeyt.com',
-			'password' => 'UserTest1!'
+			'password' => 'TestCase1!'
 		];
 		$response = $this->post("/api/mobile/pay/login", $data)->getData();
-		$this->assertEquals("invalid_email_or_password", $response->error);
+		$this->assertEquals("invalid_email", $response->error);
+
+    $data = [
+      'email' => 'test@pockeyt.com',
+      'password' => 'TestCaseBad!'
+    ];
+    $response = $this->post("/api/mobile/pay/login", $data)->getData();
+    $this->assertEquals("invalid_password", $response->error);
+
 		$response = $this->post("/api/mobile/pay/login", $data)->assertStatus(422);
   }
 
