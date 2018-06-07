@@ -49,6 +49,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         \SocialiteProviders\Manager\SocialiteWasCalled::class => [
             'SocialiteProviders\Instagram\InstagramExtendSocialite@handle'
+        ],
+        'App\Events\UpdateConnectedApps' => [
+            'App\Listeners\SendToConnectedApps'
         ]
     ];
 

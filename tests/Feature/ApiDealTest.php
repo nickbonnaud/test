@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Event;
 use App\Notifications\CustomerRedeemDeal;
 use App\Events\CustomerRedeemItem;
+use App\Events\UpdateConnectedApps;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ApiDealTest extends TestCase
@@ -220,7 +221,9 @@ class ApiDealTest extends TestCase
   }
 
   function test_an_authorized_mobile_user_can_redeem_deal() {
-    Event::fake();
+    Notification::fake();
+    $this->expectsEvents(CustomerRedeemItem::class);
+    $this->expectsEvents(UpdateConnectedApps::class);
     $profile = create('App\Profile');
     $post = create('App\Post', ['profile_id' => $profile->id, 'is_redeemable' => true, 'deal_item' => 'free coffee', 'price' => 100, 'end_date' => Carbon::tomorrow()]);
 
@@ -239,6 +242,7 @@ class ApiDealTest extends TestCase
 
   function test_an_authorized_mobile_user_can_reject_deal_later() {
     $this->expectsEvents(CustomerRedeemItem::class);
+    $this->expectsEvents(UpdateConnectedApps::class);
     $profile = create('App\Profile');
     $post = create('App\Post', ['profile_id' => $profile->id, 'is_redeemable' => true, 'deal_item' => 'free coffee', 'price' => 100, 'end_date' => Carbon::tomorrow()]);
 
@@ -257,6 +261,7 @@ class ApiDealTest extends TestCase
 
   function test_an_authorized_mobile_user_can_reject_deal_not_theirs() {
     $this->expectsEvents(CustomerRedeemItem::class);
+    $this->expectsEvents(UpdateConnectedApps::class);
     $profile = create('App\Profile');
     $post = create('App\Post', ['profile_id' => $profile->id, 'is_redeemable' => true, 'deal_item' => 'free coffee', 'price' => 100, 'end_date' => Carbon::tomorrow()]);
 
