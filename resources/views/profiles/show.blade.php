@@ -14,7 +14,7 @@
         </section>
         <section class="content">
           <search-default search-type="customer"></search-default>
-          <a href="{{ action('pusher.test') }}"><button>Do it</button></a>
+          <a href="{{ action('App\Http\Controllers\Api\Mobile\DealsController@test') }}"><button>Do it</button></a>
           <div class="scroll-container">
             <customer-list :profile="{{ $profile }}"></customer-list>
           </div>
