@@ -85,3 +85,6 @@ Route::prefix('pay')->group(function() {
 	Route::post('pusher/{profile}', 'PusherController@authenticateBusiness');
 });
 
+
+Route::get('pusher/test', 'DealsController@test')->name('pusher.test');
+

@@ -14,9 +14,6 @@ use App\Http\Controllers\Controller;
 
 class DealsController extends Controller {
 
-	public function __construct() {
-		$this->middleware('jwt.auth');
-	}
 
 	public function update(Transaction $transaction, Request $request) {
 		$user = JWTAuth::parseToken()->authenticate();
@@ -38,5 +35,12 @@ class DealsController extends Controller {
 			'created_at' => $transaction->created_at
 		];
 		return response()->json(['success' => true, 'dealId' => $dealId], 200);
+	}
+
+	public function test() {
+		$userLocation = UserLocation::where('id', 5)->first();
+		$profile = $userLocation->profile;
+		$type = 'deal_redeemed';
+		event(new UpdateConnectedApps($profile, $type, new PayCustomerResource($userLocation)));
 	}
 }
