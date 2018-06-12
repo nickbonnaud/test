@@ -7,7 +7,9 @@ use App\LoyaltyCard;
 use App\Profile;
 use App\UserLocation;
 use App\Http\Resources\UserLocationResource;
+use App\Http\Resources\PayCustomerResource;
 use App\Events\CustomerRedeemItem;
+use App\Events\UpdateConnectedApps;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use App\Http\Resources\LoyaltyCardResource;
@@ -38,6 +40,7 @@ class LoyaltyCardsController extends Controller {
 		$userLocation = UserLocation::where('user_id', $user->id)->where('profile_id', $loyaltyCard->loyaltyProgram->profile->id)->first();
 		$user = new UserLocationResource($userLocation);
 		event(new CustomerRedeemItem($user, $loyaltyCard->loyaltyProgram->profile, $type));
+		event(new UpdateConnectedApps($loyaltyCard->loyaltyProgram->profile, $type, new PayCustomerResource($userLocation)));
 		return response()->json(['success' => true], 200);
 	}
 }
