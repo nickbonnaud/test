@@ -108,7 +108,7 @@ class PayCustomerResource extends Resource
       $loyaltyCard = $user->loyaltyCards()->where('loyalty_program_id', '=', $loyaltyProgram->id)->first();
       if ($loyaltyCard) {
         $formattedLoyaltyCard = (object) [
-        	'has_reward' => true,
+        	'has_reward' => $loyaltyCard->unredeemed_rewards > 0,
         	'loyalty_card_id' => $loyaltyCard->id,
         	'unredeemed_count' => $loyaltyCard->unredeemed_rewards,
         	'total_rewards_earned' => $loyaltyCard->rewards_achieved,

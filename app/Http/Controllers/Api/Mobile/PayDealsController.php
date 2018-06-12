@@ -4,8 +4,6 @@ namespace App\Http\Controllers\Api\Mobile;
 
 use JWTAuth;
 use App\Transaction;
-use App\UserLocation;
-use App\Http\Resources\PayCustomerResource;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
