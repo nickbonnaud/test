@@ -40,7 +40,7 @@ class DealsController extends Controller {
 	public function test() {
 		$userLocation = UserLocation::where('id', 5)->first();
 		$profile = $userLocation->profile;
-		$type = 'deal_redeemed';
+		$type = 'loyalty_redeemed';
 		event(new UpdateConnectedApps($profile, $type, new PayCustomerResource($userLocation)));
 	}
 }
