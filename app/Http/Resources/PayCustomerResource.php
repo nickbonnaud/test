@@ -16,7 +16,7 @@ class PayCustomerResource extends Resource
     $user = $this->user;
     $profile = $this->profile;
 
-    dd($user);
+    dd($user->photo);
 
     $lastTransaction = $this->getLastTransaction($user, $profile);
     $deal = $this->getDeal($user, $profile);
