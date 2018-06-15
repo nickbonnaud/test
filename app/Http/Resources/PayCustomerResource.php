@@ -16,7 +16,7 @@ class PayCustomerResource extends Resource
     $user = $this->user;
     $profile = $this->profile;
 
-    dd($user->photo);
+    dd($user->photo->api_thumbnail_url);
 
     $lastTransaction = $this->getLastTransaction($user, $profile);
     $deal = $this->getDeal($user, $profile);
