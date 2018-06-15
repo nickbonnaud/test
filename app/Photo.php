@@ -40,7 +40,7 @@ class Photo extends Model {
     $photo = new Photo;
     $downScaledPhoto = $photo->makeUserLargePhoto($file);
     $filePath = $file->hashName($photo->baseDir());
-    Storage::put($filePath, (string) $downScaledPhoto->encode());
+    Storage::disk('public')->put($filePath, (string) $downScaledPhoto->encode());
     
     $photo->fill([
         'path' => $filePath,
