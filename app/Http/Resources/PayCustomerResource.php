@@ -16,10 +16,6 @@ class PayCustomerResource extends Resource
     $user = $this->user;
     $profile = $this->profile;
 
-    if ($user->id == 288) {
-      dd("here");
-    }
-
     $lastTransaction = $this->getLastTransaction($user, $profile);
     $deal = $this->getDeal($user, $profile);
     $lastPostInteractions = $this->getLastPostInteractions($user, $profile);
