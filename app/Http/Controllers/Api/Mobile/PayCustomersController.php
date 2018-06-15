@@ -9,12 +9,15 @@ use App\Http\Resources\PayCustomerResource;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-use App\Profile;
-
 class PayCustomersController extends Controller {
 
+	public function __construct() {
+		$this->middleware('jwt.auth');
+	}
+
 	public function index(UserLocationFilters $userLocationFilters, Request $request) {
-		$profile = Profile::where('id', 1)->first();
+		$user = JWTAuth::parseToken()->authenticate();
+		$profile = $user->profile;
 
 		$userLocations = UserLocation::filter($userLocationFilters, $profile)->with('user')->get();
   	return PayCustomerResource::collection($userLocations);

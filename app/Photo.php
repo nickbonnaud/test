@@ -36,6 +36,28 @@ class Photo extends Model {
     return $photo;
   }
 
+  public static function fromFormUser($file) {
+    $photo = new Photo;
+    $downScaledPhoto = $photo->makeUserLargePhoto($file);
+    $filePath = $file->hashName($photo->baseDir());
+    Storage::put($filePath, (string) $downScaledPhoto->encode());
+    
+    $photo->fill([
+        'path' => $filePath,
+        'name' => $fileName = str_replace($photo->baseDir() . '/', '', $filePath),
+        'thumbnail_path' => $photo->makeThumbnail($file, $fileName)
+      ])->save();
+    return $photo;
+  }
+
+
+  protected function makeUserLargePhoto($file) {
+    return Image::make($file)
+      ->fit(500, 500, function($constraint) {
+        $constraint->upsize();
+      }, 'center')->encode('png');
+  }
+
   public static function fromFormDeal($file) {
     $photo = new Photo;
      $photo->fill([

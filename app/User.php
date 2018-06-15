@@ -147,7 +147,7 @@ class User extends Authenticatable implements JWTSubject
 
   public function updatePhoto($file) {
     if ($file) {
-      $photo = Photo::fromForm($file);
+      $photo = Photo::fromFormUser($file);
       $photo->save();
       $this->deleteOldPhoto();
       $this->photo()->associate($photo);

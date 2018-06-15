@@ -106,7 +106,11 @@ class ApiUserTest extends TestCase
 			'photo' => $file = UploadedFile::fake()->image('photo.jpg')
 		];
 		$response = $this->json('PATCH', "/api/mobile/user", $data, $this->headers($user))->getData();
-		$this->assertEquals('images/photos/' . $file->hashName(), $user->fresh()->photo->path);
+
+		$filePath = 'images/photos/' . $file->hashName();
+		$userFilePath = $user->fresh()->photo->path;
+		
+		$this->assertEquals($filePath, $userFilePath);
 		Storage::disk('public')->assertExists('images/photos/' . $file->hashName());
 		$this->assertNotNull($response->data->photo_url);
 	}
