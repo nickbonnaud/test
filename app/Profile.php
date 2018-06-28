@@ -399,7 +399,8 @@ class Profile extends Model
     if ($connectedPos = $this->connectedPos) {
       $connectedPos->update($requestData);
     } else {
-      $this->connectedPos()->save(new connectedPos($requestData));
+      $connectedPos = $this->connectedPos()->save(new connectedPos($requestData));
+      $connectedPos->createPockeytCustomersCategory();
     }
   }
 }

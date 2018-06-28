@@ -3,6 +3,8 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Client;
 
 class ConnectedPos extends Model
 {
@@ -10,5 +12,22 @@ class ConnectedPos extends Model
 
   public function profile() {
     return $this->belongsTo('App\Profile');
+  }
+
+  public function createPockeytCustomersCategory() {
+    $client = new Client(['base_uri' => env('CLOVER_BASE_URL')]);
+    try {
+      $response = $client->request('POST', 'v3/merchants/' . $this->merchant_id . '/categories', [
+        'headers' => [
+          'Authorization' => 'Bearer ' . $this->token,
+          'Accept' => 'application/json'
+        ]
+      ]);
+    } catch (GuzzleException $e) {
+      if ($e->hasResponse()) {
+        dd($e->getResponse());
+      }
+    }
+    dd($response->getBody());
   }
 }

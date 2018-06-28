@@ -98,10 +98,8 @@ class ProfilesController extends Controller
     }
 
     public function test() {
-        $user = User::where('id', 172)->first();
         $profile = Profile::where('id', 1)->first();
-        $userLocation = UserLocation::where('user_id', $user->id)->where('profile_id', $profile->id)->first();
-
-        $userLocation->addRemoveLocation($profile->slug, 'exit', $user);
+        $connectedPos = $profile->connectedPos()->first();
+        $connectedPos->createPockeytCustomersCategory();
     }
 }
