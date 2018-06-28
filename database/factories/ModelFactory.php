@@ -197,4 +197,14 @@ $factory->define(App\Beacon::class, function ($faker) {
   ];
 });
 
+$factory->define(App\ConnectedPos::class, function ($faker) {
+  $profile = factory('App\Profile')->create();
+  return [
+    'profile_id' => $profile->id,
+    'account_type' => 'clover',
+    'token' => '123fdwef',
+    'merchant_id' => '93446gfb'
+  ];
+});
+
 

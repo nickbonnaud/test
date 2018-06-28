@@ -115,6 +115,10 @@ class Profile extends Model
     return $this->hasOne(LoyaltyProgram::class);
   }
 
+  public function connectedPos() {
+    return $this->hasOne(ConnectedPos::class);
+  }
+
   public function city() {
     return $this->belongsTo(City::class);
   }
@@ -389,5 +393,13 @@ class Profile extends Model
 
   public function accountRoute() {
     return $this->account->slug;
+  }
+
+  public function createOrUpdatePosAccount($requestData) {
+    if ($connectedPos = $this->connectedPos) {
+      $connectedPos->update($requestData);
+    } else {
+      $this->connectedPos()->save(new connectedPos($requestData));
+    }
   }
 }
