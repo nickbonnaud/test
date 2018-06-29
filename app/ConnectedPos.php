@@ -142,7 +142,7 @@ class ConnectedPos extends Model
     } catch (ClientErrorResponseException $exception) {
       dd($exception->getResponse()->getBody(true));
     }
-    dd($response->getBody());
+    dd($response->getBody()->getContents());
   }
 
   private function createCloverTransaction($orderId) {
