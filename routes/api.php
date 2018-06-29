@@ -85,6 +85,8 @@ Route::prefix('pay')->group(function() {
 	Route::patch('loyalty', 'PayLoyaltyCardsController@update');
 	Route::post('transaction', 'PayTransactionsController@store');
 	Route::patch('business', 'PayBusinessController@update');
+
+	Route::post('subscription', 'PayWebHooksController@clover');
 	Route::post('pusher/{profile}', 'PusherController@authenticateBusiness');
 });
 

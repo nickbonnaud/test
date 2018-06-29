@@ -126,7 +126,4 @@ class ConnectedPos extends Model
     }
     dd($response->getBody());
   }
-
-
-
 }
