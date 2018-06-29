@@ -114,6 +114,8 @@ class ConnectedPos extends Model
       $action = $order['type'];
       $orderId = substr($order['objectId'], 2);
 
+      $this->checkForPockeytTransaction($orderId);
+
       switch ($action) {
         case 'CREATE':
           $this->createCloverTransaction($orderId);
@@ -126,6 +128,21 @@ class ConnectedPos extends Model
           break;
       }
     }
+  }
+
+  private function checkForPockeytTransaction($orderId) {
+    $client = new Client(['base_uri' => env('CLOVER_BASE_URL')]);
+    try {
+      $response = $client->request('GET', 'v3/merchants/' . $this->merchant_id . '/orders/' . $orderId . '/line_items', [
+        'headers' => [
+          'Authorization' => 'Bearer ' . $this->token,
+          'Accept' => 'application/json'
+        ]
+      ]);
+    } catch (ClientErrorResponseException $exception) {
+      dd($exception->getResponse()->getBody(true));
+    }
+    dd($response->getBody());
   }
 
   private function createCloverTransaction($orderId) {
