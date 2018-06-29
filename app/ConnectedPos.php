@@ -47,7 +47,7 @@ class ConnectedPos extends Model
           'name' => 'Test Customer',
           'price' => 0,
           'priceType' => 'FIXED',
-          
+          'isRevenue' => false,
         ]
       ]);
     } catch (ClientErrorResponseException $exception) {
