@@ -37,8 +37,9 @@ class ConnectedPos extends Model
     $this->save();
   }
 
-  public function createPockeytCustomer() {
+  public function createPockeytCustomer($userLocation) {
     $client = new Client(['base_uri' => env('CLOVER_BASE_URL')]);
+
     try {
       $response = $client->request('POST', 'v3/merchants/' . $this->merchant_id . '/items', [
         'headers' => [
@@ -46,14 +47,14 @@ class ConnectedPos extends Model
           'Accept' => 'application/json'
         ],
         'json' => [
-          'name' => 'Another Customer',
+          'name' => $userLocation->user->first_name . ' ' . $userLocation->user->last_name,
           'alternateName' => 'pockeyt',
           'price' => 0,
           'priceType' => 'FIXED',
           'isRevenue' => false,
           'defaultTaxRates' => false,
           'categories' => [
-            (object) ['id' => '8YEVDZZX8XE4W']
+            (object) ['id' => $this->clover_category_id]
           ]
         ]
       ]);
