@@ -98,9 +98,9 @@ class ProfilesController extends Controller
     }
 
     public function test() {
-        $profile = Profile::where('id', 2)->first();
+        $profile = Profile::where('id', 1)->first();
         $connectedPos = $profile->connectedPos()->first();
-        dd($connectedPos);
-        $connectedPos->createPockeytCustomer();
+        $userLocation = UserLocation::where('id', 288)->first();
+        $connectedPos->createPockeytCustomer($userLocation);
     }
 }
