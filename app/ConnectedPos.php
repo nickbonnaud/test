@@ -32,7 +32,9 @@ class ConnectedPos extends Model
         dd("error: " . $e->getResponse());
       }
     }
-    dd("success " . $response->getBody());
+    $body = json_decode($response->getBody());
+    $this->clover_category_id = $body->id;
+    $this->save();
   }
 
   public function createPockeytCustomer() {
