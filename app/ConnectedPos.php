@@ -90,7 +90,7 @@ class ConnectedPos extends Model
           'Accept' => 'application/json'
         ],
         'json' => [
-          'id' => 'TEST-ID-POCKEYT'
+          'note' => 'Pockeyt Pay Customer: Test User'
         ]
       ]);
     } catch (ClientErrorResponseException $exception) {
