@@ -113,9 +113,38 @@ class ConnectedPos extends Model
     foreach ($orderData as $order) {
       $action = $order['type'];
       $orderId = substr($order['objectId'], 2);
-    }
 
-    dd($this->merchant_id, $action, $orderId);
+      switch ($action) {
+        case 'CREATE':
+          $this->createCloverTransaction($orderId);
+          break;
+        case 'UPDATE':
+          
+          break;
+        case 'DELETE':
+          
+          break;
+      }
+    }
+  }
+
+  private function createCloverTransaction($orderId) {
+    $cloverTransaction = $this->getTransactionData($orderId);
+  }
+
+  private function getTransactionData($orderId) {
+    $client = new Client(['base_uri' => env('CLOVER_BASE_URL')]);
+    try {
+      $response = $client->request('GET', 'v3/merchants/' . $this->merchant_id . '/orders/' . $orderId, [
+        'headers' => [
+          'Authorization' => 'Bearer ' . $this->token,
+          'Accept' => 'application/json'
+        ]
+      ]);
+    } catch (ClientErrorResponseException $exception) {
+      dd($exception->getResponse()->getBody(true));
+    }
+    dd($response->getBody());
   }
 
   public function modifyOrder() {
