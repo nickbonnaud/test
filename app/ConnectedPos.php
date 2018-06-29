@@ -21,6 +21,10 @@ class ConnectedPos extends Model
         'headers' => [
           'Authorization' => 'Bearer ' . $this->token,
           'Accept' => 'application/json'
+        ],
+        'json' => [
+          'name' => 'Pockeyt Customers',
+          'id' => 'pockeyt_customers_category'
         ]
       ]);
     } catch (GuzzleException $e) {
