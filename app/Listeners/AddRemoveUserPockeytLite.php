@@ -35,7 +35,7 @@ class AddRemoveUserPockeytLite
       $profile->updateUsersPockeytLite($event->user, $event->type);
     } elseif ($connectedPos = $profile->connectedPos()->first()) {
       if ($connectedPos->account_type == 'clover') {
-        $connectedPos->createDeleteCustomer($userLocation);
+        $connectedPos->createDeleteCustomer($type, $userLocation);
       }
     }
   }
