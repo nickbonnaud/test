@@ -45,13 +45,6 @@ class ConnectedPos extends Model
         ],
         'json' => [
           'name' => 'Test Customer',
-          'priceType' => 'FIXED',
-          'isRevenue' => false,
-          'price' => 0,
-          'id' => 'testcustomer1',
-          'categories' => [
-            'Pockeyt Customers'
-          ]
         ]
       ]);
     } catch (ClientErrorResponseException $exception) {
