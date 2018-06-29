@@ -57,6 +57,28 @@ class ConnectedPos extends Model
     } catch (ClientErrorResponseException $exception) {
       dd($exception->getResponse()->getBody(true));
     }
-    dd("success " . $response->getBody());
+    $body = $response->getBody();
+    $itemId = $body->id;
   }
+
+  private function linkCustomerItemToCategory($itemId) {
+    $client = new Client(['base_uri' => env('CLOVER_BASE_URL')]);
+    try {
+      $response = $client->request('POST', 'v3/merchants/' . $this->merchant_id . '/category_items', [
+        'json' => [
+          'elements' => [
+            (object) ['category' => (object) ['id' => '8YEVDZZX8XE4W'], 'item' => (object) ['id' => $itemId]]
+          ]
+        ]
+      ]);
+    } catch (ClientErrorResponseException $exception) {
+      dd($exception->getResponse()->getBody(true));
+    }
+    dd($response->getBody());
+  }
+
+
+
+
+
 }
