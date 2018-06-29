@@ -40,7 +40,7 @@ class ConnectedPos extends Model
   public function createPockeytCustomer($userLocation) {
     $client = new Client(['base_uri' => env('CLOVER_BASE_URL')]);
 
-    dd($userLocation->user->first_name);
+    dd($userLocation->user()->first_name);
 
     try {
       $response = $client->request('POST', 'v3/merchants/' . $this->merchant_id . '/items', [
