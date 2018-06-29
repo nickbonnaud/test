@@ -33,7 +33,7 @@ class AddRemoveUserPockeytLite
 
     if ($profile->account->pockeyt_lite_enabled) {
       $profile->updateUsersPockeytLite($event->user, $event->type);
-    } elseif ($connectedPos = $profile->connectedPos()) {
+    } elseif ($connectedPos = $profile->connectedPos()->first()) {
       if ($connectedPos->account_type == 'clover') {
         $connectedPos->createDeleteCustomer($userLocation);
       }
