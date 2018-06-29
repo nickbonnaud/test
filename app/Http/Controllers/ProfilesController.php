@@ -114,7 +114,7 @@ class ProfilesController extends Controller
         $merchants = $test['merchants'];
 
         foreach ($merchants as $key => $value) {
-            dd($key);
+            dd($value);
         }
 
       //   $profile = Profile::where('id', 1)->first();
