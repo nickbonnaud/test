@@ -32,6 +32,6 @@ class ConnectedPos extends Model
         dd("error: " . $e->getResponse());
       }
     }
-    dd("success " . json_decode($response->getBody()));
+    dd("success " . $response);
   }
 }
