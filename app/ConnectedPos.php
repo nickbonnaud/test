@@ -137,8 +137,7 @@ class ConnectedPos extends Model
     try {
       $response = $client->request('GET', 'v3/merchants/' . $this->merchant_id . '/orders/' . $orderId, [
         'headers' => [
-          'Authorization' => 'Bearer ' . $this->token,
-          'Accept' => 'application/json'
+          'Authorization' => 'Bearer ' . $this->token
         ]
       ]);
     } catch (ClientErrorResponseException $exception) {
