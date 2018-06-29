@@ -31,7 +31,6 @@ class AddRemoveUserPockeytLite
     $user = $event->user;
     $type = $event->type;
 
-    dd('TADA');
     if ($profile->account->pockeyt_lite_enabled) {
       $profile->updateUsersPockeytLite($event->user, $event->type);
     } elseif ($connectedPos = $profile->connectedPos()) {
