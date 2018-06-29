@@ -36,11 +36,4 @@ class DealsController extends Controller {
 		];
 		return response()->json(['success' => true, 'dealId' => $dealId], 200);
 	}
-
-	public function test() {
-		$userLocation = UserLocation::where('id', 5)->first();
-		$profile = $userLocation->profile;
-		$type = 'loyalty_redeemed';
-		event(new UpdateConnectedApps($profile, $type, new PayCustomerResource($userLocation)));
-	}
 }

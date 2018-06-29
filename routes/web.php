@@ -100,9 +100,6 @@ Route::patch('business/review/profile/{profile}', 'BusinessReviewController@upda
 Route::patch('business/review/account/{account}', 'BusinessReviewController@updateAccount')->name('review.updateAccount');
 
 
-
-Route::get('test/notifs', 'ProfilesController@test');
-
 // Web API routes
 Route::prefix('api/web')->group(function () {
 
@@ -153,6 +150,8 @@ Route::prefix('api/web')->group(function () {
 
 	Route::patch('loyalty-card/{profile}/{loyaltyCard}', 'Api\Web\LoyaltyCardsController@update');
 });
+
+Route::get('test/clover', 'ProfilesController@test');
 
 Route::resource('profiles', 'ProfilesController');
 Route::resource('employees', 'EmployeesController');
