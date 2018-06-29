@@ -62,10 +62,14 @@ class ConnectedPos extends Model
       dd($exception->getResponse()->getBody(true));
     }
     $body = json_decode($response->getBody());
-    $this->linkCustomerItemToCategory($body->id);
+    $posCustomerId = $body->id;
+
+    $userLocation->pos_customer_id = $posCustomerId;
+    $userLocation->save();
+    $this->linkCustomerItemToCategory($userLocation);
   }
 
-  private function linkCustomerItemToCategory($itemId) {
+  private function linkCustomerItemToCategory($userLocation) {
     $client = new Client(['base_uri' => env('CLOVER_BASE_URL')]);
     try {
       $response = $client->request('POST', 'v3/merchants/' . $this->merchant_id . '/category_items', [
@@ -75,7 +79,7 @@ class ConnectedPos extends Model
         ],
         'json' => [
           'elements' => [
-            (object) ['category' => (object) ['id' => '8YEVDZZX8XE4W'], 'item' => (object) ['id' => $itemId]]
+            (object) ['category' => (object) ['id' => $this->clover_category_id], 'item' => (object) ['id' => $userLocation->pos_customer_id]]
           ]
         ]
       ]);
