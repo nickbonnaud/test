@@ -9,6 +9,7 @@ class PayWebHooksController extends Controller {
 
 	public function clover(Request $request) {
 		if ($request->header('X-Clover-Auth') == env('CLOVER_WEBHOOK_HEADER')) {
+			\Log::debug($request->all());
 			return response()->json(['success' => 'authorized'], 200);
 		} else {
 			return response()->json(['error' => 'Unauthorized'], 401);
