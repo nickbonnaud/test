@@ -37,6 +37,14 @@ class ConnectedPos extends Model
     $this->save();
   }
 
+  public function createDeleteCustomer($eventType, $userLocation) {
+    if ($eventType == 'enter') {
+      $this->createPockeytCustomer($userLocation);
+    } else {
+      $this->deletePockeytCustomer($userLocation);
+    }
+  }
+
   public function createPockeytCustomer($userLocation) {
     $client = new Client(['base_uri' => env('CLOVER_BASE_URL')]);
     try {
@@ -80,12 +88,6 @@ class ConnectedPos extends Model
     } catch (ClientErrorResponseException $exception) {
       dd($exception->getResponse()->getBody(true));
     }
-    $body = json_decode($response->getBody());
-    dd($body);
-
-    $userLocation->pos_customer_id = $posCustomerId;
-    $userLocation->save();
-    $this->linkCustomerItemToCategory($userLocation);
   }
 
   private function linkCustomerItemToCategory($userLocation) {

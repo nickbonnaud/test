@@ -26,12 +26,17 @@ class AddRemoveUserPockeytLite
    */
   public function handle(CustomerBreakGeoFence $event)
   {
+    $userLocation = $event->userLocation;
     $profile = $event->profile;
     $user = $event->user;
     $type = $event->type;
 
     if ($profile->account->pockeyt_lite_enabled) {
       $profile->updateUsersPockeytLite($event->user, $event->type);
+    } elseif ($connectedPos = $profile->connectedPos()) {
+      if ($connectedPos->account_type == 'clover') {
+        $connectedPos->createDeleteCustomer($userLocation);
+      }
     }
   }
 }
