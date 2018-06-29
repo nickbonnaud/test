@@ -57,8 +57,8 @@ class ConnectedPos extends Model
     } catch (ClientErrorResponseException $exception) {
       dd($exception->getResponse()->getBody(true));
     }
-    $body = $response->getBody();
-    dd($body);
+    $body = json_decode($response->getBody());
+    dd($body->id);
     $itemId = $body->id;
   }
 
