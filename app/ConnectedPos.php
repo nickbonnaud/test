@@ -114,7 +114,7 @@ class ConnectedPos extends Model
       $action = $order['type'];
       $orderId = substr($order['objectId'], 2);
 
-      $this->checkForPockeytTransaction($orderId);
+      $products = $this->checkForPockeytTransaction($orderId);
 
       switch ($action) {
         case 'CREATE':
@@ -143,6 +143,11 @@ class ConnectedPos extends Model
       dd($exception->getResponse()->getBody(true));
     }
     $lineItems = (json_decode($response->getBody()->getContents()))->elements;
+    $products = $this->parseLineItems($lineItems);
+    dd($products);
+  }
+
+  private function parseLineItems($lineItems) {
     $isPockeytCustomer = false;
     $purchasedProducts = [];
     foreach ($lineItems as $lineItem) {
@@ -159,26 +164,28 @@ class ConnectedPos extends Model
             }
           }
           if (!$itemAlreadyStored) {
-            $item = (object) [
-              'id' => 'clover:' . $lineItem->item->id,
-              'name' => $lineItem->name,
-              'price' => $lineItem->price,
-              'quantity' => 1
-            ];
-            array_push($purchasedProducts, $item); 
+            createFormattedItem($lineItem, $purchasedProducts); 
           }
         } else {
-          $item = (object) [
-            'id' => 'clover:' . $lineItem->item->id,
-            'name' => $lineItem->name,
-            'price' => $lineItem->price,
-            'quantity' => 1
-          ];
-          array_push($purchasedProducts, $item); 
+          createFormattedItem($lineItem, $purchasedProducts);
         }
       }
     }
-    dd($isPockeytCustomer, $purchasedProducts);
+    if ($isPockeytCustomer) {
+      return $purchasedProducts;
+    } else {
+      return null;
+    }
+  }
+
+  private function createFormattedItem($lineItem, $purchasedProducts) {
+    $item = (object) [
+      'id' => 'clover:' . $lineItem->item->id,
+      'name' => $lineItem->name,
+      'price' => $lineItem->price,
+      'quantity' => 1
+    ];
+    array_push($purchasedProducts, $item);
   }
 
   private function createCloverTransaction($orderId) {
