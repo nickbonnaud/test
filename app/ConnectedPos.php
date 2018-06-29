@@ -65,6 +65,10 @@ class ConnectedPos extends Model
     $client = new Client(['base_uri' => env('CLOVER_BASE_URL')]);
     try {
       $response = $client->request('POST', 'v3/merchants/' . $this->merchant_id . '/category_items', [
+        'headers' => [
+          'Authorization' => 'Bearer ' . $this->token,
+          'Accept' => 'application/json'
+        ],
         'json' => [
           'elements' => [
             (object) ['category' => (object) ['id' => '8YEVDZZX8XE4W'], 'item' => (object) ['id' => $itemId]]
