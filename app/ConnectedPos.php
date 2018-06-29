@@ -24,7 +24,6 @@ class ConnectedPos extends Model
         ],
         'json' => [
           'name' => 'Pockeyt Customers',
-          'id' => 'pockeyt_customers_category'
         ]
       ]);
     } catch (GuzzleException $e) {
