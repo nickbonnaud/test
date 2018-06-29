@@ -59,7 +59,6 @@ class ConnectedPos extends Model
       dd($exception->getResponse()->getBody(true));
     }
     $body = json_decode($response->getBody());
-    dd($body);
     $this->linkCustomerItemToCategory($body->id);
   }
 
