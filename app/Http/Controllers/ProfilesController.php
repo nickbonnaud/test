@@ -113,9 +113,15 @@ class ProfilesController extends Controller
 
         $merchants = $test['merchants'];
 
-        foreach ($merchants as $key => $value) {
-            dd($value);
+        foreach ($merchants as $merchantIdKey => $orderData) {
+            $merchantId = $merchantIdKey;
+            foreach ($orderData as $order) {
+                $orderId = $order['objectId'];
+                $orderType = $order['type'];
+            }
         }
+
+        dd($merchantId . ', ' . $orderId . ', ' . $orderType );
 
       //   $profile = Profile::where('id', 1)->first();
       //   $user = User::where('id', 288)->first();
