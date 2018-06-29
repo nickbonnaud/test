@@ -101,6 +101,6 @@ class ProfilesController extends Controller
         $profile = Profile::where('id', 1)->first();
         $connectedPos = $profile->connectedPos()->first();
         $userLocation = UserLocation::where('user_id', 288)->first();
-        $connectedPos->createPockeytCustomer($userLocation);
+        $connectedPos->deletePockeytCustomer($userLocation);
     }
 }

@@ -68,6 +68,26 @@ class ConnectedPos extends Model
     $this->linkCustomerItemToCategory($userLocation);
   }
 
+  public function deletePockeytCustomer($userLocation) {
+    $client = new Client(['base_uri' => env('CLOVER_BASE_URL')]);
+    try {
+      $response = $client->request('DELETE', 'v3/merchants/' . $this->merchant_id . '/items/' . $userLocation->pos_customer_id, [
+        'headers' => [
+          'Authorization' => 'Bearer ' . $this->token,
+          'Accept' => 'application/json'
+        ]
+      ]);
+    } catch (ClientErrorResponseException $exception) {
+      dd($exception->getResponse()->getBody(true));
+    }
+    $body = json_decode($response->getBody());
+    dd($body);
+
+    $userLocation->pos_customer_id = $posCustomerId;
+    $userLocation->save();
+    $this->linkCustomerItemToCategory($userLocation);
+  }
+
   private function linkCustomerItemToCategory($userLocation) {
     $client = new Client(['base_uri' => env('CLOVER_BASE_URL')]);
     try {
@@ -85,7 +105,6 @@ class ConnectedPos extends Model
     } catch (ClientErrorResponseException $exception) {
       dd($exception->getResponse()->getBody(true));
     }
-    dd($response->getBody());
   }
 
   public function modifyOrder() {
