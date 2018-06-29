@@ -98,11 +98,30 @@ class ProfilesController extends Controller
     }
 
     public function test() {
-        $profile = Profile::where('id', 1)->first();
-        $user = User::where('id', 288)->first();
-        UserLocation::create([
-        'profile_id' => $profile->id,
-        'user_id' => $user->id
-      ]);
+        $test = [
+          'appId' => '3DA2Z9KPJ7VZ6',
+          'merchants' => [
+            'RR9ACXMZ6AFA1' => [
+              0 =>[
+                'objectId' => 'O:AYRH2ZM2DQ12A',
+                'type' => 'CREATE',
+                'ts' => 1530299707655,
+              ],
+            ],
+          ],
+        ];
+
+        $merchants = $test['merchants'];
+
+        foreach ($merchants as $key => $value) {
+            dd($key);
+        }
+
+      //   $profile = Profile::where('id', 1)->first();
+      //   $user = User::where('id', 288)->first();
+      //   UserLocation::create([
+      //   'profile_id' => $profile->id,
+      //   'user_id' => $user->id
+      // ]);
     }
 }
