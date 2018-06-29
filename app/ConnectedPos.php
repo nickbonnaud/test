@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use GuzzleHttp\Exception\GuzzleException;
+use Guzzle\Http\Exception\ClientErrorResponseException;
 use GuzzleHttp\Client;
 
 class ConnectedPos extends Model
@@ -53,10 +54,8 @@ class ConnectedPos extends Model
           ]
         ]
       ]);
-    } catch (GuzzleException $e) {
-      if ($e->hasResponse()) {
-        dd("error: " . $e->getBody());
-      }
+    } catch (ClientErrorResponseException $exception) {
+      dd($exception->getResponse()->getBody(true));
     }
     dd("success " . $response->getBody());
   }
