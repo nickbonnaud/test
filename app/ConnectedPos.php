@@ -45,6 +45,7 @@ class ConnectedPos extends Model
         ],
         'json' => [
           'name' => 'Test Customer',
+          'alternateName' => 'pockeyt',
           'price' => 0,
           'priceType' => 'FIXED',
           'isRevenue' => false,
