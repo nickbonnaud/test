@@ -44,7 +44,7 @@ class ConnectedPos extends Model
           'Accept' => 'application/json'
         ],
         'json' => [
-          'name' => 'Test Customer',
+          'name' => 'New Customer',
           'alternateName' => 'pockeyt',
           'price' => 0,
           'priceType' => 'FIXED',
