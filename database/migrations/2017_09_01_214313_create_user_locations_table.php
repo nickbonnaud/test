@@ -19,6 +19,7 @@ class CreateUserLocationsTable extends Migration
             $table->foreign('user_id')->references('id')->on('users');
             $table->integer('profile_id')->references('id')->on('profiles');
             $table->boolean('exit_notification_sent')->default(false);
+            $table->string('pos_customer_id')->nullable();
             $table->timestamps();
         });
     }
