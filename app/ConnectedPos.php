@@ -49,7 +49,7 @@ class ConnectedPos extends Model
           'priceType' => 'FIXED',
           'isRevenue' => false,
           'defaultTaxRates' => false,
-          'categories' => [
+          'categories' => (array) [
             'id' => 'NRG0617ANGC24'
           ]
         ]
