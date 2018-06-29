@@ -10,6 +10,9 @@ class PayWebHooksController extends Controller {
 
 	public function clover(Request $request) {
 		if ($request->header('X-Clover-Auth') == env('CLOVER_WEBHOOK_HEADER')) {
+			\Log::debug('++++++++++++++++++++++++++++++++++++++++++++');
+			\Log::debug($request->all());
+
 			// $webHookData = $request->all();
 			// $merchants = $webHookData['merchants'];
 			// foreach ($merchants as $merchantIdKey => $orderData) {

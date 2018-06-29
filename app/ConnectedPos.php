@@ -116,16 +116,18 @@ class ConnectedPos extends Model
 
       $products = $this->checkForPockeytTransaction($orderId);
 
-      switch ($action) {
-        case 'CREATE':
-          $this->createCloverTransaction($orderId);
-          break;
-        case 'UPDATE':
-          
-          break;
-        case 'DELETE':
-          
-          break;
+      if ($products) {
+        switch ($action) {
+          case 'CREATE':
+            $this->createCloverTransaction($orderId, $products);
+            break;
+          case 'UPDATE':
+            
+            break;
+          case 'DELETE':
+            
+            break;
+        }
       }
     }
   }
@@ -143,8 +145,8 @@ class ConnectedPos extends Model
       dd($exception->getResponse()->getBody(true));
     }
     $lineItems = (json_decode($response->getBody()->getContents()))->elements;
-    $products = $this->parseLineItems($lineItems);
-    dd($products);
+    return $this->parseLineItems($lineItems);
+    
   }
 
   private function parseLineItems($lineItems) {
@@ -190,17 +192,7 @@ class ConnectedPos extends Model
     }
   }
 
-  private function createFormattedItem($lineItem, $purchasedProducts) {
-    $item = (object) [
-      'id' => 'clover:' . $lineItem->item->id,
-      'name' => $lineItem->name,
-      'price' => $lineItem->price,
-      'quantity' => 1
-    ];
-    array_push($purchasedProducts, $item);
-  }
-
-  private function createCloverTransaction($orderId) {
+  private function createCloverTransaction($orderId, $products) {
     $cloverTransaction = $this->getTransactionData($orderId);
   }
 
@@ -222,7 +214,7 @@ class ConnectedPos extends Model
   public function modifyOrder() {
     $client = new Client(['base_uri' => env('CLOVER_BASE_URL')]);
     try {
-      $response = $client->request('POST', 'v3/merchants/' . $this->merchant_id . '/orders/72WGF62NTRY1E', [
+      $response = $client->request('POST', 'v3/merchants/' . $this->merchant_id . '/orders/30GDKF7BJCB9R', [
         'headers' => [
           'Authorization' => 'Bearer ' . $this->token,
           'Accept' => 'application/json'
