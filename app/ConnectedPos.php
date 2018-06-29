@@ -50,7 +50,7 @@ class ConnectedPos extends Model
           'isRevenue' => false,
           'defaultTaxRates' => false,
           'categories' => [
-            (object) ['id' => 'NRG0617ANGC24']
+            (object) ['id' => '8YEVDZZX8XE4W']
           ]
         ]
       ]);
