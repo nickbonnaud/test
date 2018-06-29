@@ -98,7 +98,11 @@ class ProfilesController extends Controller
     }
 
     public function test() {
-        $userLocation = UserLocation::where('user_id', 288)->first();
-        $userLocation->removeLocationNoUnpaidTransaction();
+        $profile = Profile::where('id', 2)->first();
+        $user = User::where('id', 288)->first();
+        UserLocation::create([
+        'profile_id' => $profile->id,
+        'user_id' => $user->id
+      ]);
     }
 }
