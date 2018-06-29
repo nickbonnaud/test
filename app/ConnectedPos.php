@@ -50,7 +50,7 @@ class ConnectedPos extends Model
           'isRevenue' => false,
           'defaultTaxRates' => false,
           'categories' => [
-            'name' => 'Pockeyt Customers'
+            'id' => 'NRG0617ANGC24'
           ]
         ]
       ]);
