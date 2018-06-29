@@ -133,11 +133,13 @@ class ConnectedPos extends Model
   }
 
   private function getTransactionData($orderId) {
+    dd($orderId);
     $client = new Client(['base_uri' => env('CLOVER_BASE_URL')]);
     try {
       $response = $client->request('GET', 'v3/merchants/' . $this->merchant_id . '/orders/' . $orderId, [
         'headers' => [
-          'Authorization' => 'Bearer ' . $this->token
+          'Authorization' => 'Bearer ' . $this->token,
+          'Accept' => 'application/json'
         ]
       ]);
     } catch (ClientErrorResponseException $exception) {
