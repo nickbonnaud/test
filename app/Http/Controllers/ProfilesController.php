@@ -116,7 +116,7 @@ class ProfilesController extends Controller
         foreach ($merchants as $merchantIdKey => $orderData) {
             $merchantId = $merchantIdKey;
             foreach ($orderData as $order) {
-                $orderId = $order['objectId'];
+                $orderId = substr($order['objectId'], 2);
                 $orderType = $order['type'];
             }
         }

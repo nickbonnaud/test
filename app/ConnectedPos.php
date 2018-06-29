@@ -109,6 +109,13 @@ class ConnectedPos extends Model
     }
   }
 
+  public function parseWebHookData($orderData) {
+    foreach ($orderData as $order) {
+      $action = $order['type'];
+      $orderId = $order['objectId'];
+    }
+  }
+
   public function modifyOrder() {
     $client = new Client(['base_uri' => env('CLOVER_BASE_URL')]);
     try {
