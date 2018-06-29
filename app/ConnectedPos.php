@@ -144,7 +144,6 @@ class ConnectedPos extends Model
     } catch (ClientErrorResponseException $exception) {
       dd($exception->getResponse()->getBody(true));
     }
-    dd('here');
     dd($response->getBody());
   }
 
