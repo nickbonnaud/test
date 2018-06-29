@@ -142,8 +142,43 @@ class ConnectedPos extends Model
     } catch (ClientErrorResponseException $exception) {
       dd($exception->getResponse()->getBody(true));
     }
-    $items = (json_decode($response->getBody()->getContents()))->elements;
-    dd($items);
+    $lineItems = (json_decode($response->getBody()->getContents()))->elements;
+    $isPockeytCustomer = false;
+    $purchasedProducts = [];
+    foreach ($lineItems as $lineItem) {
+      if ($lineItem->alternateName == 'pockeyt') {
+        $isPockeytCustomer = true;
+      } else {
+        if (count($purchasedProducts) > 0) {
+          foreach ($purchasedProducts as $purchasedProduct) {
+            $itemAlreadyStored = false;
+            if ($purchasedProduct->name == $lineItem->name) {
+              $itemAlreadyStored = true;
+              $purchasedProduct->quantity++;
+              break;
+            }
+          }
+          if (!$itemAlreadyStored) {
+            $item = (object) [
+              'id' => 'clover:' . $lineItem->item->id,
+              'name' => $lineItem->name,
+              'price' => $lineItem->price,
+              'quantity' => 1
+            ];
+            array_push($purchasedProducts, $item); 
+          }
+        } else {
+          $item = (object) [
+            'id' => 'clover:' . $lineItem->item->id,
+            'name' => $lineItem->name,
+            'price' => $lineItem->price,
+            'quantity' => 1
+          ];
+          array_push($purchasedProducts, $item); 
+        }
+      }
+    }
+    dd($isPockeytCustomer, $purchasedProducts);
   }
 
   private function createCloverTransaction($orderId) {
