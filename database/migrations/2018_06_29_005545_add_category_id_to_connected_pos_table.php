@@ -14,11 +14,11 @@ class AddCategoryIdToConnectedPosTable extends Migration
     public function up()
     {
         Schema::table('connected_pos', function (Blueprint $table) {
-            $table->string('clover_category_id')->nullable();;
+            $table->string('clover_category_id')->after('merchant_id')->nullable();;
         });
 
         Schema::table('user_locations', function (Blueprint $table) {
-            $table->string('pos_customer_id')->nullable();;
+            $table->string('pos_customer_id')->after('exit_notification_sent')->nullable();;
         });
     }
 
