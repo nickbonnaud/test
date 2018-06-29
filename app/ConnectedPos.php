@@ -38,9 +38,7 @@ class ConnectedPos extends Model
   }
 
   public function createPockeytCustomer($userLocation) {
-    dd($userLocation);
     $client = new Client(['base_uri' => env('CLOVER_BASE_URL')]);
-    $customer = $userLocation->user()->first();
     try {
       $response = $client->request('POST', 'v3/merchants/' . $this->merchant_id . '/items', [
         'headers' => [
@@ -48,7 +46,7 @@ class ConnectedPos extends Model
           'Accept' => 'application/json'
         ],
         'json' => [
-          'name' => $customer->first_name . ' ' . $customer->last_name,
+          'name' => $userLocation->user->first_name . ' ' . $userLocation->user->last_name,
           'alternateName' => 'pockeyt',
           'price' => 0,
           'priceType' => 'FIXED',
