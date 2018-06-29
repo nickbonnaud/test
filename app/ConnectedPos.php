@@ -38,6 +38,7 @@ class ConnectedPos extends Model
   }
 
   public function createPockeytCustomer($userLocation) {
+    dd($userLocation);
     $client = new Client(['base_uri' => env('CLOVER_BASE_URL')]);
     $customer = $userLocation->user()->first();
     try {
