@@ -111,9 +111,11 @@ class ConnectedPos extends Model
 
   public function parseWebHookData($orderData) {
     foreach ($orderData as $order) {
-      $action = $order['type'];
+      $action = substr($order['objectId'], 2);
       $orderId = $order['objectId'];
     }
+
+    dd($this->merchant_id, $action, $orderId);
   }
 
   public function modifyOrder() {

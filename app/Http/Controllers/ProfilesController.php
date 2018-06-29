@@ -10,6 +10,7 @@ use App\Http\Requests\UpdateProfileRequest;
 
 use App\User;
 use App\UserLocation;
+use App\ConnectedPos;
 
 class ProfilesController extends Controller
 {
@@ -115,13 +116,13 @@ class ProfilesController extends Controller
 
         foreach ($merchants as $merchantIdKey => $orderData) {
             $merchantId = $merchantIdKey;
-            foreach ($orderData as $order) {
-                $orderId = substr($order['objectId'], 2);
-                $orderType = $order['type'];
+            foreach ($merchants as $merchantIdKey => $orderData) {
+                $connectedPos = ConnectedPos::where('merchant_id', $merchantIdKey)->first();
+                if ($connectedPos) {
+                    $connectedPos->parseWebHookData($orderData);
+                }
             }
         }
-
-        dd($merchantId . ', ' . $orderId . ', ' . $orderType );
 
       //   $profile = Profile::where('id', 1)->first();
       //   $user = User::where('id', 288)->first();
