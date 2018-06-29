@@ -81,7 +81,7 @@ class ConnectedPos extends Model
     dd($response->getBody());
   }
 
-  private function modifyOrder() {
+  public function modifyOrder() {
     $client = new Client(['base_uri' => env('CLOVER_BASE_URL')]);
     try {
       $response = $client->request('POST', 'v3/merchants/' . $this->merchant_id . '/orders/72WGF62NTRY1E', [
