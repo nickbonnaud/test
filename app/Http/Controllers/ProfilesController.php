@@ -100,6 +100,9 @@ class ProfilesController extends Controller
     public function test() {
         $profile = Profile::where('id', 1)->first();
         $user = User::where('id', 288)->first();
-        $userLocation = new UserLocation(['user_id' => $user->id, 'profile_id' => $profile->id]);
+        UserLocation::create([
+            'profile_id' => $profile->id,
+            'user_id' => $user->id
+        ]);
     }
 }
