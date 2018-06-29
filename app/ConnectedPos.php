@@ -55,7 +55,7 @@ class ConnectedPos extends Model
       ]);
     } catch (GuzzleException $e) {
       if ($e->hasResponse()) {
-        dd("error: " . $e->getResponse()->getContents());
+        dd("error: " . $e->getBody());
       }
     }
     dd("success " . $response->getBody());
