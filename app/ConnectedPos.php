@@ -48,9 +48,10 @@ class ConnectedPos extends Model
           'price' => 0,
           'priceType' => 'FIXED',
           'isRevenue' => false,
-          'id' => 'testcustomer1',
           'defaultTaxRates' => false,
-          
+          'categories' => [
+            'Pockeyt Customers'
+          ]
         ]
       ]);
     } catch (ClientErrorResponseException $exception) {
