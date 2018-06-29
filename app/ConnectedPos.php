@@ -164,10 +164,22 @@ class ConnectedPos extends Model
             }
           }
           if (!$itemAlreadyStored) {
-            $this->createFormattedItem($lineItem, $purchasedProducts); 
+            $item = (object) [
+              'id' => 'clover:' . $lineItem->item->id,
+              'name' => $lineItem->name,
+              'price' => $lineItem->price,
+              'quantity' => 1
+            ];
+            array_push($purchasedProducts, $item);
           }
         } else {
-          $this->createFormattedItem($lineItem, $purchasedProducts);
+          $item = (object) [
+            'id' => 'clover:' . $lineItem->item->id,
+            'name' => $lineItem->name,
+            'price' => $lineItem->price,
+            'quantity' => 1
+          ];
+          array_push($purchasedProducts, $item);
         }
       }
     }
