@@ -32,6 +32,6 @@ class ConnectedPos extends Model
         dd("error: " . $e->getResponse());
       }
     }
-    dd("success " . $response);
+    dd("success " . $response->getBody());
   }
 }
