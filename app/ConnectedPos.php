@@ -44,7 +44,7 @@ class ConnectedPos extends Model
           'Accept' => 'application/json'
         ],
         'json' => [
-          'name' => 'New Customer',
+          'name' => 'Another Customer',
           'alternateName' => 'pockeyt',
           'price' => 0,
           'priceType' => 'FIXED',
@@ -59,6 +59,7 @@ class ConnectedPos extends Model
       dd($exception->getResponse()->getBody(true));
     }
     $body = json_decode($response->getBody());
+    dd($body);
     $this->linkCustomerItemToCategory($body->id);
   }
 
