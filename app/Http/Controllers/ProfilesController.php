@@ -98,7 +98,7 @@ class ProfilesController extends Controller
     }
 
     public function test() {
-        $profile = Profile::where('id', 1)->first();
+        $profile = Profile::where('id', 2)->first();
         $connectedPos = $profile->connectedPos()->first();
         dd($connectedPos);
         $connectedPos->createPockeytCustomer();
