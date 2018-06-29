@@ -58,6 +58,7 @@ class ConnectedPos extends Model
       dd($exception->getResponse()->getBody(true));
     }
     $body = $response->getBody();
+    dd($body->id);
     $itemId = $body->id;
   }
 
