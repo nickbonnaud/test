@@ -164,10 +164,10 @@ class ConnectedPos extends Model
             }
           }
           if (!$itemAlreadyStored) {
-            createFormattedItem($lineItem, $purchasedProducts); 
+            $this->createFormattedItem($lineItem, $purchasedProducts); 
           }
         } else {
-          createFormattedItem($lineItem, $purchasedProducts);
+          $this->createFormattedItem($lineItem, $purchasedProducts);
         }
       }
     }
