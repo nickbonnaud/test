@@ -154,6 +154,7 @@ class ConnectedPos extends Model
     $purchasedProducts = [];
     foreach ($lineItems as $lineItem) {
       if ($lineItem->alternateName == 'pockeyt') {
+        dd($lineItem);
         $isPockeytCustomer = true;
       } else {
         if (count($purchasedProducts) > 0) {
@@ -194,7 +195,6 @@ class ConnectedPos extends Model
 
   private function createCloverTransaction($orderId, $products) {
     $cloverTransaction = $this->getTransactionData($orderId);
-    dd($products);
     $transaction = new Transaction([
       'profile_id' => $this->profile_id,
 
