@@ -204,7 +204,8 @@ class ConnectedPos extends Model
     $transaction = new Transaction([
       'profile_id' => $this->profile_id,
       'user_id' => $customer->id,
-
+      'paid' => false,
+      'bill_closed' => !$cloverTransaction->state == 'open'
     ]);
   }
 
