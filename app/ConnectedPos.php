@@ -56,6 +56,7 @@ class ConnectedPos extends Model
         'json' => [
           'name' => $userLocation->user->first_name . ' ' . $userLocation->user->last_name,
           'alternateName' => 'pockeyt',
+          'code' => $userLocation->user->id,
           'price' => 0,
           'priceType' => 'FIXED',
           'isRevenue' => false,
@@ -114,12 +115,11 @@ class ConnectedPos extends Model
       $action = $order['type'];
       $orderId = substr($order['objectId'], 2);
 
-      $products = $this->checkForPockeytTransaction($orderId);
-
-      if ($products) {
+      $data = $this->checkForPockeytTransaction($orderId);
+      if ($data) {
         switch ($action) {
           case 'CREATE':
-            $this->createCloverTransaction($orderId, $products);
+            $this->createCloverTransaction($orderId, $data);
             break;
           case 'UPDATE':
             
@@ -150,12 +150,11 @@ class ConnectedPos extends Model
   }
 
   private function parseLineItems($lineItems) {
-    $isPockeytCustomer = false;
+    $pockeytCustomer = null;
     $purchasedProducts = [];
     foreach ($lineItems as $lineItem) {
       if ($lineItem->alternateName == 'pockeyt') {
-        dd($lineItem);
-        $isPockeytCustomer = true;
+        $pockeytCustomer = Customer::where('id', $lineItem->code)->first();
       } else {
         if (count($purchasedProducts) > 0) {
           foreach ($purchasedProducts as $purchasedProduct) {
@@ -186,17 +185,24 @@ class ConnectedPos extends Model
         }
       }
     }
-    if ($isPockeytCustomer) {
-      return $purchasedProducts;
+    if ($pockeytCustomer) {
+      $data = ['customer' => $pockeytCustomer, 'products' => $purchasedProducts];
+      return $data;
     } else {
       return null;
     }
   }
 
-  private function createCloverTransaction($orderId, $products) {
+  private function createCloverTransaction($orderId, $data) {
     $cloverTransaction = $this->getTransactionData($orderId);
+    dd($cloverTransaction);
+    $customer = $data['customer'];
+    $products = $data['products'];
+
+
     $transaction = new Transaction([
       'profile_id' => $this->profile_id,
+      'user_id' => $customer->id,
 
     ]);
   }
