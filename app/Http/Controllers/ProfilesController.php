@@ -99,37 +99,29 @@ class ProfilesController extends Controller
     }
 
     public function test() {
-        $connectedPos = ConnectedPos::where('id', 4)->first();
-        $connectedPos->modifyOrder();
+        $test = [
+          'appId' => '3DA2Z9KPJ7VZ6',
+          'merchants' => [
+            'RR9ACXMZ6AFA1' => [
+              0 =>[
+                'objectId' => 'O:30GDKF7BJCB9R',
+                'type' => 'CREATE',
+                'ts' => 1530299707655,
+              ],
+            ],
+          ],
+        ];
 
+        $merchants = $test['merchants'];
 
-
-
-
-
-        // $test = [
-        //   'appId' => '3DA2Z9KPJ7VZ6',
-        //   'merchants' => [
-        //     'RR9ACXMZ6AFA1' => [
-        //       0 =>[
-        //         'objectId' => 'O:30GDKF7BJCB9R',
-        //         'type' => 'CREATE',
-        //         'ts' => 1530299707655,
-        //       ],
-        //     ],
-        //   ],
-        // ];
-
-        // $merchants = $test['merchants'];
-
-        // foreach ($merchants as $merchantIdKey => $orderData) {
-        //     $merchantId = $merchantIdKey;
-        //     foreach ($merchants as $merchantIdKey => $orderData) {
-        //         $connectedPos = ConnectedPos::where('merchant_id', $merchantIdKey)->first();
-        //         if ($connectedPos) {
-        //             $connectedPos->parseWebHookData($orderData);
-        //         }
-        //     }
-        // }
+        foreach ($merchants as $merchantIdKey => $orderData) {
+            $merchantId = $merchantIdKey;
+            foreach ($merchants as $merchantIdKey => $orderData) {
+                $connectedPos = ConnectedPos::where('merchant_id', $merchantIdKey)->first();
+                if ($connectedPos) {
+                    $connectedPos->parseWebHookData($orderData);
+                }
+            }
+        }
     }
 }

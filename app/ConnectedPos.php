@@ -208,7 +208,7 @@ class ConnectedPos extends Model
     } catch (ClientErrorResponseException $exception) {
       dd($exception->getResponse()->getBody(true));
     }
-    dd($response->getBody());
+    dd(json_decode($response->getBody()->getContents()));
   }
 
   public function modifyOrder() {
