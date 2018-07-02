@@ -194,6 +194,11 @@ class ConnectedPos extends Model
 
   private function createCloverTransaction($orderId, $products) {
     $cloverTransaction = $this->getTransactionData($orderId);
+    dd($products);
+    $transaction = new Transaction([
+      'profile_id' => $this->profile_id,
+
+    ]);
   }
 
   private function getTransactionData($orderId) {
@@ -208,7 +213,7 @@ class ConnectedPos extends Model
     } catch (ClientErrorResponseException $exception) {
       dd($exception->getResponse()->getBody(true));
     }
-    dd(json_decode($response->getBody()->getContents()));
+    return json_decode($response->getBody()->getContents());
   }
 
   public function modifyOrder() {
