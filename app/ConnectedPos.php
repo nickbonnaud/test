@@ -196,16 +196,18 @@ class ConnectedPos extends Model
 
   private function createCloverTransaction($orderId, $data) {
     $cloverTransaction = $this->getTransactionData($orderId);
-    dd($cloverTransaction);
     $customer = $data['customer'];
     $products = $data['products'];
 
+    dd($cloverTransaction);
 
     $transaction = new Transaction([
       'profile_id' => $this->profile_id,
       'user_id' => $customer->id,
       'paid' => false,
-      'bill_closed' => !$cloverTransaction->state == 'open'
+      'bill_closed' => !$cloverTransaction->state == 'open',
+      'status' => 10,
+      'products' => json_encode($products),
     ]);
   }
 
