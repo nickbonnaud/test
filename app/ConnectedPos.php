@@ -56,7 +56,7 @@ class ConnectedPos extends Model
         'json' => [
           'name' => $userLocation->user->first_name . ' ' . $userLocation->user->last_name,
           'alternateName' => 'pockeyt',
-          'code' => $userLocation->user->id,
+          'code' => 'pockeyt-' . $userLocation->user->id,
           'price' => 0,
           'priceType' => 'FIXED',
           'isRevenue' => false,
