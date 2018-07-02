@@ -154,7 +154,7 @@ class ConnectedPos extends Model
     $purchasedProducts = [];
     foreach ($lineItems as $lineItem) {
       if ($lineItem->alternateName == 'pockeyt') {
-        $pockeytCustomer = Customer::where('id', $lineItem->code)->first();
+        $pockeytCustomer = User::where('id', $lineItem->code)->first();
       } else {
         if (count($purchasedProducts) > 0) {
           foreach ($purchasedProducts as $purchasedProduct) {
