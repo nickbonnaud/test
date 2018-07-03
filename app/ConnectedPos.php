@@ -150,7 +150,6 @@ class ConnectedPos extends Model
   }
 
   private function parseLineItems($lineItems) {
-    dd($lineItems);
     $pockeytCustomer = null;
     $purchasedProducts = [];
     foreach ($lineItems as $lineItem) {
