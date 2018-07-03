@@ -112,7 +112,7 @@ class ConnectedPos extends Model
 
   public function parseWebHookData($orderData) {
     foreach ($orderData as $order) {
-      \Log::info('*****************************************************');
+      \Log::info('+++++++++++++++++++++++++++&&&&&&&&&&&&&&&&&&&&&');
       \Log::info($order);
       $action = $order['type'];
       \Log::info($action);
