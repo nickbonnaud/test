@@ -199,16 +199,32 @@ class ConnectedPos extends Model
     $customer = $data['customer'];
     $products = $data['products'];
 
-    dd($cloverTransaction);
+    $total = $cloverTransaction->total;
+    $subTotalAndTax = getCloverTransactionSubtotalAndTax($products, $total);
+    $subTotal = $subTotalAndTax['subTotal'];
+    $tax = $subTotal['tax'];
 
     $transaction = new Transaction([
       'profile_id' => $this->profile_id,
       'user_id' => $customer->id,
       'paid' => false,
-      'bill_closed' => !$cloverTransaction->state == 'open',
+      'bill_closed' => $cloverTransaction->state != 'open',
       'status' => 10,
       'products' => json_encode($products),
+      'tax' => $tax,
+      'net_sales' => $subTotal,
+      'total' => $total,
+      'pos_transaction_id' => $cloverTransaction->id,
     ]);
+  }
+
+  private function getCloverTransactionSubtotalAndTax($products, $total) {
+    $subTotal = 0;
+    foreach ($products as $product) {
+      $subTotal = $subTotal + ($product->quantity * $product->price);
+    }
+    $tax = $total - $subTotal;
+    return ['subTotal' => $subTotal, 'tax' => $tax];
   }
 
   private function getTransactionData($orderId) {
