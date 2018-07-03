@@ -200,7 +200,7 @@ class ConnectedPos extends Model
     $products = $data['products'];
 
     $total = $cloverTransaction->total;
-    $subTotalAndTax = getCloverTransactionSubtotalAndTax($products, $total);
+    $subTotalAndTax = $this->getCloverTransactionSubtotalAndTax($products, $total);
     $subTotal = $subTotalAndTax['subTotal'];
     $tax = $subTotal['tax'];
 
