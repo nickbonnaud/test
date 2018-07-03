@@ -114,20 +114,21 @@ class ConnectedPos extends Model
     foreach ($orderData as $order) {
       $action = $order['type'];
       $orderId = substr($order['objectId'], 2);
+      $data = $this->checkForPockeytTransaction($orderId);
 
-      if ($action != 'DELETE') {
-        $data = $this->checkForPockeytTransaction($orderId);
-        $cloverTransaction = $this->getTransactionData($orderId);
-        $transaction = Transaction::where('pos_transaction_id', $cloverTransaction->id)->first();
+      if ($data) {
+        if ($action != 'DELETE') {
+          $cloverTransaction = $this->getTransactionData($orderId);
+          $transaction = Transaction::where('pos_transaction_id', $cloverTransaction->id)->first();
 
-        if ($transaction) {
-          $this->updateCloverTransaction($cloverTransaction, $data, $transaction);
+          if ($transaction) {
+            $this->updateCloverTransaction($cloverTransaction, $data, $transaction);
+          } else {
+            $this->createCloverTransaction($cloverTransaction, $data);
+          }
         } else {
-          $this->createCloverTransaction($cloverTransaction, $data);
+          $this->deleteCloverTransaction($orderId);
         }
-      } else {
-        $data = null;
-        $this->deleteCloverTransaction($orderId);
       }
     }
   }
