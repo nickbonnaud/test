@@ -147,7 +147,6 @@ class ConnectedPos extends Model
     }
     $lineItems = (json_decode($response->getBody()->getContents()))->elements;
     return $this->parseLineItems($lineItems);
-    
   }
 
   private function parseLineItems($lineItems) {
@@ -202,7 +201,7 @@ class ConnectedPos extends Model
     $total = $cloverTransaction->total;
     $subTotalAndTax = $this->getCloverTransactionSubtotalAndTax($products, $total);
     $subTotal = $subTotalAndTax['subTotal'];
-    $tax = $subTotal['tax'];
+    $tax = $subTotalAndTax['tax'];
 
     $transaction = new Transaction([
       'profile_id' => $this->profile_id,

@@ -49,7 +49,8 @@ class Transaction extends Model
     'employee_id',
     'redeemed',
     'bill_closed',
-    'status'
+    'status',
+    'pos_transaction_id'
   ];
 
   public function profile() {
