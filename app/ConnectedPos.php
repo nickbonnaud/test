@@ -152,7 +152,6 @@ class ConnectedPos extends Model
   private function parseLineItems($lineItems) {
     $pockeytCustomer = null;
     $purchasedProducts = [];
-    dd($lineItems);
     foreach ($lineItems as $lineItem) {
       if ($lineItem->alternateName == 'pockeyt') {
         $customerId = substr($lineItem->itemCode, 8);
@@ -161,7 +160,7 @@ class ConnectedPos extends Model
         if (count($purchasedProducts) > 0) {
           foreach ($purchasedProducts as $purchasedProduct) {
             $itemAlreadyStored = false;
-            if ($purchasedProduct->name == $lineItem->name) {
+            if ($lineItem->item && ($purchasedProduct->id == ('clover:' . $lineItem->item->id))) {
               $itemAlreadyStored = true;
               $purchasedProduct->quantity++;
               break;
@@ -169,7 +168,7 @@ class ConnectedPos extends Model
           }
           if (!$itemAlreadyStored) {
             $item = (object) [
-              'id' => 'clover:' . $lineItem->item->id,
+              'id' => 'clover:' . ($lineItem->item ? $lineItem->item->id : 'custom'),
               'name' => $lineItem->name,
               'price' => $lineItem->price,
               'quantity' => 1
@@ -178,7 +177,7 @@ class ConnectedPos extends Model
           }
         } else {
           $item = (object) [
-            'id' => 'clover:' . $lineItem->item->id,
+            'id' => 'clover:' . ($lineItem->item ? $lineItem->item->id : 'custom'),
             'name' => $lineItem->name,
             'price' => $lineItem->price,
             'quantity' => 1
