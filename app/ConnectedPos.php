@@ -112,28 +112,22 @@ class ConnectedPos extends Model
 
   public function parseWebHookData($orderData) {
     foreach ($orderData as $order) {
-      \Log::info('+++++++++++++++++++++++++++&&&&&&&&&&&&&&&&&&&&&');
-      \Log::info($order);
       $action = $order['type'];
-      \Log::info($action);
       $orderId = substr($order['objectId'], 2);
 
       if ($action != 'DELETE') {
         $data = $this->checkForPockeytTransaction($orderId);
         $cloverTransaction = $this->getTransactionData($orderId);
+        $transaction = Transaction::where('pos_transaction_id', $cloverTransaction->id)->first();
+
+        if ($transaction) {
+          $this->updateCloverTransaction($cloverTransaction, $data, $transaction);
+        } else {
+          $this->createCloverTransaction($cloverTransaction, $data);
+        }
       } else {
         $data = null;
-        $this->deleteCloverTransaction($cloverTransaction);
-      }
-      if ($data) {
-        switch ($action) {
-          case 'CREATE':
-            $this->createCloverTransaction($cloverTransaction, $data);
-            break;
-          case 'UPDATE':
-            $this->updateCloverTransaction($cloverTransaction, $data);
-            break;
-        }
+        $this->deleteCloverTransaction($orderId);
       }
     }
   }
@@ -228,7 +222,7 @@ class ConnectedPos extends Model
     }
   }
 
-  private function updateCloverTransaction($cloverTransaction, $data) {
+  private function updateCloverTransaction($cloverTransaction, $data, $transaction) {
     $customer = $data['customer'];
     $products = $data['products'];
     $total = $cloverTransaction->total;
@@ -236,7 +230,6 @@ class ConnectedPos extends Model
     $subTotal = $subTotalAndTax['subTotal'];
     $tax = $subTotalAndTax['tax'];
 
-    $transaction = Transaction::where('pos_transaction_id', $cloverTransaction->id)->first();
     $transaction->update([
       'bill_closed' => $cloverTransaction->state != 'open',
       'products' => json_encode($products),
@@ -250,8 +243,8 @@ class ConnectedPos extends Model
     }
   }
 
-  private function deleteCloverTransaction($cloverTransaction) {
-    $transaction = Transaction::where('pos_transaction_id', $cloverTransaction->id)->first();
+  private function deleteCloverTransaction($cloverTransactionId) {
+    $transaction = Transaction::where('pos_transaction_id', $cloverTransactionId)->first();
     if ($transaction) {
       $transaction->delete();
     }
