@@ -112,7 +112,10 @@ class ConnectedPos extends Model
 
   public function parseWebHookData($orderData) {
     foreach ($orderData as $order) {
+      \Log::info('*****************************************************');
+      \Log::info($order);
       $action = $order['type'];
+      \Log::info($action);
       $orderId = substr($order['objectId'], 2);
 
       $data = $this->checkForPockeytTransaction($orderId);
@@ -247,7 +250,9 @@ class ConnectedPos extends Model
 
   private function deleteCloverTransaction($cloverTransaction) {
     $transaction = Transaction::where('pos_transaction_id', $cloverTransaction->id)->first();
-    $transaction->delete();
+    if ($transaction) {
+      $transaction->delete();
+    }
   }
 
   private function addNoteToTransaction($cloverTransactionId, $customer) {
