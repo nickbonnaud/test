@@ -160,7 +160,7 @@ class ConnectedPos extends Model
         if (count($purchasedProducts) > 0) {
           foreach ($purchasedProducts as $purchasedProduct) {
             $itemAlreadyStored = false;
-            if ($lineItem->item && ($purchasedProduct->id == ('clover:' . $lineItem->item->id))) {
+            if (isset($lineItem->item) && ($purchasedProduct->id == ('clover:' . $lineItem->item->id))) {
               $itemAlreadyStored = true;
               $purchasedProduct->quantity++;
               break;
@@ -168,7 +168,7 @@ class ConnectedPos extends Model
           }
           if (!$itemAlreadyStored) {
             $item = (object) [
-              'id' => 'clover:' . ($lineItem->item ? $lineItem->item->id : 'custom'),
+              'id' => 'clover:' . (isset($lineItem->item) ? $lineItem->item->id : 'custom'),
               'name' => $lineItem->name,
               'price' => $lineItem->price,
               'quantity' => 1
@@ -177,7 +177,7 @@ class ConnectedPos extends Model
           }
         } else {
           $item = (object) [
-            'id' => 'clover:' . ($lineItem->item ? $lineItem->item->id : 'custom'),
+            'id' => 'clover:' . (isset($lineItem->item) ? $lineItem->item->id : 'custom'),
             'name' => $lineItem->name,
             'price' => $lineItem->price,
             'quantity' => 1
