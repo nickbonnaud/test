@@ -152,6 +152,7 @@ class ConnectedPos extends Model
   private function parseLineItems($lineItems) {
     $pockeytCustomer = null;
     $purchasedProducts = [];
+    dd($lineItems);
     foreach ($lineItems as $lineItem) {
       if ($lineItem->alternateName == 'pockeyt') {
         $customerId = substr($lineItem->itemCode, 8);
