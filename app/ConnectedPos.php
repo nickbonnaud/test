@@ -116,10 +116,11 @@ class ConnectedPos extends Model
       $orderId = substr($order['objectId'], 2);
 
       $data = $this->checkForPockeytTransaction($orderId);
+      $cloverTransaction = $this->getTransactionData($orderId);
       if ($data) {
         switch ($action) {
           case 'CREATE':
-            $this->createCloverTransaction($orderId, $data);
+            $this->createCloverTransaction($cloverTransaction, $data);
             break;
           case 'UPDATE':
             
@@ -194,8 +195,7 @@ class ConnectedPos extends Model
     }
   }
 
-  private function createCloverTransaction($orderId, $data) {
-    $cloverTransaction = $this->getTransactionData($orderId);
+  private function createCloverTransaction($cloverTransaction, $data) {
     $customer = $data['customer'];
     $products = $data['products'];
 
@@ -216,6 +216,46 @@ class ConnectedPos extends Model
       'total' => $total,
       'pos_transaction_id' => $cloverTransaction->id,
     ]);
+    $transaction->save();
+
+    if ($cloverTransaction->state == 'open') {
+      $this->addNoteToTransaction($cloverTransaction->id, $customer);
+    } else {
+      $userLocation = UserLocation::where('user_id', $customer->id)->where('profile_id', $this->profile_id)->first();
+      $posCustomerId = $userLocation->pos_customer_id;
+      $this->removePockeytCustomerFromTransaction($cloverTransaction->id, $posCustomerId);
+    }
+  }
+
+  private function addNoteToTransaction($cloverTransactionId, $customer) {
+    $client = new Client(['base_uri' => env('CLOVER_BASE_URL')]);
+    try {
+      $response = $client->request('POST', 'v3/merchants/' . $this->merchant_id . '/orders/' . $cloverTransactionId, [
+        'headers' => [
+          'Authorization' => 'Bearer ' . $this->token,
+          'Accept' => 'application/json'
+        ],
+        'json' => [
+          'note' => 'Pockeyt Pay Customer: ' . $customer->first_name . ' ' . $customer->last_name 
+        ]
+      ]);
+    } catch (ClientErrorResponseException $exception) {
+      dd($exception->getResponse()->getBody(true));
+    }
+  }
+
+  private function removePockeytCustomerFromTransaction($cloverTransactionId, $posCustomerId) {
+    $client = new Client(['base_uri' => env('CLOVER_BASE_URL')]);
+    try {
+      $response = $client->request('DELETE', 'v3/merchants/' . $this->merchant_id . '/orders/' . $cloverTransactionId . '/line_items/' . $posCustomerId, [
+        'headers' => [
+          'Authorization' => 'Bearer ' . $this->token,
+          'Accept' => 'application/json'
+        ]
+      ]);
+    } catch (ClientErrorResponseException $exception) {
+      dd($exception->getResponse()->getBody(true));
+    }
   }
 
   private function getCloverTransactionSubtotalAndTax($products, $total) {
@@ -240,23 +280,5 @@ class ConnectedPos extends Model
       dd($exception->getResponse()->getBody(true));
     }
     return json_decode($response->getBody()->getContents());
-  }
-
-  public function modifyOrder() {
-    $client = new Client(['base_uri' => env('CLOVER_BASE_URL')]);
-    try {
-      $response = $client->request('POST', 'v3/merchants/' . $this->merchant_id . '/orders/30GDKF7BJCB9R', [
-        'headers' => [
-          'Authorization' => 'Bearer ' . $this->token,
-          'Accept' => 'application/json'
-        ],
-        'json' => [
-          'note' => 'Pockeyt Pay Customer: Test User'
-        ]
-      ]);
-    } catch (ClientErrorResponseException $exception) {
-      dd($exception->getResponse()->getBody(true));
-    }
-    dd($response->getBody());
   }
 }

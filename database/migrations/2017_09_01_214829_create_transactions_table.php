@@ -42,6 +42,7 @@ class CreateTransactionsTable extends Migration
             $table->integer('refund_tax')->unsigned()->nullable();
             $table->integer('refund_amount')->unsigned()->nullable();
             $table->string('refund_id')->nullable();
+            $table->string('pos_transaction_id')->nullable();
             $table->timestamps();
         });
     }
