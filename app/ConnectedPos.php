@@ -118,8 +118,13 @@ class ConnectedPos extends Model
       \Log::info($action);
       $orderId = substr($order['objectId'], 2);
 
-      $data = $this->checkForPockeytTransaction($orderId);
-      $cloverTransaction = $this->getTransactionData($orderId);
+      if ($action != 'DELETE') {
+        $data = $this->checkForPockeytTransaction($orderId);
+        $cloverTransaction = $this->getTransactionData($orderId);
+      } else {
+        $data = null;
+        $this->deleteCloverTransaction($cloverTransaction);
+      }
       if ($data) {
         switch ($action) {
           case 'CREATE':
@@ -127,9 +132,6 @@ class ConnectedPos extends Model
             break;
           case 'UPDATE':
             $this->updateCloverTransaction($cloverTransaction, $data);
-            break;
-          case 'DELETE':
-            $this->deleteCloverTransaction($cloverTransaction);
             break;
         }
       }
