@@ -126,7 +126,7 @@ class ConnectedPos extends Model
             $this->updateCloverTransaction($cloverTransaction, $data);
             break;
           case 'DELETE':
-            $this->deleteCloverTransaction($cloverTransaction, $data);
+            $this->deleteCloverTransaction($cloverTransaction);
             break;
         }
       }
@@ -219,13 +219,12 @@ class ConnectedPos extends Model
     if ($cloverTransaction->state == 'open') {
       $this->addNoteToTransaction($cloverTransaction->id, $customer);
     } else {
-      $userLocation = UserLocation::where('user_id', $customer->id)->where('profile_id', $this->profile_id)->first();
-      $posCustomerId = $userLocation->pos_customer_id;
-      $this->removePockeytCustomerFromTransaction($cloverTransaction->id, $posCustomerId);
+      $this->removePockeytCustomerFromTransaction($cloverTransaction->id, $customer);
     }
   }
 
   private function updateCloverTransaction($cloverTransaction, $data) {
+    $customer = $data['customer'];
     $products = $data['products'];
     $total = $cloverTransaction->total;
     $subTotalAndTax = $this->getCloverTransactionSubtotalAndTax($products, $total);
@@ -240,16 +239,15 @@ class ConnectedPos extends Model
       'net_sales' => $subTotal,
       'total' => $total,
     ]);
+
+    if ($cloverTransaction->state != 'open') {
+      $this->removePockeytCustomerFromTransaction($cloverTransaction->id, $customer);
+    }
   }
 
-  private function deleteCloverTransaction($cloverTransaction, $data) {
+  private function deleteCloverTransaction($cloverTransaction) {
     $transaction = Transaction::where('pos_transaction_id', $cloverTransaction->id)->first();
     $transaction->delete();
-
-    $customer = $data['customer'];
-    $userLocation = UserLocation::where('profile_id', $this->profile_id)->where('user_id', $customer->id)->first();
-    $userLocation->pos_customer_id =  null;
-    $userLocation->save();
   }
 
   private function addNoteToTransaction($cloverTransactionId, $customer) {
@@ -269,7 +267,9 @@ class ConnectedPos extends Model
     }
   }
 
-  private function removePockeytCustomerFromTransaction($cloverTransactionId, $posCustomerId) {
+  private function removePockeytCustomerFromTransaction($cloverTransactionId, $customer) {
+    $userLocation = UserLocation::where('user_id', $customer->id)->where('profile_id', $this->profile_id)->first();
+    $posCustomerId = $userLocation->pos_customer_id;
     $client = new Client(['base_uri' => env('CLOVER_BASE_URL')]);
     try {
       $response = $client->request('DELETE', 'v3/merchants/' . $this->merchant_id . '/orders/' . $cloverTransactionId . '/line_items/' . $posCustomerId, [
