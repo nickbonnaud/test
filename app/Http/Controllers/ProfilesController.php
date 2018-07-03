@@ -111,7 +111,7 @@ class ProfilesController extends Controller
             'RR9ACXMZ6AFA1' => [
               0 =>[
                 'objectId' => 'O:PF1G119PYQ38E',
-                'type' => 'UPDATE',
+                'type' => 'DELETE',
                 'ts' => 1530299707655,
               ],
             ],
