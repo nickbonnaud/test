@@ -242,7 +242,7 @@ class ConnectedPos extends Model
     ]);
   }
 
-  private function deleteCloverTransaction($cloverTransaction) {
+  private function deleteCloverTransaction($cloverTransaction, $data) {
     $transaction = Transaction::where('pos_transaction_id', $cloverTransaction->id)->first();
     $transaction->delete();
 
