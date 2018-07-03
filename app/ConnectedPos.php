@@ -126,7 +126,7 @@ class ConnectedPos extends Model
             $this->updateCloverTransaction($cloverTransaction, $data);
             break;
           case 'DELETE':
-            
+            $this->deleteCloverTransaction($cloverTransaction, $data);
             break;
         }
       }
@@ -226,7 +226,6 @@ class ConnectedPos extends Model
   }
 
   private function updateCloverTransaction($cloverTransaction, $data) {
-    $customer = $data['customer'];
     $products = $data['products'];
     $total = $cloverTransaction->total;
     $subTotalAndTax = $this->getCloverTransactionSubtotalAndTax($products, $total);
@@ -241,6 +240,16 @@ class ConnectedPos extends Model
       'net_sales' => $subTotal,
       'total' => $total,
     ]);
+  }
+
+  private function deleteCloverTransaction($cloverTransaction) {
+    $transaction = Transaction::where('pos_transaction_id', $cloverTransaction->id)->first();
+    $transaction->delete();
+
+    $customer = $data['customer'];
+    $userLocation = UserLocation::where('profile_id', $this->profile_id)->where('user_id', $customer->id)->first();
+    $userLocation->pos_customer_id =  null;
+    $userLocation->save();
   }
 
   private function addNoteToTransaction($cloverTransactionId, $customer) {
