@@ -195,6 +195,7 @@ class ConnectedPos extends Model
   }
 
   private function createCloverTransaction($cloverTransaction, $data) {
+    \Log::info('HELLO WORLD THIS IS AFTER SAVE');
     $customer = $data['customer'];
     $products = $data['products'];
     $total = $cloverTransaction->total;
