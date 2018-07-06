@@ -225,6 +225,7 @@ class ConnectedPos extends Model
   }
 
   private function updateCloverTransaction($cloverTransaction, $data, $transaction) {
+    \Log::info('ANOTHER REASON FOR CHECKING');
     $customer = $data['customer'];
     $products = $data['products'];
     $total = $cloverTransaction->total;
