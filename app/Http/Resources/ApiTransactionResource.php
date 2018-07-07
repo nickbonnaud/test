@@ -26,6 +26,16 @@ class ApiTransactionResource extends Resource
           'is_redeemable' => $this->deal->is_redeemable,
         ]
       ];
+    } else if ($request->has('clover')) {
+      return [
+        'id' => $this->id,
+        'business_id' => $this->profile_id,
+        'customer_id' => $this->user_id,
+        'tax' => $this->tax,
+        'sub_total' => $this->net_sales,
+        'total' => $this->total,
+        'pos_transaction_id' => $this->pos_transaction_id
+      ];
     } else {
       return [
         'id' => $this->id,

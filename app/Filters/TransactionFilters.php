@@ -7,7 +7,7 @@ use Carbon\Carbon;
 class TransactionFilters extends Filters
 {
 
-  protected $filters = ['defaultDate', 'customDate', 'pending', 'finalized', 'recent', 'redeemedDeals', 'unRedeemedDeals', 'customerPending', 'dealsAll'];
+  protected $filters = ['defaultDate', 'customDate', 'pending', 'finalized', 'recent', 'redeemedDeals', 'unRedeemedDeals', 'customerPending', 'dealsAll', 'clover'];
 
   protected function defaultDate() {
   	$currentDate = Carbon::now();
@@ -73,6 +73,13 @@ class TransactionFilters extends Filters
     ->where('refund_full', '=', false)
     ->orderBy('created_at', 'desc')
     ->select('deal_id', 'redeemed', 'created_at');
+  }
+
+  protected function clover($cloverTransactionId) {
+    return $this->builder->where('pos_transaction_id', $cloverTransactionId)
+      ->where('paid', false)
+      ->whereNull('deal_id')
+      ->where('is_refund', false);
   }
 
   private function getFromDate($currentDate) {

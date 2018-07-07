@@ -83,6 +83,7 @@ Route::prefix('pay')->group(function() {
 	Route::post('login', 'PayAuthenticateController@login');
 	Route::patch('deal', 'PayDealsController@update');
 	Route::patch('loyalty', 'PayLoyaltyCardsController@update');
+	Route::get('transaction', 'PayTransactionsController@index');
 	Route::post('transaction', 'PayTransactionsController@store');
 	Route::patch('business', 'PayBusinessController@update');
 
