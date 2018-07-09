@@ -21,7 +21,7 @@ class CloverTransactionTest extends TestCase
     $response = $this->get("/api/mobile/pay/transaction?clover={$cloverId}")->assertStatus(401);
   }
 
-  function test_an_authorized_clover_client_cann_retrieve_a_clover_transaction() {
+  function test_an_authorized_clover_client_can_retrieve_a_clover_transaction() {
     $authUser = create('App\User');
     $profile = create('App\Profile', ['user_id' => $authUser->id]);
     $user = create('App\User');
@@ -31,6 +31,8 @@ class CloverTransactionTest extends TestCase
     $transaction = create('App\Transaction', ['profile_id' => $profile->id, 'user_id' => $user->id, 'pos_transaction_id' => $cloverId, 'paid' => false]);
 
     $response = $this->get("/api/mobile/pay/transaction?clover={$cloverId}", $this->headers($authUser))->getData();
+
+    dd($response);
 
     $this->assertEquals($cloverId, $response->data[0]->pos_transaction_id);
     $this->assertEquals($profile->id, $response->data[0]->business_id);

@@ -19,8 +19,8 @@ class PayTransactionsController extends Controller {
 		$user = JWTAuth::parseToken()->authenticate();
 		$profile = $user->profile;
 
-		$transactions = Transaction::filter($filters, $profile)->get();
-		return ApiTransactionResource::collection($transactions);
+		$transaction = Transaction::filter($filters, $profile)->first();
+		return new ApiTransactionResource($transaction);
 	}
 
 	public function store(Request $request) {
