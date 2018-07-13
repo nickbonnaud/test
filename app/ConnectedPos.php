@@ -264,6 +264,25 @@ class ConnectedPos extends Model
     }
   }
 
+  private function reOpenClosedCloverTransaction($orderId) {
+    $client = new Client(['base_uri' => env('CLOVER_BASE_URL')]);
+    try {
+      $response = $client->request('POST', 'v3/merchants/' . $this->merchant_id . '/orders/' . $orderId, [
+        'headers' => [
+          'Authorization' => 'Bearer ' . $this->token,
+          'Accept' => 'application/json'
+        ],
+        'json' => [
+          'state' => 'open' 
+        ]
+      ]);
+    } catch (ClientErrorResponseException $exception) {
+      dd($exception->getResponse()->getBody(true));
+    }
+
+    dd(json_decode($response->getBody()->getContents()));
+  }
+
   private function removePockeytCustomerFromTransaction($cloverTransactionId, $customer) {
     $userLocation = UserLocation::where('user_id', $customer->id)->where('profile_id', $this->profile_id)->first();
     $posCustomerId = $userLocation->pos_customer_id;
