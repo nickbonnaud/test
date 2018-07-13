@@ -267,10 +267,13 @@ class ConnectedPos extends Model
   public function deleteClosedCloverTransaction($orderId) {
     $client = new Client(['base_uri' => env('CLOVER_BASE_URL')]);
     try {
-      $response = $client->request('GET', 'v3/merchants/' . $this->merchant_id . '/orders/' . $orderId, [
+      $response = $client->request('POST', 'v3/merchants/' . $this->merchant_id . '/orders/' . $orderId, [
         'headers' => [
           'Authorization' => 'Bearer ' . $this->token,
           'Accept' => 'application/json'
+        ],
+        'json' => [
+          'state' => null 
         ]
       ]);
     } catch (ClientErrorResponseException $exception) {
