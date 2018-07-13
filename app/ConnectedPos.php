@@ -264,13 +264,17 @@ class ConnectedPos extends Model
     }
   }
 
-  public function deleteClosedCloverTransaction($orderId) {
+  public function sendNotificationToClover($notificationData) {
     $client = new Client(['base_uri' => env('CLOVER_BASE_URL')]);
     try {
-      $response = $client->request('DELETE', 'v3/merchants/' . $this->merchant_id . '/orders/' . $orderId, [
+      $response = $client->request('POST', 'v3/apps/' . env('CLOVER_APP_ID') . '/merchants/' . $this->merchant_id . '/notifications', [
         'headers' => [
-          'Authorization' => 'Bearer ' . $this->token,
+          'Authorization' => 'Bearer ' . env('CLOVER_APP_SECRET'),
           'Accept' => 'application/json'
+        ],
+        'json' => [
+          'event' => 'test_event',
+          'data' => 'test data'
         ]
       ]);
     } catch (ClientErrorResponseException $exception) {
