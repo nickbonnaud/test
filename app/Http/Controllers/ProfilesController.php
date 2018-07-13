@@ -100,6 +100,6 @@ class ProfilesController extends Controller
 
     public function test() {
         $connectedPos = ConnectedPos::where('id', 4)->first();
-        $connectedPos->reOpenClosedCloverTransaction('MSX2EDKAZQ0A8');
+        $connectedPos->deleteClosedCloverTransaction('7K3MTWQ41K05G');
     }
 }
