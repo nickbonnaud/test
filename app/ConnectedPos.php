@@ -111,7 +111,6 @@ class ConnectedPos extends Model
   }
 
   public function parseWebHookData($orderData) {
-    \Log::info('INSIDE PARSE WEBHOOK DATA');
     foreach ($orderData as $order) {
       $action = $order['type'];
       $orderId = substr($order['objectId'], 2);
@@ -119,8 +118,8 @@ class ConnectedPos extends Model
       if ($action == 'DELETE') {
         $this->deleteCloverTransaction($orderId);
       } else {
-        $data = $this->checkForPockeytTransaction($orderId);
-        if ($data) {
+        $data = $this->getLineItems($orderId);
+        if ($data['customer']) {
           $cloverTransaction = $this->getTransactionData($orderId);
           $transaction = Transaction::where('pos_transaction_id', $cloverTransaction->id)->first();
 
@@ -134,7 +133,7 @@ class ConnectedPos extends Model
     }
   }
 
-  private function checkForPockeytTransaction($orderId) {
+  public function getLineItems($orderId) {
     $client = new Client(['base_uri' => env('CLOVER_BASE_URL')]);
     try {
       $response = $client->request('GET', 'v3/merchants/' . $this->merchant_id . '/orders/' . $orderId . '/line_items', [
@@ -187,16 +186,11 @@ class ConnectedPos extends Model
         }
       }
     }
-    if ($pockeytCustomer) {
-      $data = ['customer' => $pockeytCustomer, 'products' => $purchasedProducts];
-      return $data;
-    } else {
-      return null;
-    }
+    $data = ['customer' => $pockeytCustomer, 'products' => $purchasedProducts];
+    return $data;
   }
 
   private function createCloverTransaction($cloverTransaction, $data) {
-    \Log::info('HELLO WORLD THIS IS AFTER SAVE');
     $customer = $data['customer'];
     $products = $data['products'];
     $total = $cloverTransaction->total;
@@ -214,7 +208,7 @@ class ConnectedPos extends Model
       'tax' => $tax,
       'net_sales' => $subTotal,
       'total' => $total,
-      'pos_transaction_id' => $cloverTransaction->id,
+      'pos_transaction_id' => $cloverTransaction->id
     ]);
     $transaction->save();
 
@@ -226,7 +220,6 @@ class ConnectedPos extends Model
   }
 
   private function updateCloverTransaction($cloverTransaction, $data, $transaction) {
-    \Log::info('ANOTHER REASON FOR CHECKING');
     $customer = $data['customer'];
     $products = $data['products'];
     $total = $cloverTransaction->total;
@@ -287,7 +280,7 @@ class ConnectedPos extends Model
     }
   }
 
-  private function getCloverTransactionSubtotalAndTax($products, $total) {
+  public function getCloverTransactionSubtotalAndTax($products, $total) {
     $subTotal = 0;
     foreach ($products as $product) {
       $subTotal = $subTotal + ($product->quantity * $product->price);
@@ -296,7 +289,7 @@ class ConnectedPos extends Model
     return ['subTotal' => $subTotal, 'tax' => $tax];
   }
 
-  private function getTransactionData($orderId) {
+  public function getTransactionData($orderId) {
     $client = new Client(['base_uri' => env('CLOVER_BASE_URL')]);
     try {
       $response = $client->request('GET', 'v3/merchants/' . $this->merchant_id . '/orders/' . $orderId, [
