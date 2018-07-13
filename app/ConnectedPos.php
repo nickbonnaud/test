@@ -279,9 +279,10 @@ class ConnectedPos extends Model
         ]
       ]);
     } catch (ClientErrorResponseException $exception) {
+      dd('exception');
       dd($exception->getResponse()->getBody(true));
     }
-
+    dd('Here');
     dd(json_decode($response->getBody()->getContents()));
   }
 
