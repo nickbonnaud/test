@@ -264,7 +264,7 @@ class ConnectedPos extends Model
     }
   }
 
-  private function reOpenClosedCloverTransaction($orderId) {
+  public function reOpenClosedCloverTransaction($orderId) {
     $client = new Client(['base_uri' => env('CLOVER_BASE_URL')]);
     try {
       $response = $client->request('POST', 'v3/merchants/' . $this->merchant_id . '/orders/' . $orderId, [
