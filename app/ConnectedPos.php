@@ -275,7 +275,7 @@ class ConnectedPos extends Model
         ],
         'json' => [
           'event' => 'test_event',
-          'data' => json_encode(array('customer_name' => "Test User", 'order_id' => '1234', 'title' => 'test title', 'message' => 'test message'))
+          'data' => "TEST TEST"
         ]
       ]);
     } catch (ClientErrorResponseException $exception) {
