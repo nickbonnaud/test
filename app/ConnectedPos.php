@@ -265,6 +265,7 @@ class ConnectedPos extends Model
   }
 
   public function sendNotificationToClover($notificationData) {
+
     $client = new Client(['base_uri' => env('CLOVER_BASE_URL')]);
     try {
       $response = $client->request('POST', 'v3/apps/' . env('CLOVER_APP_ID') . '/merchants/' . $this->merchant_id . '/notifications', [
@@ -274,7 +275,7 @@ class ConnectedPos extends Model
         ],
         'json' => [
           'event' => 'test_event',
-          'data' => 'test data'
+          'data' => json_encode(array('customer_name' => "Test User", 'order_id' => '1234', 'title' => 'test title', 'message' => 'test message'))
         ]
       ]);
     } catch (ClientErrorResponseException $exception) {
