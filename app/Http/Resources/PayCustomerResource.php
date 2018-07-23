@@ -17,6 +17,7 @@ class PayCustomerResource extends Resource
     $profile = $this->profile;
 
     $lastTransaction = $this->getLastTransaction($user, $profile);
+    $openTransaction = $this->getOpenTransaction($user, $profile);
     $deal = $this->getDeal($user, $profile);
     $lastPostInteractions = $this->getLastPostInteractions($user, $profile);
     $loyaltyCard = $this->getLoyaltyCard($user, $profile);
@@ -28,6 +29,7 @@ class PayCustomerResource extends Resource
       'photo_path' => $user->photo->api_thumbnail_url,
       'large_photo_path' => $user->photo->api_url,
       'recent_transaction' => $lastTransaction,
+      'open_transaction' => $openTransaction,
       'last_post_interactions' => $lastPostInteractions,
       'deal_data' => $deal,
       'loyalty_card' => $loyaltyCard
@@ -56,6 +58,27 @@ class PayCustomerResource extends Resource
     	];
     }
     return $lastTransaction;
+  }
+
+  public function getOpenTransaction($user, $profile) {
+    $transaction = $user->transactions()->where('profile_id', '=', $profile->id)
+      ->where('paid', '=', false)
+      ->where('refund_full', '=', false)
+      ->whereNull('deal_id')
+      ->latest('updated_at')->first();
+
+    if ($transaction) {
+      $openTransaction = (object) [
+        'has_open' => true,
+        'transaction_id' => $transaction->id,
+        'pos_transaction_id' => $transaction->pos_transaction_id
+      ];
+    } else {
+      $openTransaction = (object) [
+        'has_open' => false
+      ];
+    }
+    return $openTransaction;
   }
 
   public function getDeal($user, $profile) {

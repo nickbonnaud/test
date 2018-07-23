@@ -123,6 +123,8 @@ class Transaction extends Model
 
   public function transactionErrorEvent() {
     event(new TransactionError($this->user, $this, $this->profile->slug));
+    $userLocation = UserLocation::where('user_id', $this->user->id)->where('profile_id', $this->profile->id)->first();
+    event(new UpdateConnectedApps($this->profile, $this->status == 3 ? "wrong_bill" : "error_bill", new PayCustomerResource($userLocation)));
   }
 
   public function transactionSuccessEvent() {
