@@ -16,6 +16,7 @@ use App\Events\TransactionSuccess;
 use App\Events\TransactionsChange;
 use App\Events\CustomerBillUpdate;
 use App\Events\CustomerRequestBill;
+use App\Events\UpdateConnectedApps;
 use App\Mail\TransactionReceipt;
 use App\Mail\TransactionErrorEmail;
 use Illuminate\Support\Facades\Mail;
