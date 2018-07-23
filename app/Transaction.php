@@ -4,6 +4,7 @@ namespace App;
 
 use App\LoyaltyCard;
 use App\PostAnalytics;
+use App\UserLocation;
 use SplashPayments;
 use Carbon\Carbon;
 use App\Notifications\TransactionBillWasClosed;
@@ -21,6 +22,7 @@ use App\Mail\TransactionReceipt;
 use App\Mail\TransactionErrorEmail;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Database\Eloquent\Model;
+use App\Http\Resources\PayCustomerResource;
 
 class Transaction extends Model
 {
