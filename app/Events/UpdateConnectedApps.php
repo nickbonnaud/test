@@ -10,6 +10,8 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
+use Illuminate\Support\Facades\Log;
+
 class UpdateConnectedApps implements ShouldBroadcast
 {
   use Dispatchable, InteractsWithSockets, SerializesModels;
@@ -24,6 +26,8 @@ class UpdateConnectedApps implements ShouldBroadcast
    */
   public function __construct($profile, $eventType, $data)
   {
+    Log::info("update Connected Apps " . $eventType);
+
     $this->profile = $profile;
 
     $this->data = [

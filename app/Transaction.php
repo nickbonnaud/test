@@ -24,6 +24,8 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Database\Eloquent\Model;
 use App\Http\Resources\PayCustomerResource;
 
+use Illuminate\Support\Facades\Log;
+
 class Transaction extends Model
 {
 	protected static function boot() {
@@ -125,6 +127,7 @@ class Transaction extends Model
   }
 
   public function transactionErrorEvent() {
+    Log::info("transaction error event");
     event(new TransactionError($this->user, $this, $this->profile->slug));
     $userLocation = UserLocation::where('user_id', $this->user->id)->where('profile_id', $this->profile->id)->first();
     event(new UpdateConnectedApps($this->profile, $this->status == 3 ? "wrong_bill" : "error_bill", new PayCustomerResource($userLocation)));
