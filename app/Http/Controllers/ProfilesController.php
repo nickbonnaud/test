@@ -98,7 +98,7 @@ class ProfilesController extends Controller
 
     public function test() {
         UserLocation::create([
-        'profile_id' => 11,
+        'profile_id' => 1,
         'user_id' => 274
       ]);
     }
