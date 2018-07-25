@@ -8,9 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\CreateProfileRequest;
 use App\Http\Requests\UpdateProfileRequest;
 
-use App\User;
 use App\UserLocation;
-use App\ConnectedPos;
 
 class ProfilesController extends Controller
 {
@@ -99,7 +97,9 @@ class ProfilesController extends Controller
     }
 
     public function test() {
-        $connectedPos = ConnectedPos::where('id', 4)->first();
-        $connectedPos->sendNotificationToClover('data');
+        UserLocation::create([
+        'profile_id' => 11,
+        'user_id' => 274
+      ]);
     }
 }
