@@ -119,9 +119,12 @@ class ConnectedPos extends Model
         $this->deleteCloverTransaction($orderId);
       } else {
         $data = $this->getLineItems($orderId);
-        if ($data['customer']) {
+        if ($customer = $data['customer']) {
           $cloverTransaction = $this->getTransactionData($orderId);
           $transaction = Transaction::where('pos_transaction_id', $cloverTransaction->id)->first();
+          $userLocation = UserLocation::where('profile_id', $this->profile_id)->where('user_id', $customer->id)->first();
+          $userLocation->clover_line_item_id = $data['line_item_id'];
+          $userLocation->save();
 
           if ($transaction) {
             $this->updateCloverTransaction($cloverTransaction, $data, $transaction);
@@ -151,10 +154,12 @@ class ConnectedPos extends Model
 
   private function parseLineItems($lineItems) {
     $pockeytCustomer = null;
+    $lineItemId = null;
     $purchasedProducts = [];
     foreach ($lineItems as $lineItem) {
       if ($lineItem->alternateName == 'pockeyt') {
         $customerId = substr($lineItem->itemCode, 8);
+        $lineItemId = $lineItem->id;
         $pockeytCustomer = User::where('id', $customerId)->first();
       } else {
         if (count($purchasedProducts) > 0) {
@@ -186,7 +191,7 @@ class ConnectedPos extends Model
         }
       }
     }
-    $data = ['customer' => $pockeytCustomer, 'products' => $purchasedProducts];
+    $data = ['customer' => $pockeytCustomer, 'products' => $purchasedProducts, 'line_item_id' => $lineItemId];
     return $data;
   }
 
@@ -276,10 +281,10 @@ class ConnectedPos extends Model
 
   public function removePockeytCustomerFromTransaction($cloverTransactionId, $customer) {
     $userLocation = UserLocation::where('user_id', $customer->id)->where('profile_id', $this->profile_id)->first();
-    $posCustomerId = $userLocation->pos_customer_id;
+    $lineItemId = $userLocation->line_item_id;
     $client = new Client(['base_uri' => env('CLOVER_BASE_URL')]);
     try {
-      $response = $client->request('DELETE', 'v3/merchants/' . $this->merchant_id . '/orders/' . $cloverTransactionId . '/line_items/' . $posCustomerId, [
+      $response = $client->request('DELETE', 'v3/merchants/' . $this->merchant_id . '/orders/' . $cloverTransactionId . '/line_items/' . $lineItemId, [
         'headers' => [
           'Authorization' => 'Bearer ' . $this->token,
           'Accept' => 'application/json'
@@ -340,6 +345,7 @@ class ConnectedPos extends Model
       dd($exception->getResponse()->getBody(true));
     }
     dd(json_decode($response->getBody()->getContents()));
+
   }
 
 
