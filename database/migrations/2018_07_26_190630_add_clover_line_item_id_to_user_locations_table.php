@@ -14,7 +14,7 @@ class AddCloverLineItemIdToUserLocationsTable extends Migration
     public function up()
     {
         Schema::table('user_locations', function (Blueprint $table) {
-            $table->string('clover_line_item_id')->nullable();
+            $table->string('clover_line_item_id')->after('pos_customer_id')->nullable();
         });
     }
 
