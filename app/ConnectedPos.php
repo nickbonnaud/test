@@ -211,12 +211,7 @@ class ConnectedPos extends Model
       'pos_transaction_id' => $cloverTransaction->id
     ]);
     $transaction->save();
-
-    if ($cloverTransaction->state == 'open') {
-      $this->addNoteToTransaction($cloverTransaction->id, $customer);
-    } else {
-      $this->removePockeytCustomerFromTransaction($cloverTransaction->id, $customer);
-    }
+    $this->addNoteToTransaction($cloverTransaction->id, $customer);
   }
 
   private function updateCloverTransaction($cloverTransaction, $data, $transaction) {
@@ -234,10 +229,6 @@ class ConnectedPos extends Model
       'net_sales' => $subTotal,
       'total' => $total,
     ]);
-
-    if ($cloverTransaction->state != 'open') {
-      $this->removePockeytCustomerFromTransaction($cloverTransaction->id, $customer);
-    }
   }
 
   private function deleteCloverTransaction($cloverTransactionId) {
@@ -264,29 +255,26 @@ class ConnectedPos extends Model
     }
   }
 
-  public function sendNotificationToClover($notificationData) {
-
+  public function closeCloverTransaction($transaction) {
     $client = new Client(['base_uri' => env('CLOVER_BASE_URL')]);
     try {
-      $response = $client->request('POST', 'v3/apps/' . env('CLOVER_APP_ID') . '/merchants/' . $this->merchant_id . '/notifications', [
+      $response = $client->request('POST', 'v3/merchants/' . $this->merchant_id . '/orders/' . $transaction->pos_transaction_id . '/payments', [
         'headers' => [
-          'Authorization' => 'Bearer ' . env('CLOVER_APP_SECRET'),
+          'Authorization' => 'Bearer ' . $this->token,
           'Accept' => 'application/json'
         ],
         'json' => [
-          'event' => 'test_event',
-          'data' => "TEST TEST"
+          'total' => $transaction->tax + $transaction->net_sales,
+          'tipAmount' => $transaction->tips
         ]
       ]);
     } catch (ClientErrorResponseException $exception) {
-      dd('exception');
       dd($exception->getResponse()->getBody(true));
     }
-    dd('Here');
     dd(json_decode($response->getBody()->getContents()));
   }
 
-  private function removePockeytCustomerFromTransaction($cloverTransactionId, $customer) {
+  public function removePockeytCustomerFromTransaction($cloverTransactionId, $customer) {
     $userLocation = UserLocation::where('user_id', $customer->id)->where('profile_id', $this->profile_id)->first();
     $posCustomerId = $userLocation->pos_customer_id;
     $client = new Client(['base_uri' => env('CLOVER_BASE_URL')]);

@@ -132,6 +132,16 @@ class Transaction extends Model
 
   public function transactionSuccessEvent() {
     event(new TransactionSuccess($this->user, $this->profile->slug));
+    if ($connectedPos = $this->profile->connectedPos) {
+      $userLocation = UserLocation::where('user_id', $this->user->id)->where('profile_id', $this->profile->id)->first();
+      event(new UpdateConnectedApps($this->profile, "success_bill", new PayCustomerResource($userLocation)));
+      $this->updateCloverFinalizedTransaction($connectedPos);
+    }
+  }
+
+  public function updateCloverFinalizedTransaction($connectedPos) {
+    $connectedPos->removePockeytCustomerFromTransaction($this->pos_transaction_id, $this->user);
+    $connectedPos->closeCloverTransaction($this);
   }
 
   public function transactionChangeEvent() {

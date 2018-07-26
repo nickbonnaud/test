@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\CreateProfileRequest;
 use App\Http\Requests\UpdateProfileRequest;
 
-use App\UserLocation;
+use App\Transaction;
 
 class ProfilesController extends Controller
 {
@@ -97,9 +97,8 @@ class ProfilesController extends Controller
     }
 
     public function test() {
-        UserLocation::create([
-        'profile_id' => 1,
-        'user_id' => 274
-      ]);
+        $transaction = Transaction::where('id', 474)->first();
+        $connectedPos = $transaction->profile->connectedPos;
+        $transaction->updateCloverFinalizedTransaction($connectedPos);
     }
 }
