@@ -282,6 +282,7 @@ class ConnectedPos extends Model
   public function removePockeytCustomerFromTransaction($cloverTransactionId, $customer) {
     $userLocation = UserLocation::where('user_id', $customer->id)->where('profile_id', $this->profile_id)->first();
     $lineItemId = $userLocation->line_item_id;
+    dd($lineItemId);
     $client = new Client(['base_uri' => env('CLOVER_BASE_URL')]);
     try {
       $response = $client->request('DELETE', 'v3/merchants/' . $this->merchant_id . '/orders/' . $cloverTransactionId . '/line_items/' . $lineItemId, [
