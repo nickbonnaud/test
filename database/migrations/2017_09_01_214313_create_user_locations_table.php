@@ -20,6 +20,7 @@ class CreateUserLocationsTable extends Migration
             $table->integer('profile_id')->references('id')->on('profiles');
             $table->boolean('exit_notification_sent')->default(false);
             $table->string('pos_customer_id')->nullable();
+            $table->string('clover_line_item_id')->after('pos_customer_id')->nullable();
             $table->timestamps();
         });
     }
