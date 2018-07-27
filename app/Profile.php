@@ -396,12 +396,12 @@ class Profile extends Model
   }
 
   public function createOrUpdatePosAccount($requestData) {
-    \Log::debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-    \Log::debug($requestData);
     if ($connectedPos = $this->connectedPos) {
       $connectedPos->update($requestData);
     } else {
       $connectedPos = $this->connectedPos()->save(new connectedPos($requestData));
+    }
+    if (!$connectedPos->clover_category_id && $connectedPos->merchant_id) {
       $connectedPos->createPockeytCustomersCategory();
     }
   }
