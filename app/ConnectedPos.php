@@ -9,7 +9,7 @@ use GuzzleHttp\Client;
 
 class ConnectedPos extends Model
 {
-	protected $fillable = ['account_type', 'token', 'merchant_id'];
+	protected $fillable = ['account_type', 'token', 'merchant_id', 'clover_tender_id'];
 
   public function profile() {
     return $this->belongsTo('App\Profile');
