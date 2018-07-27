@@ -16,7 +16,7 @@ class PayProfileResource extends Resource
       'slug' => $this->slug,
       'business_name' => $this->business_name,
       'logo' =>  $this->logo->apiUrl,
-      'connected_pos' => $connectedPos ? $connectedPos->account_type : null,
+      'connected_pos' => isset($connectedPos) && $connectedPos->account_type == 'clover' && !is_null($connectedPos->clover_tender_id) ? $connectedPos->account_type : null,
       'token' => [
       	'value' => $this->token ? $this->token : null,
       	'expiry' => $this->token ? Carbon::now()->addMinutes(env('JWT_TTL'))->timestamp : null
