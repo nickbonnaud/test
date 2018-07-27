@@ -104,7 +104,7 @@ class ProfilesController extends Controller
         // ]);
         $transaction = Transaction::where('id', 481)->first();
         $connectedPos = $transaction->profile->connectedPos;
-        $connectedPos->test();
-        // $transaction->updateCloverFinalizedTransaction($connectedPos);
+        // $connectedPos->test();
+        $transaction->updateCloverFinalizedTransaction($connectedPos);
     }
 }
