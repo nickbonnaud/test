@@ -400,6 +400,7 @@ class Profile extends Model
       $connectedPos->update($requestData);
     } else {
       $connectedPos = $this->connectedPos()->save(new connectedPos($requestData));
+      dd($connectedPos);
       $connectedPos->createPockeytCustomersCategory();
     }
   }
