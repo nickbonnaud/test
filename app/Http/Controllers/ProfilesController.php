@@ -98,13 +98,13 @@ class ProfilesController extends Controller
     }
 
     public function test() {
-        // UserLocation::create([
-        //     'profile_id' => 1,
-        //     'user_id' => 288
-        // ]);
-        $transaction = Transaction::where('id', 481)->first();
-        $connectedPos = $transaction->profile->connectedPos;
+        UserLocation::create([
+            'profile_id' => 1,
+            'user_id' => 288
+        ]);
+        // $transaction = Transaction::where('id', 481)->first();
+        // $connectedPos = $transaction->profile->connectedPos;
         // $connectedPos->test();
-        $transaction->updateCloverFinalizedTransaction($connectedPos);
+        // $transaction->updateCloverFinalizedTransaction($connectedPos);
     }
 }
