@@ -21,6 +21,7 @@ class CreateConnectedPosTable extends Migration
             $table->string('token');
             $table->string('merchant_id');
             $table->string('clover_category_id')->nullable();
+            $table->string('clover_tender_id')->nullable();
             $table->timestamps();
         });
     }
