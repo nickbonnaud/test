@@ -27,10 +27,8 @@ class ConnectedPos extends Model
           'name' => 'Pockeyt Customers',
         ]
       ]);
-    } catch (GuzzleException $e) {
-      if ($e->hasResponse()) {
-        dd("error: " . $e->getResponse());
-      }
+    } catch (ClientErrorResponseException $exception) {
+      dd($exception->getResponse()->getBody(true));
     }
     $body = json_decode($response->getBody());
     $this->clover_category_id = $body->id;
