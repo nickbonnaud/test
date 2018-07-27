@@ -271,8 +271,10 @@ class ConnectedPos extends Model
         ],
         'json' => [
           'amount' => $total,
-          'tender' => 'BPQN5844528BA',
-          'tipAmount' => $transaction->tips
+          'tipAmount' => $transaction->tips,
+          'tender' => [
+            (object) ['id' => 'BPQN5844528BA']
+          ]
         ]
       ]);
     } catch (ClientErrorResponseException $exception) {
