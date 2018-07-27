@@ -336,7 +336,7 @@ class ConnectedPos extends Model
   public function test() {
      $client = new Client(['base_uri' => env('CLOVER_BASE_URL')]);
     try {
-      $response = $client->request('GET', 'v3/merchants/' . $this->merchant_id . '/orders/Q97Z0K3A88PVG/line_items', [
+      $response = $client->request('GET', 'v3/merchants/' . $this->merchant_id . '/tenders', [
         'headers' => [
           'Authorization' => 'Bearer ' . $this->token,
           'Accept' => 'application/json'
