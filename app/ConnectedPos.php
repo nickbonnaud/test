@@ -262,6 +262,8 @@ class ConnectedPos extends Model
 
   public function closeCloverTransaction($transaction) {
     $client = new Client(['base_uri' => env('CLOVER_BASE_URL')]);
+    $total = $transaction->tax + $transaction->net_sales;
+    dd($total);
     try {
       $response = $client->request('POST', 'v3/merchants/' . $this->merchant_id . '/orders/' . $transaction->pos_transaction_id . '/payments', [
         'headers' => [

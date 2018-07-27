@@ -140,7 +140,7 @@ class Transaction extends Model
   }
 
   public function updateCloverFinalizedTransaction($connectedPos) {
-    $connectedPos->removePockeytCustomerFromTransaction($this->pos_transaction_id, $this->user);
+    // $connectedPos->removePockeytCustomerFromTransaction($this->pos_transaction_id, $this->user);
     $connectedPos->closeCloverTransaction($this);
   }
 

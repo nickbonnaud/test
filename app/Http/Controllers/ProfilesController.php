@@ -102,7 +102,7 @@ class ProfilesController extends Controller
         //     'profile_id' => 1,
         //     'user_id' => 288
         // ]);
-        $transaction = Transaction::where('id', 480)->first();
+        $transaction = Transaction::where('id', 481)->first();
         $connectedPos = $transaction->profile->connectedPos;
 
         $transaction->updateCloverFinalizedTransaction($connectedPos);
