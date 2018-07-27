@@ -17,9 +17,9 @@ class CreateConnectedPosTable extends Migration
             $table->increments('id');
             $table->integer('profile_id')->unsigned();
             $table->foreign('profile_id')->references('id')->on('profiles')->onDelete('cascade');
-            $table->string('account_type');
-            $table->string('token');
-            $table->string('merchant_id');
+            $table->string('account_type')->nullable();
+            $table->string('token')->nullable();
+            $table->string('merchant_id')->nullable();
             $table->string('clover_category_id')->nullable();
             $table->string('clover_tender_id')->nullable();
             $table->timestamps();
