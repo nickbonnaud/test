@@ -270,7 +270,10 @@ class ConnectedPos extends Model
           'Accept' => 'application/json'
         ],
         'json' => [
-          'amount' => $total,
+          'tender' => (object) [
+            "id" => BPQN5844528BA
+          ],
+          'amount' => $total
         ]
       ]);
     } catch (ClientErrorResponseException $exception) {
