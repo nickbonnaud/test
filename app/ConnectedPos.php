@@ -271,7 +271,7 @@ class ConnectedPos extends Model
         ],
         'json' => [
           'tender' => (object) [
-            "id" => BPQN5844528BA
+            "id" => 'BPQN5844528BA'
           ],
           'amount' => $total
         ]
