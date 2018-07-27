@@ -271,6 +271,7 @@ class ConnectedPos extends Model
         ],
         'json' => [
           'amount' => $total,
+          'tender' => 'BPQN5844528BA',
           'tipAmount' => $transaction->tips
         ]
       ]);
