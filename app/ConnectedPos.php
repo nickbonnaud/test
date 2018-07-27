@@ -270,7 +270,7 @@ class ConnectedPos extends Model
           'Accept' => 'application/json'
         ],
         'json' => [
-          'total' => $total,
+          'amount' => $total,
           'tipAmount' => $transaction->tips
         ]
       ]);
