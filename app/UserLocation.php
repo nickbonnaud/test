@@ -76,7 +76,7 @@ class UserLocation extends Model {
   public function removeLocation() {
     if ($transaction = $this->checkForUnpaidTransactionOnDelete()) {
       if (!$this->exit_notification_sent) {
-        event(new UpdateConnectedApps($this->profile, "customer_exit", new PayCustomerResource($this)));
+        event(new UpdateConnectedApps($this->profile, "customer_exit_unpaid", new PayCustomerResource($this)));
         $this->sendPaymentNotificationByType($transaction);
         $this->exit_notification_sent = true;
         $this->save();
@@ -88,6 +88,7 @@ class UserLocation extends Model {
 
   public function removeLocationNoUnpaidTransaction() {
     event(new CustomerBreakGeoFence($this, $type='exit'));
+    event(new UpdateConnectedApps($this->profile, "customer_exit_paid", new PayCustomerResource($this)));
     $this->delete();
   }
 
