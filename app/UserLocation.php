@@ -6,6 +6,8 @@ use Carbon\Carbon;
 use App\Events\CustomerBreakGeoFence;
 use App\Notifications\CustomerEnterGeoFence;
 use Illuminate\Database\Eloquent\Model;
+use App\Events\UpdateConnectedApps;
+use App\Http\Resources\PayCustomerResource;
 
 class UserLocation extends Model {
 
@@ -19,6 +21,7 @@ class UserLocation extends Model {
   protected static function boot() {
     static::created(function ($userLocation) {
       event(new CustomerBreakGeoFence($userLocation, $type='enter'));
+      event(new UpdateConnectedApps($userLocation->profile, "customer_enter", new PayCustomerResource($userLocation)));
       $userLocation->notifyUserEnter();
     });
   }
@@ -73,6 +76,7 @@ class UserLocation extends Model {
   public function removeLocation() {
     if ($transaction = $this->checkForUnpaidTransactionOnDelete()) {
       if (!$this->exit_notification_sent) {
+        event(new UpdateConnectedApps($this->profile, "customer_exit", new PayCustomerResource($this)));
         $this->sendPaymentNotificationByType($transaction);
         $this->exit_notification_sent = true;
         $this->save();
