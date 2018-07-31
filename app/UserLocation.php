@@ -75,11 +75,13 @@ class UserLocation extends Model {
 
   public function removeLocation() {
     if ($transaction = $this->checkForUnpaidTransactionOnDelete()) {
-      if (!$this->exit_notification_sent) {
-        event(new UpdateConnectedApps($this->profile, "customer_exit_unpaid", new PayCustomerResource($this)));
-        $this->sendPaymentNotificationByType($transaction);
-        $this->exit_notification_sent = true;
-        $this->save();
+      if (($transaction->status == 11 || $transaction->bill_closed)) {
+        if (!$this->exit_notification_sent) {
+          event(new UpdateConnectedApps($this->profile, "customer_exit_unpaid", new PayCustomerResource($this)));
+          $this->sendPaymentNotificationByType($transaction);
+          $this->exit_notification_sent = true;
+          $this->save();
+        }
       }
     } else {
       $this->removeLocationNoUnpaidTransaction();
