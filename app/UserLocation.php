@@ -84,7 +84,7 @@ class UserLocation extends Model {
         }
       } else {
         $this->customer_exited = true;
-        $this->exited_on = Carbon::now;
+        $this->exited_on = Carbon::now();
         $this->save();
       }
     } else {
