@@ -104,7 +104,7 @@ class ProfilesController extends Controller
         // ]);
 
         $userLocation = UserLocation::where('profile_id', 1)->where('user_id', 288)->first();
-        // $userLocation->removeLocation();
+        $userLocation->removeLocation();
 
         // $transaction = Transaction::where('id', 482)->first();
         // $connectedPos = $transaction->profile->connectedPos;
