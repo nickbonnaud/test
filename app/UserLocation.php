@@ -22,7 +22,6 @@ class UserLocation extends Model {
   protected static function boot() {
     static::created(function ($userLocation) {
       event(new CustomerBreakGeoFence($userLocation, $type='enter'));
-      dd("here");
       event(new UpdateConnectedApps($userLocation->profile, "customer_enter", new PayCustomerResource($userLocation)));
       $userLocation->notifyUserEnter();
     });

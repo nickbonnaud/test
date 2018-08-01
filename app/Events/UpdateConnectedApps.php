@@ -39,6 +39,7 @@ class UpdateConnectedApps implements ShouldBroadcast
    */
   public function broadcastOn()
   {
+    dd("here");
     return new PrivateChannel('update.' . $this->profile->slug);
   }
 }
