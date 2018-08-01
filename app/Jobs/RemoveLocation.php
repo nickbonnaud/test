@@ -31,11 +31,17 @@ class RemoveLocation implements ShouldQueue
      * @return void
      */
     public function handle() {
+       \Log::debug("Inside handle RemoveLocation");
+
        $userLocation = UserLocation::where('profile_id', $this->transaction->profile_id)
             ->where('user_id',  $this->transaction->user_id)
             ->first();
+        \Log::debug($userLocation);
         if ($userLocation) {
+            \Log::debug("is true");
             $userLocation->removeLocation();
+        } else {
+            \Log::debug("is false");
         }
     }
 }

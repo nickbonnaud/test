@@ -75,8 +75,9 @@ class UserLocation extends Model {
   }
 
   public function removeLocation() {
+    \Log::debug("Remove location function called");
     if ($transaction = $this->checkForUnpaidTransactionOnDelete()) {
-      $expireTime = (new Carbon($this->exited_on))->addMinutes(3);
+      $expireTime = (new Carbon($this->exited_on))->addSeconds((3 * 60) - 5);
       if (($transaction->status == 11 || $transaction->bill_closed) || ($this->customer_exited && $expireTime->lt(Carbon::now()))) {
 
         if (!$this->exit_notification_sent) {
@@ -89,7 +90,7 @@ class UserLocation extends Model {
         $this->exited_on = Carbon::now();
         $this->save();
         event(new UpdateConnectedApps($this->profile, "customer_exit_unpaid", new PayCustomerResource($this)));
-        RemoveLocation::dispatch($transaction)->delay(now()->addMinutes(1));
+        RemoveLocation::dispatch($transaction)->delay(now()->addMinutes(3));
       }
     } else {
       $this->removeLocationNoUnpaidTransaction();
