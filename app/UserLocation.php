@@ -88,17 +88,10 @@ class UserLocation extends Model {
         $this->exited_on = Carbon::now();
         $this->save();
         event(new UpdateConnectedApps($this->profile, "customer_exit_unpaid", new PayCustomerResource($this)));
-        $this->sendExitNotification();
       }
     } else {
       $this->removeLocationNoUnpaidTransaction();
     }
-  }
-
-  public function sendExitNotification() {
-    sleep(1 * 60 + 5);
-    dd('here');
-    $this->removeLocation();
   }
 
   public function removeLocationNoUnpaidTransaction() {
