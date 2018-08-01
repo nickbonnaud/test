@@ -97,6 +97,7 @@ class UserLocation extends Model {
 
   public function sendExitNotification() {
     sleep(1 * 60 + 5);
+    dd('here');
     $this->removeLocation();
   }
 
