@@ -103,12 +103,15 @@ class ProfilesController extends Controller
         //     'user_id' => 288
         // ]);
 
-        $userLocation = UserLocation::where('profile_id', 1)->where('user_id', 288)->first();
-        $userLocation->removeLocation();
+        // $userLocation = UserLocation::where('profile_id', 1)->where('user_id', 288)->first();
+        // $userLocation->removeLocation();
 
         // $transaction = Transaction::where('id', 482)->first();
         // $connectedPos = $transaction->profile->connectedPos;
         // $connectedPos->test();
         // $transaction->updateCloverFinalizedTransaction($connectedPos);
+
+        $transaction = Transaction::where('user_id', 1)->where('profile_id', 288)->first();
+        $transaction->checkRecentSentNotification();
     }
 }
