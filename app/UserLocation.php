@@ -88,7 +88,6 @@ class UserLocation extends Model {
         $this->customer_exited = true;
         $this->exited_on = Carbon::now();
         $this->save();
-        dd('Here');
         event(new UpdateConnectedApps($this->profile, "customer_exit_unpaid", new PayCustomerResource($this)));
         RemoveLocation::dispatch($transaction)->delay(now()->addMinutes(1));
       }
