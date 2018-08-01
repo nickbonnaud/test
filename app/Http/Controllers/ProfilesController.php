@@ -111,7 +111,7 @@ class ProfilesController extends Controller
         // $connectedPos->test();
         // $transaction->updateCloverFinalizedTransaction($connectedPos);
 
-        $transaction = Transaction::where('profile_id', 1)->where('user_id', 288)->first();
+        $transaction = Transaction::where('id', 457)->first();
         $count = $transaction->checkRecentSentNotification();
         dd($count);
     }
