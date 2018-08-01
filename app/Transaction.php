@@ -401,7 +401,6 @@ class Transaction extends Model
         ->where($path, $this->id)
         ->where('created_at', '>=', Carbon::now()->subMinutes(5))->count();
     } else {
-      dd($path);
       return $this->user->notifications()
         ->where($path, $this->id)
         ->count();
