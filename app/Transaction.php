@@ -394,14 +394,15 @@ class Transaction extends Model
   }
 
   public function checkRecentSentNotification($classType = null) {
+    $path = $this->user->pushToken == "ios" ? "data->data->transactionId" : "data->data->custom->transactionId";
     if ($classType) {
       $type = "App\\Notifications\\" . $classType;
       return $this->user->notifications()->where('type', $type)
-        ->where('data->data->custom->transactionId', $this->id)
+        ->where($path, $this->id)
         ->where('created_at', '>=', Carbon::now()->subMinutes(5))->count();
     } else {
       return $this->user->notifications()
-        ->where('data->data->custom->transactionId', $this->id)
+        ->where($path, $this->id)
         ->count();
     }
   }
