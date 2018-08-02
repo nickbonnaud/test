@@ -105,7 +105,7 @@ class ProfilesController extends Controller
             ->where($path, $transaction->id)
             ->first();
 
-        dd(json_decode($notif->data));
+        dd($notif->data);
         // UserLocation::create([
         //     'profile_id' => 1,
         //     'user_id' => 288
