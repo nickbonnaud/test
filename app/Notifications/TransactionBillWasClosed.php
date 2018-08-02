@@ -42,6 +42,7 @@ class TransactionBillWasClosed extends Notification
         ],
         'data' => [
           'transactionId' => $transactionId,
+          'total' => $this->transaction->total,
           'businessName' => $businessName,
           'businessSlug' => $businessSlug,
           'inAppBody' => $inAppBody,
@@ -62,6 +63,7 @@ class TransactionBillWasClosed extends Notification
           'no-cache' => 1,
           'custom' => [
             'transactionId' => $transactionId,
+            'total' => $this->transaction->total,
             'businessName' => $businessName,
             'businessSlug' => $businessSlug,
             'inAppBody' => $inAppBody

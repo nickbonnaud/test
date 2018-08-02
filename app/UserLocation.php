@@ -80,6 +80,7 @@ class UserLocation extends Model {
       if (($transaction->status == 11 || $transaction->bill_closed) || ($this->customer_exited && $expireTime->lt(Carbon::now()))) {
 
         if ($transaction->status == 11 && $transaction->bill_closed && !$this->customer_exited) {
+          
           $transaction->autoChargeCustomer();
         } elseif (!$this->exit_notification_sent  && ($transaction->status != 11 || !$transaction->bill_closed)) {
           $this->sendPaymentNotificationByType($transaction);
