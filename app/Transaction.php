@@ -412,4 +412,13 @@ class Transaction extends Model
     $this->save();
     $this->updateCustomerEvent();
   }
+
+  public function autoChargeCustomer() {
+    $this->processCharge();
+    $this->sendAutoPayNotification('no_response_exit');
+    $userLocation = UserLocation::where('profile_id', $this->profile_id)->where('user_id', $this->user_id)->first();
+    if ($userLocation) {
+      $userLocation->removeLocation();
+    }
+  }
 }

@@ -84,9 +84,7 @@ class InactiveCustomerManager extends Command
   }
 
   public static function chargeCustomer($transaction, $userLocation) {
-    $transaction->processCharge();
-    $transaction->sendAutoPayNotification('no_response_exit');
-    $userLocation->delete();
+    $transaction->autoChargeCustomer();
   }
 
   public static function fixTransactionOrPay($transaction, $userLocation) {
