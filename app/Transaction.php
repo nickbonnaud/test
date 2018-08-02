@@ -414,6 +414,15 @@ class Transaction extends Model
         ->where('type', 'App\Notifications\FixTransactionNotification')->count();
   }
 
+  public function getLastClosedBillNotification() {
+    $deviceType = $this->user->pushToken->device;
+    $path = $deviceType == "ios" ? "data->data->transactionId" : "data->data->custom->transactionId";
+    return $this->user->notifications()
+        ->where("type", "App\\Notifications\\TransactionBillWasClosed")
+        ->where($path, $this->id)
+        ->first();
+  }
+
   public function updateTransactionBeforeNotification() {
     $this->status = 11;
     $this->save();

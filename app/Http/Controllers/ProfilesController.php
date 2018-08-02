@@ -98,19 +98,10 @@ class ProfilesController extends Controller
     }
 
     public function enter() {
-        $transaction = Transaction::where('id', 479)->first();
-        $deviceType = $transaction->user->pushToken->device;
-        $path = $deviceType == "ios" ? "data->data->transactionId" : "data->data->custom->transactionId";
-        $notif =  $transaction->user->notifications()
-            ->where("type", "App\\Notifications\\TransactionBillWasClosed")
-            ->where($path, $transaction->id)
-            ->first();
-
-        dd(array_get($notif->data, "data.total"));
-        // UserLocation::create([
-        //     'profile_id' => 1,
-        //     'user_id' => 288
-        // ]);
+        UserLocation::create([
+            'profile_id' => 1,
+            'user_id' => 288
+        ]);
 
 
         // $transaction = Transaction::where('id', 482)->first();

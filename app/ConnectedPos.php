@@ -226,7 +226,8 @@ class ConnectedPos extends Model
     $tax = $subTotalAndTax['tax'];
 
     $transaction->update([
-      'bill_closed' => $cloverTransaction->state != 'open',
+      'bill_closed' => false,
+      'status' => 10,
       'products' => json_encode($products),
       'tax' => $tax,
       'net_sales' => $subTotal,
