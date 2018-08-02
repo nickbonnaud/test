@@ -75,7 +75,6 @@ class UserLocation extends Model {
   }
 
   public function removeLocation() {
-    \Log::debug("Remove location function called");
     if ($transaction = $this->checkForUnpaidTransactionOnDelete()) {
       $expireTime = (new Carbon($this->exited_on))->addSeconds((3 * 60) - 5);
       if (($transaction->status == 11 || $transaction->bill_closed) || ($this->customer_exited && $expireTime->lt(Carbon::now()))) {

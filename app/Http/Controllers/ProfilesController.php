@@ -98,10 +98,10 @@ class ProfilesController extends Controller
     }
 
     public function test() {
-        // UserLocation::create([
-        //     'profile_id' => 1,
-        //     'user_id' => 288
-        // ]);
+        UserLocation::create([
+            'profile_id' => 1,
+            'user_id' => 288
+        ]);
 
         // $userLocation = UserLocation::where('profile_id', 1)->where('user_id', 288)->first();
         // $userLocation->removeLocation();
@@ -110,9 +110,5 @@ class ProfilesController extends Controller
         // $connectedPos = $transaction->profile->connectedPos;
         // $connectedPos->test();
         // $transaction->updateCloverFinalizedTransaction($connectedPos);
-
-        $transaction = Transaction::where('id', 457)->first();
-        $count = $transaction->checkRecentSentNotification();
-        dd($count);
     }
 }
