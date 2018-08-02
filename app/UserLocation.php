@@ -86,7 +86,7 @@ class UserLocation extends Model {
           $this->exit_notification_sent = true;
           $this->save();
         }
-      } elseif ($transaction->status == 3 || $transaction->status == 4) {
+      } elseif ($transaction->status == 3 || $transaction->status == 4 && !$this->exit_notification_sent) {
           $this->sendPaymentNotificationByType($transaction);
           $this->exit_notification_sent = true;
           $this->save();
