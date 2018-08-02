@@ -277,7 +277,6 @@ class ConnectedPos extends Model
     } catch (ClientErrorResponseException $exception) {
       dd($exception->getResponse()->getBody(true));
     }
-    dd(json_decode($response->getBody()->getContents()));
   }
 
   public function removePockeytCustomerFromTransaction($cloverTransactionId, $customer) {
