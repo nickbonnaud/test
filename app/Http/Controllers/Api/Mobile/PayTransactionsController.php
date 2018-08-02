@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Mobile;
 use JWTAuth;
 use App\Transaction;
 use App\User;
+use App\UserLocation;
 use App\Filters\TransactionFilters;
 use App\Http\Resources\ApiTransactionResource;
 use Illuminate\Http\Request;
@@ -34,6 +35,7 @@ class PayTransactionsController extends Controller {
 			$success = $transaction->save();
 			if ($success) {
 				$transaction->updateCustomerEvent();
+				$this->setExitNotificationSentIfCustomerExited($request, $profile);
 				return response()->json(['success' => 'waiting_customer_approval'], 200);
 			} else {
 				return response()->json(['error' => 'unable_to_charge_customer'], 500);
@@ -43,6 +45,11 @@ class PayTransactionsController extends Controller {
 
 
 
+	private function setExitNotificationSentIfCustomerExited($request, $profile) {
+		$userLocation = UserLocation::where('profile_id', $profile->id)->where('user_id', $request->user_id)->first();
+		$userLocation->exit_notification_sent = $userLocation->customer_exited;
+		$userLocation->save();
+	}
 
 	private function findOrCreateTransaction($request, $profile) {
 		if ($request->transaction_id) {
