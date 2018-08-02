@@ -98,10 +98,14 @@ class ProfilesController extends Controller
     }
 
     public function enter() {
-        UserLocation::create([
-            'profile_id' => 1,
-            'user_id' => 288
-        ]);
+        $transaction = Transaction::where('id', 476)->first();
+        $count = $transaction->getRecentSentErrorNotifCount();
+        $transaction->sendFixTransactionNotification($count);
+
+        // UserLocation::create([
+        //     'profile_id' => 1,
+        //     'user_id' => 288
+        // ]);
 
 
         // $transaction = Transaction::where('id', 482)->first();
