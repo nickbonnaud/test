@@ -82,7 +82,11 @@ class UserLocation extends Model {
         if ($transaction->status == 11 && $transaction->bill_closed && !$this->customer_exited) {
           $transaction->autoChargeCustomer();
         } elseif (!$this->exit_notification_sent  && ($transaction->status != 11 || !$transaction->bill_closed)) {
-          $this->sendPaymentNotificationByType($transaction);
+          if ($transaction->hasPriceDiscrepancyWithLastNotification()) {
+            $transaction->sendPayOrKeepOpenNotification();
+          } else {
+            $this->sendPaymentNotificationByType($transaction);
+          }
           $this->exit_notification_sent = true;
           $this->save();
         }
@@ -114,8 +118,8 @@ class UserLocation extends Model {
   }
 
   public function sendPaymentNotificationByType($transaction) {
-    $recentSentTransactionsCount = $transaction->checkRecentSentNotification();
-    if ($recentSentTransactionsCount == 0) {
+    $recentSentNotificationsCount = $transaction->checkRecentSentNotification();
+    if ($recentSentNotificationsCount == 0) {
       if ($transaction->bill_closed && ($transaction->status != 0)) {
         $transaction->sendBillClosedNotification();
       } elseif($transaction->status !== 0) {
