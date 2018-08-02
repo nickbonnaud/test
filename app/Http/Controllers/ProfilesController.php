@@ -102,7 +102,7 @@ class ProfilesController extends Controller
         $path = $transaction->user->pushToken->device == "ios" ? "data->data->transactionId" : "data->data->custom->transactionId";
         $notif =  $transaction->user->notifications()
             ->where("App\\Notifications\\TransactionBillWasClosed")
-            ->where($path, $this->id)
+            ->where($path, $transaction->id)
             ->first();
 
         dd(json_decode($notif->data));
