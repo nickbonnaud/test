@@ -106,7 +106,7 @@ class ProfilesController extends Controller
             ->where($path, $transaction->id)
             ->first();
 
-        dd($notif);
+        dd(array_get($notif->data, "data.total"));
         // UserLocation::create([
         //     'profile_id' => 1,
         //     'user_id' => 288
