@@ -120,13 +120,15 @@ class UserLocation extends Model {
         $transaction->sendBillClosedNotification();
       } elseif($transaction->status !== 0) {
         if (($transaction->status == 2) || ($transaction->status == 3) || ($transaction->status == 4)) {
-          $transaction->sendFixTransactionNotification();
+          $count = $transaction->getRecentSentErrorNotifCount();
+          $transaction->sendFixTransactionNotification($count);
         } else {
           $transaction->sendPayOrKeepOpenNotification();
         }
       }
     } elseif (!$this->exit_notification_sent && ($transaction->status == 3 || $transaction->status == 4)) {
-      $transaction->sendFixTransactionNotification();
+      $count = $transaction->getRecentSentErrorNotifCount();
+      $transaction->sendFixTransactionNotification($count);
     }
   }
 }

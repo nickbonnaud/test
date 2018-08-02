@@ -407,6 +407,13 @@ class Transaction extends Model
     }
   }
 
+  public function getRecentSentErrorNotifCount() {
+    $path = $this->user->pushToken->device == "ios" ? "data->data->transactionId" : "data->data->custom->transactionId";
+    return $this->user->notifications()
+        ->where($path, $this->id)
+        ->where('type', 'App\Notifications\FixTransactionNotification')->count();
+  }
+
   public function updateTransactionBeforeNotification() {
     $this->status = 11;
     $this->save();

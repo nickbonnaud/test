@@ -88,15 +88,10 @@ class InactiveCustomerManager extends Command
   }
 
   public static function fixTransactionOrPay($transaction, $userLocation) {
-    if ($transaction->user->pushToken->device == 'android') {
-      $previousNotifCount = $transaction->user->notifications()
-        ->where('data->data->custom->transactionId', $transaction->id)
+    $path = $transaction->user->pushToken->device == "ios" ? "data->data->transactionId" : "data->data->custom->transactionId";
+    $previousNotifCount = $transaction->user->notifications()
+        ->where($path, $transaction->id)
         ->where('type', 'App\Notifications\FixTransactionNotification')->count();
-    } else {
-      $previousNotifCount = $transaction->user->notifications()
-        ->where('data->data->transactionId', $transaction->id)
-        ->where('type', 'App\Notifications\FixTransactionNotification')->count();
-    }
     switch ($previousNotifCount) {
       case 0:
       case 1:
