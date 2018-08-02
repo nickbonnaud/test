@@ -14,7 +14,8 @@
         </section>
         <section class="content">
           <search-default search-type="customer"></search-default>
-          <a href="{{ action('ProfilesController@test') }}"><button>Do it</button></a>
+          <a href="{{ action('ProfilesController@enter') }}"><button>Enter</button></a>
+          <a href="{{ action('ProfilesController@leave') }}"><button>Leave</button></a>
           <div class="scroll-container">
             <customer-list :profile="{{ $profile }}"></customer-list>
           </div>

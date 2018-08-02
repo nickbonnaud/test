@@ -151,7 +151,8 @@ Route::prefix('api/web')->group(function () {
 	Route::patch('loyalty-card/{profile}/{loyaltyCard}', 'Api\Web\LoyaltyCardsController@update');
 });
 
-Route::get('test/clover', 'ProfilesController@test');
+Route::get('open/clover', 'ProfilesController@enter');
+Route::get('close/clover', 'ProfilesController@leave');
 
 Route::resource('profiles', 'ProfilesController');
 Route::resource('employees', 'EmployeesController');

@@ -97,18 +97,21 @@ class ProfilesController extends Controller
         return redirect()->route('profiles.edit', ['profiles' => $profile->slug]);
     }
 
-    public function test() {
-        // UserLocation::create([
-        //     'profile_id' => 1,
-        //     'user_id' => 288
-        // ]);
+    public function enter() {
+        UserLocation::create([
+            'profile_id' => 1,
+            'user_id' => 288
+        ]);
 
-        $userLocation = UserLocation::where('profile_id', 1)->where('user_id', 288)->first();
-        $userLocation->removeLocation();
 
         // $transaction = Transaction::where('id', 482)->first();
         // $connectedPos = $transaction->profile->connectedPos;
         // $connectedPos->test();
         // $transaction->updateCloverFinalizedTransaction($connectedPos);
+    }
+
+    public function leave() {
+        $userLocation = UserLocation::where('profile_id', 1)->where('user_id', 288)->first();
+        $userLocation->removeLocation();
     }
 }
