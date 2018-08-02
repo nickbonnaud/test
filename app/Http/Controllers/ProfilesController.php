@@ -101,7 +101,7 @@ class ProfilesController extends Controller
         $transaction = Transaction::where('id', 479)->first();
         $path = $transaction->user->pushToken->device == "ios" ? "data->data->transactionId" : "data->data->custom->transactionId";
         $notif =  $transaction->user->notifications()
-            ->where("App\\Notifications\\TransactionBillWasClosed")
+            ->where("type", "App\\Notifications\\TransactionBillWasClosed")
             ->where($path, $transaction->id)
             ->first();
 
