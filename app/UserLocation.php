@@ -86,6 +86,10 @@ class UserLocation extends Model {
           $this->exit_notification_sent = true;
           $this->save();
         }
+      } elseif ($transaction->status == 3 || $transaction->status == 4) {
+          $this->sendPaymentNotificationByType($transaction);
+          $this->exit_notification_sent = true;
+          $this->save();
       } elseif (!$this->customer_exited) {
         $this->customer_exited = true;
         $this->exited_on = Carbon::now();
