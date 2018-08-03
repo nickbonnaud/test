@@ -122,6 +122,7 @@ class ConnectedPos extends Model
           $transaction = Transaction::where('pos_transaction_id', $cloverTransaction->id)->first();
           $userLocation = UserLocation::where('profile_id', $this->profile_id)->where('user_id', $customer->id)->first();
           $userLocation->clover_line_item_id = $data['line_item_id'];
+          $userLocation->exit_notification_sent = false;
           $userLocation->save();
 
           if ($transaction) {
