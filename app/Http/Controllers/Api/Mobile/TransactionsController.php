@@ -36,6 +36,7 @@ class TransactionsController extends Controller {
 
 	public function update(Profile $profile, Request $request) {
 		\Log::debug("Inside update transaction");
+		\Log::debug($request->all());
 		$user = JWTAuth::parseToken()->authenticate();
 		$transaction = Transaction::with('profile')->findOrFail($request->id);
 		if (!($transaction->user_id == $user->id)) return response()->json(['error' => 'Unauthorized'], 401);
