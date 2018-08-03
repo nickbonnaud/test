@@ -35,11 +35,13 @@ class TransactionsController extends Controller {
 	}
 
 	public function update(Profile $profile, Request $request) {
-		\Log::debug("Inside update transaction");
-		\Log::debug($request->all());
 		$user = JWTAuth::parseToken()->authenticate();
 		$transaction = Transaction::with('profile')->findOrFail($request->id);
 		if (!($transaction->user_id == $user->id)) return response()->json(['error' => 'Unauthorized'], 401);
+		if ($request->status == 19 && $request->bill_closed && $transaction->hasPriceDiscrepancyWithLastNotification()) {
+			$transaction->sendBillChangedNotification();
+			return response()->json(['success' => false, 'type' => 'bill_total_changed'], 200);
+		}
 		$transaction->update($request->all());
 		$transaction->transactionChangeEvent();
 		if ($request->status == 2 || $request->status == 3 || $request->status == 4) {
