@@ -47,7 +47,11 @@ class PayTransactionsController extends Controller {
 
 	private function setExitNotificationSentIfCustomerExited($request, $profile) {
 		$userLocation = UserLocation::where('profile_id', $profile->id)->where('user_id', $request->user_id)->first();
-		$userLocation->exit_notification_sent = $userLocation->customer_exited;
+		if ($userLocation->exit_notification_sent) {
+			$userLocation->exit_notification_sent = false;
+		} else {
+			$userLocation->exit_notification_sent = $userLocation->customer_exited;
+		}
 		$userLocation->save();
 	}
 
