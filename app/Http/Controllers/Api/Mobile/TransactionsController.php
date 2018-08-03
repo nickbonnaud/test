@@ -35,27 +35,33 @@ class TransactionsController extends Controller {
 	}
 
 	public function update(Profile $profile, Request $request) {
+		\Log::debug("Inside update transaction");
 		$user = JWTAuth::parseToken()->authenticate();
 		$transaction = Transaction::with('profile')->findOrFail($request->id);
 		if (!($transaction->user_id == $user->id)) return response()->json(['error' => 'Unauthorized'], 401);
 		$transaction->update($request->all());
 		$transaction->transactionChangeEvent();
 		if ($request->status == 2 || $request->status == 3 || $request->status == 4) {
+			\Log::debug("1");
 			$transaction->transactionErrorEvent();
 			$success = true;
 			$type = 'user_decline';
 		} elseif ($request->status == 12) {
+			\Log::debug("2");
 			$transaction->customerRequestBillEvent();
 			$success = true;
 			$type = 'request_bill';
 		} elseif ($request->status == 10) {
+			\Log::debug("3");
 			$userLocation = UserLocation::where('user_id', $user->id)->where('profile_id', $profile->id)->first();
 			$userLocation->touch();
 
 
 			if ($user->pushToken->device === 'android') {
+				\Log::debug("4");
 				$notifications = $user->notifications()->where('data->data->custom->transactionId', $transaction->id)->where('type', 'App\Notifications\PayOrKeepOpenNotification')->get();
 			} else {
+				\Log::debug("5");
 				$notifications = $user->notifications()->where('data->data->transactionId', $transaction->id)->where('type', 'App\Notifications\PayOrKeepOpenNotification')->get();
 			}
 
@@ -68,11 +74,14 @@ class TransactionsController extends Controller {
 			$success = true;
 			$type = 'keep_open';
 		} else {
+			\Log::debug("6");
 			if ($transaction->hasPriceDiscrepancyWithLastNotification()) {
+				\Log::debug("7");
 				$success = false;
 				$type = 'bill_total_changed';
 				$transaction->sendBillChangedNotification();
 			} else {
+				\Log::debug("8");
 				$success = $transaction->processCharge($request->tip);
 				$type = 'user_pay';
 			}
