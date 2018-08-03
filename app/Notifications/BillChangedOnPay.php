@@ -29,14 +29,14 @@ class BillChangedOnPay extends Notification
     $category = 'bill_changed';
     $transactionId = $this->transaction->id;
     $businessSlug = $this->transaction->profile->slug;
-    $inAppBody = `Your bill at ${$businessName} has changed recently. Your new total is $${$total}.`;
+    $inAppBody = 'Your bill at ' . $businessName . ' has changed recently. Your new total is ' . $total . '.';
     $title = 'Bill Changed';
     
     if (strtolower($notifiable->pushToken->device) == 'ios') {
       return [
         'notification' => [
           'title' => $title,
-          'body' => `Please swipe this notification left or down and tap VIEW to see options. ${$inAppBody}`,
+          'body' => 'Please swipe this notification left or down and tap VIEW to see options. ' . $inAppBody,
           'click-action' => $category,
           'sound' => 'default'
         ],
