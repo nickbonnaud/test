@@ -433,7 +433,7 @@ class Transaction extends Model
       \Log::debug("Inside has notif");
       $arrayPath = $deviceType == "ios" ? "data.total" : "data.custom.total";
       \Log::debug(array_get($lastClosedBillNotif->data, $arrayPath));
-      array_get( $this->total);
+      \Log::debug($this->total);
       return array_get($lastClosedBillNotif->data, $arrayPath) != $this->total;
     } else {
       return false;
