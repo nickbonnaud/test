@@ -71,6 +71,7 @@ class TransactionsController extends Controller {
 			if ($transaction->hasPriceDiscrepancyWithLastNotification()) {
 				$success = false;
 				$type = 'bill_total_changed';
+				$transaction->sendBillChangedNotification();
 			} else {
 				$success = $transaction->processCharge($request->tip);
 				$type = 'user_pay';

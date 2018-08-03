@@ -393,6 +393,10 @@ class Transaction extends Model
     $this->user->notify(new AutoPayNotification($this, $reason));
   }
 
+  public function sendBillChangedNotification() {
+    $this->user->notify(new BillChangedOnPay($this));
+  }
+
   public function checkRecentSentNotification($classType = null) {
     $path = $this->user->pushToken->device == "ios" ? "data->data->transactionId" : "data->data->custom->transactionId";
     if ($classType) {
