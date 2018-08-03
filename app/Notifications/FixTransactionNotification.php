@@ -65,6 +65,7 @@ class FixTransactionNotification extends Notification
         ],
         'data' => [
           'transactionId' => $transactionId,
+          'total' => $this->transaction->total,
           'businessName' => $businessName,
           'businessSlug' => $businessSlug,
           'phoneNumber' => $businessPhoneNumber,
@@ -86,6 +87,7 @@ class FixTransactionNotification extends Notification
           'no-cache' => 1,
           'custom' => [
             'transactionId' => $transactionId,
+            'total' => $this->transaction->total,
             'businessName' => $businessName,
             'businessSlug' => $businessSlug,
             'phoneNumber' => $businessPhoneNumber,

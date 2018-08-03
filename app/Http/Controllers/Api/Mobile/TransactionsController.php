@@ -68,8 +68,13 @@ class TransactionsController extends Controller {
 			$success = true;
 			$type = 'keep_open';
 		} else {
-			$success = $transaction->processCharge($request->tip);
-			$type = 'user_pay';
+			if ($transaction->hasPriceDiscrepancyWithLastNotification()) {
+				$success = false;
+				$type = 'bill_total_changed';
+			} else {
+				$success = $transaction->processCharge($request->tip);
+				$type = 'user_pay';
+			}
 		}
 		return response()->json(['success' => $success, 'type' => $type], 200);
 	}
