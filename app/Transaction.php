@@ -12,6 +12,7 @@ use App\Notifications\PayOrKeepOpenNotification;
 use App\Notifications\CustomerRedeemDeal;
 use App\Notifications\FixTransactionNotification;
 use App\Notifications\AutoPayNotification;
+use App\Notifications\BillChangedOnPay;
 use App\Events\TransactionError;
 use App\Events\TransactionSuccess;
 use App\Events\TransactionsChange;
