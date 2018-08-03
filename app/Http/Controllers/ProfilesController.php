@@ -98,10 +98,13 @@ class ProfilesController extends Controller
     }
 
     public function enter() {
-        UserLocation::create([
-            'profile_id' => 1,
-            'user_id' => 288
-        ]);
+        // UserLocation::create([
+        //     'profile_id' => 1,
+        //     'user_id' => 288
+        // ]);
+
+        $transaction = Transaction::where('id', 516)->first();
+        dd($transaction->hasPriceDiscrepancyWithLastNotification());
 
 
         // $transaction = Transaction::where('id', 482)->first();
