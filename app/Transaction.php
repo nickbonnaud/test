@@ -35,6 +35,7 @@ class Transaction extends Model
 
     static::updated(function($transaction) {
       if ($transaction->notification_id && !$transaction->is_refund && $transaction->paid && ($transaction->status == 20)) {
+        \Log::debug("1");
         $transaction->removeNotifications();
       }
     });
@@ -74,6 +75,7 @@ class Transaction extends Model
 
   public function setBillClosedAttribute($billClosed) {
     if (($this->bill_closed == false && !is_null($this->bill_closed)) && $billClosed && !$this->is_refund && ($this->status != 11)) {
+      \Log::debug("2");
       $this->sendBillClosedNotification();
     }
     $this->attributes['bill_closed'] = $billClosed;
@@ -131,6 +133,7 @@ class Transaction extends Model
   }
 
   public function transactionSuccessEvent() {
+    \Log::debug("3");
     event(new TransactionSuccess($this->user, $this->profile->slug));
     if ($connectedPos = $this->profile->connectedPos) {
       $userLocation = UserLocation::where('user_id', $this->user->id)->where('profile_id', $this->profile->id)->first();
@@ -140,6 +143,7 @@ class Transaction extends Model
   }
 
   public function updateCloverFinalizedTransaction($connectedPos) {
+    \Log::debug("4");
     $connectedPos->removePockeytCustomerFromTransaction($this->pos_transaction_id, $this->user);
     $connectedPos->closeCloverTransaction($this);
   }
@@ -157,6 +161,7 @@ class Transaction extends Model
   }
 
   public function processCharge($tip = null) {
+    \Log::debug("5");
     if ($tip) {
       $this->addTipToTransaction($tip);
     } else {
@@ -394,6 +399,7 @@ class Transaction extends Model
   }
 
   public function sendBillChangedNotification() {
+    \Log::debug("6");
     $this->user->notify(new BillChangedOnPay($this));
   }
 
@@ -419,7 +425,6 @@ class Transaction extends Model
   }
 
   public function hasPriceDiscrepancyWithLastNotification() {
-    \Log::debug("Checking has price diff");
     $deviceType = $this->user->pushToken->device;
     $path = $deviceType == "ios" ? "data->data->transactionId" : "data->data->custom->transactionId";
     $lastClosedBillNotif = $this->user->notifications()->where($path, $this->id)
@@ -428,12 +433,8 @@ class Transaction extends Model
           ->orWhere("type", "App\\Notifications\\FixTransactionNotification")
           ->orWhere("type", "App\\Notifications\\PayOrKeepOpenNotification");
         })->first();
-    \Log::debug($lastClosedBillNotif);
     if ($lastClosedBillNotif) {
-      \Log::debug("Inside has notif");
       $arrayPath = $deviceType == "ios" ? "data.total" : "data.custom.total";
-      \Log::debug(array_get($lastClosedBillNotif->data, $arrayPath));
-      \Log::debug($this->total);
       return array_get($lastClosedBillNotif->data, $arrayPath) != $this->total;
     } else {
       return false;
@@ -441,6 +442,7 @@ class Transaction extends Model
   }
 
   public function updateTransactionBeforeNotification() {
+    \Log::debug("7");
     $this->status = 11;
     $this->save();
     $this->updateCustomerEvent();
