@@ -419,6 +419,7 @@ class Transaction extends Model
   }
 
   public function hasPriceDiscrepancyWithLastNotification() {
+    \Log::debug("Checking has price diff");
     $deviceType = $this->user->pushToken->device;
     $path = $deviceType == "ios" ? "data->data->transactionId" : "data->data->custom->transactionId";
     $lastClosedBillNotif = $this->user->notifications()->where($path, $this->id)
@@ -427,8 +428,12 @@ class Transaction extends Model
           ->orWhere("type", "App\\Notifications\\FixTransactionNotification")
           ->orWhere("type", "App\\Notifications\\PayOrKeepOpenNotification");
         })->first();
+    \Log::debug($lastClosedBillNotif);
     if ($lastClosedBillNotif) {
+      \Log::debug("Inside has notif");
       $arrayPath = $deviceType == "ios" ? "data.total" : "data.custom.total";
+      \Log::debug(array_get($lastClosedBillNotif->data, $arrayPath));
+      array_get( $this->total);
       return array_get($lastClosedBillNotif->data, $arrayPath) != $this->total;
     } else {
       return false;
