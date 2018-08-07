@@ -98,13 +98,30 @@ class ProfilesController extends Controller
     }
 
     public function enter() {
-        UserLocation::create([
-            'profile_id' => 1,
-            'user_id' => 288
-        ]);
+        // UserLocation::create([
+        //     'profile_id' => 1,
+        //     'user_id' => 288
+        // ]);
 
 
-        // $transaction = Transaction::where('id', 482)->first();
+
+        $transaction = Transaction::where('id', 522)->first();
+        $profile = $transaction->profile;
+
+        $client = new Client(['base_uri' => env('CLOVER_BASE_URL')]);
+        try {
+          $response = $client->request('GET', 'v3/merchants/' . $profile->connectedPos->merchant_id . '/orders/' . $transaction->pos_transaction_id . '/payments', [
+            'headers' => [
+              'Authorization' => 'Bearer ' . $profile->connectedPos->token,
+              'Accept' => 'application/json'
+            ]
+          ]);
+        } catch (ClientErrorResponseException $exception) {
+          dd($exception->getResponse()->getBody(true));
+        }
+        dd(json_decode($response->getBody()->getContents()));
+
+
         // $connectedPos = $transaction->profile->connectedPos;
         // $connectedPos->test();
         // $transaction->updateCloverFinalizedTransaction($connectedPos);
