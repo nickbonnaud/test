@@ -10,6 +10,7 @@ use App\Http\Requests\UpdateProfileRequest;
 
 use App\Transaction;
 use App\UserLocation;
+use GuzzleHttp\Client;
 
 class ProfilesController extends Controller
 {
