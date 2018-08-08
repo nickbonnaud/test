@@ -80,10 +80,11 @@ Route::post('analytics/posts', 'AnalyticsController@store');
 Route::prefix('pay')->group(function() {
 	Route::get('customers', 'PayCustomersController@index');
 	Route::get('me', 'PayAuthenticateController@me');
+	Route::get('transaction', 'PayTransactionsController@index');
+	Route::get('employees', 'PayEmployeesController@index');
 	Route::post('login', 'PayAuthenticateController@login');
 	Route::patch('deal', 'PayDealsController@update');
 	Route::patch('loyalty', 'PayLoyaltyCardsController@update');
-	Route::get('transaction', 'PayTransactionsController@index');
 	Route::post('transaction', 'PayTransactionsController@store');
 	Route::patch('business', 'PayBusinessController@update');
 

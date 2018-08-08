@@ -207,4 +207,14 @@ $factory->define(App\ConnectedPos::class, function ($faker) {
   ];
 });
 
+$factory->define(App\Employee::class, function ($faker) {
+  $profile = factory('App\Profile')->create();
+  return [
+    'profile_id' => $profile->id,
+    'name' => $faker->name,
+    'pos_employee_id' => $faker->word,
+    'role' => 'manager'
+  ];
+});
+
 

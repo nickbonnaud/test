@@ -91,6 +91,10 @@ class Profile extends Model
     return $this->hasMany('App\Transaction');
   }
 
+  public function employees() {
+    return $this->hasMany('App\Employee');
+  }
+
   public function owns($relation) {
     return $relation->profile_id == $this->id;
   }
