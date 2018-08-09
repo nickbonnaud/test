@@ -26,6 +26,8 @@ class PayEmployeesController extends Controller {
 		$user = JWTAuth::parseToken()->authenticate();
 		$profile = $user->profile;
 
+		\Log::debug($request->is_create);
+
 		if ($request->is_create) {
 			$profile->employees()->save(new Employee($request->except('is_create')));
 		} else {
