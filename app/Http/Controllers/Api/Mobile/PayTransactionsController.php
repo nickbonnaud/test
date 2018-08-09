@@ -73,6 +73,10 @@ class PayTransactionsController extends Controller {
 	      	'total' => $total,
 	      	'employee_id' => $request->employee_id
 				]);
+			} elseif (!$transaction->employee_id) {
+				$transaction->update([
+	      	'employee_id' => $request->employee_id
+				]);
 			}
 			return $transaction;
 		} else {
