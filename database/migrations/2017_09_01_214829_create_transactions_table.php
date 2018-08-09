@@ -19,7 +19,7 @@ class CreateTransactionsTable extends Migration
             $table->foreign('profile_id')->references('id')->on('profiles')->onDelete('cascade');
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users');
-            $table->integer('employee_id')->unsigned()->nullable();
+            $table->string('employee_id')->nullable();
             $table->boolean('paid')->default(false);
             $table->boolean('customer_first_transaction')->default(false);
             $table->boolean('bill_closed')->default(false);
