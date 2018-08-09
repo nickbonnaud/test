@@ -25,10 +25,9 @@ class PayEmployeesController extends Controller {
 	public function store(Request $request) {
 		$user = JWTAuth::parseToken()->authenticate();
 		$profile = $user->profile;
+		$shouldCreateEmployee = $request->is_create;
 
-		\Log::debug($request->is_create);
-
-		if ($request->is_create) {
+		if ($shouldCreateEmployee) {
 			$profile->employees()->save(new Employee($request->except('is_create')));
 		} else {
 			$employee = Employee::where('pos_employee_id', $request->pos_employee_id)->first();
