@@ -40,4 +40,62 @@ class CloverEmployeeTest extends TestCase {
 		$response = $this->get("/api/mobile/pay/employees", $this->headers($user))->getData();
 		$this->assertCount(3, $response->data);
 	}
+
+	function test_an_unauthorized_clover_client_cannot_add_delete_employees() {
+		$this->withExceptionHandling();
+		$user = create('App\User');
+  	$profile = create('App\Profile', ['user_id' => $user->id]);
+
+  	$data = [
+  		'pos_employee_id' => 'employee_id',
+  		'name' => 'test employee',
+  		'role' => 'manager',
+  		'is_create' => 'true'
+  	];
+
+  	$response = $this->post("/api/mobile/pay/employees", $data)->assertStatus(401);
+	}
+
+	function test_an_authorized_clover_client_can_add_an_employees() {
+		$this->withExceptionHandling();
+		$user = create('App\User');
+  	$profile = create('App\Profile', ['user_id' => $user->id]);
+
+  	$data = [
+  		'pos_employee_id' => 'employee_id',
+  		'name' => 'test employee',
+  		'role' => 'manager',
+  		'is_create' => true
+  	];
+
+  	$this->assertDatabaseMissing('employees', ['pos_employee_id' => 'employee_id']);
+  	$response = $this->post("/api/mobile/pay/employees", $data, $this->headers($user))->getData();
+  	$this->assertEquals('employees_updated', $response->success);
+  	$this->assertDatabaseHas('employees', ['pos_employee_id' => 'employee_id']);
+	}
+
+	function test_an_authorized_clover_client_can_remove_an_employees() {
+		$this->withExceptionHandling();
+		$user = create('App\User');
+  	$profile = create('App\Profile', ['user_id' => $user->id]);
+  	$employee = create('App\Employee', [
+  		'profile_id' => $profile->id,
+  		'pos_employee_id' => 'employee_id',
+  		'name' => 'test employee',
+  		'role' => 'manager'
+  	]);
+  	
+
+  	$data = [
+  		'pos_employee_id' => 'employee_id',
+  		'name' => 'test employee',
+  		'role' => 'manager',
+  		'is_create' => false
+  	];
+
+  	$this->assertDatabaseHas('employees', ['pos_employee_id' => 'employee_id']);
+  	$response = $this->post("/api/mobile/pay/employees", $data, $this->headers($user))->getData();
+  	$this->assertEquals('employees_updated', $response->success);
+  	$this->assertDatabaseMissing('employees', ['pos_employee_id' => 'employee_id']);
+	}
 }
