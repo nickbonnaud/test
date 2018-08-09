@@ -52,7 +52,7 @@ class PayTransactionsController extends Controller {
 	}
 
 	private function findOrCreateTransaction($request, $profile) {
-		\Log::debug("Employee Id: " + $request->employee_id);
+		\Log::debug("Employee Id: " . $request->employee_id);
 		if ($request->transaction_id) {
 			\Log::debug("Has transaction_id");
 			$transaction = Transaction::where('id', $request->transaction_id)->first();
