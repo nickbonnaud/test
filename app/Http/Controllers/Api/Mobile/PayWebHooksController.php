@@ -9,6 +9,10 @@ use App\Http\Controllers\Controller;
 class PayWebHooksController extends Controller {
 
 	public function clover(Request $request) {
+		if ($verificationCode = $request->verificationCode) {
+			\Log::debug('Verification Code ' . $verificationCode);
+			return response()->json(['success' => 'authorized'], 200);
+		}
 		if ($request->header('X-Clover-Auth') == env('CLOVER_WEBHOOK_HEADER')) {
 			$webHookData = $request->all();
 			$merchants = $webHookData['merchants'];
