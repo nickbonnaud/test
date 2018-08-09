@@ -68,6 +68,7 @@ class PayTransactionsController extends Controller {
 		      'tax' => $subTotalAndTax['tax'],
 	      	'net_sales' => $subTotalAndTax['subTotal'],
 	      	'total' => $total,
+	      	'employee_id' => $request->employee_id
 				]);
 			}
 			return $transaction;
@@ -90,7 +91,8 @@ class PayTransactionsController extends Controller {
 	      'tax' => $subTotalAndTax['tax'],
 	      'net_sales' => $subTotalAndTax['subTotal'],
 	      'total' => $total,
-	      'pos_transaction_id' => $request->pos_transaction_id
+	      'pos_transaction_id' => $request->pos_transaction_id,
+	      'employee_id' => $request->employee_id
 			]);
 		}
 	}
