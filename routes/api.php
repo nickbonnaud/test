@@ -82,11 +82,14 @@ Route::prefix('pay')->group(function() {
 	Route::get('me', 'PayAuthenticateController@me');
 	Route::get('transaction', 'PayTransactionsController@index');
 	Route::get('employees', 'PayEmployeesController@index');
+	Route::get('tips', 'PayTipsController@index');
+
 	Route::post('employees', 'PayEmployeesController@store');
 	Route::post('login', 'PayAuthenticateController@login');
+	Route::post('transaction', 'PayTransactionsController@store');
+
 	Route::patch('deal', 'PayDealsController@update');
 	Route::patch('loyalty', 'PayLoyaltyCardsController@update');
-	Route::post('transaction', 'PayTransactionsController@store');
 	Route::patch('business', 'PayBusinessController@update');
 
 	Route::post('subscription', 'PayWebHooksController@clover');
