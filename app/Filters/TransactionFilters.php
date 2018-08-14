@@ -7,7 +7,7 @@ use Carbon\Carbon;
 class TransactionFilters extends Filters
 {
 
-  protected $filters = ['defaultDate', 'customDate', 'pending', 'finalized', 'recent', 'redeemedDeals', 'unRedeemedDeals', 'customerPending', 'dealsAll', 'clover', 'employeeTips', 'allTips'];
+  protected $filters = ['defaultDate', 'customDate', 'pending', 'finalized', 'recent', 'redeemedDeals', 'unRedeemedDeals', 'customerPending', 'dealsAll', 'clover', 'employeeTips', 'allTips', 'startTime', 'endTime'];
 
   protected function defaultDate() {
   	$currentDate = Carbon::now();
@@ -99,6 +99,16 @@ class TransactionFilters extends Filters
       ->whereNotNull('tips')
       ->where('refund_full', '=', false)
       ->orderBy('created_at', 'desc');
+  }
+
+  protected function startTime($startTime) {
+    $startDateTime = str_replace_first('_', ' ', $startTime);
+    return $this->builder->where('created_at', '>=', $startDateTime);
+  }
+
+  protected function endTime($endTime) {
+    $endDateTime = str_replace_first('_', ' ', $endTime);
+    return $this->builder->where('created_at', '<=', $endDateTime);
   }
 
   private function getFromDate($currentDate) {
