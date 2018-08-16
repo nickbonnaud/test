@@ -84,6 +84,7 @@ class TransactionFilters extends Filters
 
   protected function employeeTips($employeeId) {
     return $this->builder->where('employee_id', $employeeId)
+      ->whereNotNull('pos_transaction_id')
       ->where('status', '=', '20')
       ->where('paid', '=', true)
       ->whereNull('deal_id')
@@ -94,6 +95,7 @@ class TransactionFilters extends Filters
 
   protected function allTips() {
     return $this->builder->where('status', '=', '20')
+      ->whereNotNull('pos_transaction_id')
       ->where('paid', '=', true)
       ->whereNull('deal_id')
       ->whereNotNull('tips')
