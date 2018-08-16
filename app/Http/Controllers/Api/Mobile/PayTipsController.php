@@ -17,12 +17,10 @@ class PayTipsController extends Controller {
 	}
 
 	public function index(Request $request, TransactionFilters $filters) {
-		\Log::debug('Hit the endpoint');
 		$user = JWTAuth::parseToken()->authenticate();
 		$profile = $user->profile;
 
 		$transactions = Transaction::filter($filters, $profile)->paginate(20)->appends(Input::except('page'));
-		\Log::debug($transactions);
 		return PayTipsResource::collection($transactions);
 	}
 }
