@@ -82,8 +82,8 @@ class TransactionFilters extends Filters
       ->where('is_refund', false);
   }
 
-  protected function employeeTips($employeeId) {
-    return $this->builder->where('employee_id', $employeeId)
+  protected function employeeTips($ids) {
+    return $this->builder->whereIn('employee_id', $ids)
       ->whereNotNull('pos_transaction_id')
       ->where('status', '=', '20')
       ->where('paid', '=', true)
