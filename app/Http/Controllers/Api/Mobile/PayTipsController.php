@@ -20,7 +20,7 @@ class PayTipsController extends Controller {
 		$user = JWTAuth::parseToken()->authenticate();
 		$profile = $user->profile;
 
-		$transactions = Transaction::filter($filters, $profile)->paginate(20)->appends(Input::except('page'));
+		$transactions = Transaction::filter($filters, $profile)->paginate(5)->appends(Input::except('page'));
 		return PayTipsResource::collection($transactions);
 	}
 }

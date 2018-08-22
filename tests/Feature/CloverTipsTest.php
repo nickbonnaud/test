@@ -164,6 +164,8 @@ class CloverTipsTest extends TestCase
 
     $response = $this->get("/api/mobile/pay/tips?startTime={$startDateTime}&endTime={$endDateTime}&employeeTips[]={$employeeId}&employeeTips[]={$employeeId1}", $this->headers($user))->getData();
 
+    dd($response);
+
     $this->assertEquals($employeeId1, $response->data[1]->employee_id);
     $this->assertEquals($transactionId1, $response->data[1]->transaction_id);
 
