@@ -74,7 +74,14 @@ class ConnectedPos extends Model {
   }
 
   public function addPockeytCustomer($userLocation) {
-    
+    if (!$posCustomerId = checkIfCloverCustomerExists($userLocation)) {
+      dd("here");
+      $posCustomerId = $this->createPockeytCustomer($userLocation);
+    }
+    dd($posCustomerId);
+    $userLocation->pos_customer_id = $posCustomerId;
+    $userLocation->save();
+    $this->linkCustomerItemToCategory($userLocation);
   }
 
   public function checkIfCloverCustomerExists($userLocation) {
@@ -91,16 +98,15 @@ class ConnectedPos extends Model {
     }
     $body = json_decode($response->getBody());
     $customers = $body->elements;
-    dd($customers);
     foreach ($customers as $customer) {
-      if (strtolower(Config::get('constants.clover.customer_prefix')) . $userLocation->user_id == $customer) {
-        # code...
+      if (strtolower(Config::get('constants.clover.customer_prefix')) . $userLocation->user_id == $customer->code) {
+        return $customer->code;
       }
     }
-    dd("after");
+    return null;
   }
 
-  public function createPockeytCustomer() {
+  public function createPockeytCustomer($userLocation) {
     $client = new Client(['base_uri' => env('CLOVER_BASE_URL')]);
     try {
       $response = $client->request('POST', 'v3/merchants/' . $this->merchant_id . '/items', [
@@ -125,11 +131,7 @@ class ConnectedPos extends Model {
       dd($exception->getResponse()->getBody(true));
     }
     $body = json_decode($response->getBody());
-    $posCustomerId = $body->id;
-
-    $userLocation->pos_customer_id = $posCustomerId;
-    $userLocation->save();
-    $this->linkCustomerItemToCategory($userLocation);
+    return $body->id;
   }
 
   public function deletePockeytCustomer($userLocation) {
