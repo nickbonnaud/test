@@ -43,20 +43,20 @@ class ConnectedPos extends Model {
   }
 
   public function checkIfCategoryExistsInClover() {
-    // $client = new Client(['base_uri' => env('CLOVER_BASE_URL')]);
+    $client = new Client(['base_uri' => env('CLOVER_BASE_URL')]);
 
-    // try {
-    //   $response = $client->request("GET", "v3/merchants", [
-    //     'headers' => [
-    //       'Authorization' => 'Bearer ' . $this->token,
-    //       'Accept' => 'application/json'
-    //     ]
-    //   ]);
-    // } catch (ClientErrorResponseException $exception) {
-    //   dd($exception->getResponse()->getBody(true));
-    // }
-    // $body = json_decode($response->getBody());
-    // dd($body);
+    try {
+      $response = $client->request("GET", "v3/merchants", [
+        'headers' => [
+          'Authorization' => 'Bearer ' . $this->token,
+          'Accept' => 'application/json'
+        ]
+      ]);
+    } catch (ClientErrorResponseException $exception) {
+      dd($exception->getResponse()->getBody(true));
+    }
+    $body = json_decode($response->getBody());
+    dd($body);
 
 
 
