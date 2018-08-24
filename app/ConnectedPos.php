@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use GuzzleHttp\Exception\GuzzleException;
 use Guzzle\Http\Exception\ClientErrorResponseException;
 use GuzzleHttp\Client;
+use Config;
 
 class ConnectedPos extends Model {
 	protected $fillable = ['account_type', 'token', 'merchant_id', 'clover_tender_id'];
@@ -59,7 +60,7 @@ class ConnectedPos extends Model {
     $body = json_decode($response->getBody());
     $categories = $body->elements;
     foreach ($categories as $category) {
-      if (strtolower($category->name) == config::get('constants.clover.category')) {
+      if (strtolower($category->name) == Config::get('constants.clover.category')) {
         return category;
       }
     }
