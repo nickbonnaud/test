@@ -99,16 +99,11 @@ class ProfilesController extends Controller
     }
 
     public function enter() {
-        $profile = Profile::where('id', 1)->first();
-        $userLocation = UserLocation::where('id', 111)->first();
-        $profile->connectedPos->addPockeytCustomer($userLocation);
 
-
-
-        // UserLocation::create([
-        //     'profile_id' => 1,
-        //     'user_id' => 288
-        // ]);
+        UserLocation::create([
+            'profile_id' => 1,
+            'user_id' => 288
+        ]);
 
 
 

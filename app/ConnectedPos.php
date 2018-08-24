@@ -77,11 +77,10 @@ class ConnectedPos extends Model {
     $shouldLinkCustomerToCategory = false;
     if (!$posCustomerId = $this->checkIfCloverCustomerExists($userLocation)) {
       $shouldLinkCustomerToCategory = true;
-      // $posCustomerId = $this->createPockeytCustomer($userLocation);
+      $posCustomerId = $this->createPockeytCustomer($userLocation);
     }
-    // $userLocation->pos_customer_id = $posCustomerId;
-    // $userLocation->save();
-    dd($shouldLinkCustomerToCategory);
+    $userLocation->pos_customer_id = $posCustomerId;
+    $userLocation->save();
     if ($shouldLinkCustomerToCategory) {
       $this->linkCustomerItemToCategory($userLocation);
     }
