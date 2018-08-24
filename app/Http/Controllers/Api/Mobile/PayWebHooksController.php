@@ -16,10 +16,10 @@ class PayWebHooksController extends Controller {
 		if ($request->header('X-Clover-Auth') == env('CLOVER_WEBHOOK_HEADER')) {
 			$webHookData = $request->all();
 			$merchants = $webHookData['merchants'];
-			foreach ($merchants as $merchantIdKey => $orderData) {
+			foreach ($merchants as $merchantIdKey => $data) {
 				$connectedPos = ConnectedPos::where('merchant_id', $merchantIdKey)->first();
 				if ($connectedPos) {
-					$connectedPos->parseWebHookData($orderData);
+					$connectedPos->parseWebHookData($data);
 				}
 			}
 			return response()->json(['success' => 'authorized'], 200);
