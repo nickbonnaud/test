@@ -51,6 +51,7 @@ class ConnectedPos extends Model
       dd($exception->getResponse()->getBody(true));
     }
     $body = json_decode($response->getBody());
+    dd($body);
   }
 
   public function createDeleteCustomer($eventType, $userLocation) {
