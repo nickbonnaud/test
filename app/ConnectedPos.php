@@ -59,11 +59,9 @@ class ConnectedPos extends Model {
     $categories = $body->elements;
     foreach ($categories as $category) {
       if (strtolower($category->name) == strtolower(Config::get('constants.clover.category'))) {
-        dd($category->id);
         return $category->id;
       }
     }
-    dd("Is null");
     return null;
   }
 
