@@ -80,7 +80,7 @@ class ConnectedPos extends Model {
   public function checkIfCloverCustomerExists() {
     $client = new Client(['base_uri' => env('CLOVER_BASE_URL')]);
     try {
-      $response = $client->request("GET", "v3/merchants/{$this->merchant_id}/categories", [
+      $response = $client->request("GET", "v3/merchants/{$this->merchant_id}/categories/5EYQZRQB2WSA0/items", [
         'headers' => [
           'Authorization' => 'Bearer ' . $this->token,
           'Accept' => 'application/json'
