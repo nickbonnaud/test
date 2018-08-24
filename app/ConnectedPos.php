@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use GuzzleHttp\Exception\GuzzleException;
 use Guzzle\Http\Exception\ClientErrorResponseException;
 use GuzzleHttp\Client;
+use App\config;
 
 class ConnectedPos extends Model {
 	protected $fillable = ['account_type', 'token', 'merchant_id', 'clover_tender_id'];
