@@ -99,10 +99,15 @@ class ProfilesController extends Controller
     }
 
     public function enter() {
-        UserLocation::create([
-            'profile_id' => 1,
-            'user_id' => 288
-        ]);
+        $profile = Profile::where('id', 1)->first();
+        $profile->connectedPos->checkIfCategoryExistsInClover();
+
+
+
+        // UserLocation::create([
+        //     'profile_id' => 1,
+        //     'user_id' => 288
+        // ]);
 
 
 

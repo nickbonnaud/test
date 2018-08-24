@@ -16,6 +16,8 @@ class ConnectedPos extends Model
   }
 
   public function createPockeytCustomersCategory() {
+    $this->checkIfCategoryExistsInClover();
+
     $client = new Client(['base_uri' => env('CLOVER_BASE_URL')]);
     try {
       $response = $client->request('POST', 'v3/merchants/' . $this->merchant_id . '/categories', [
@@ -33,6 +35,22 @@ class ConnectedPos extends Model
     $body = json_decode($response->getBody());
     $this->clover_category_id = $body->id;
     $this->save();
+  }
+
+  public function checkIfCategoryExistsInClover() {
+    $client = new Client(['base_uri' => env('CLOVER_BASE_URL')]);
+
+    try {
+      $response = $client->request("GET", "v3/merchants/{$this->merchant_id}/categories", [
+        'headers' => [
+          'Authorization' => 'Bearer ' . $this->token,
+          'Accept' => 'application/json'
+        ]
+      ]);
+    } catch (ClientErrorResponseException $exception) {
+      dd($exception->getResponse()->getBody(true));
+    }
+    $body = json_decode($response->getBody());
   }
 
   public function createDeleteCustomer($eventType, $userLocation) {
