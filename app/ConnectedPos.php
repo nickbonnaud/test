@@ -7,17 +7,24 @@ use GuzzleHttp\Exception\GuzzleException;
 use Guzzle\Http\Exception\ClientErrorResponseException;
 use GuzzleHttp\Client;
 
-class ConnectedPos extends Model
-{
+class ConnectedPos extends Model {
 	protected $fillable = ['account_type', 'token', 'merchant_id', 'clover_tender_id'];
 
   public function profile() {
     return $this->belongsTo('App\Profile');
   }
 
-  public function createPockeytCustomersCategory() {
-    $this->checkIfCategoryExistsInClover();
+  public function addPockeytCustomersCategory() {
+    if(!$categoryId = $this->checkIfCategoryExistsInClover()) {
+      dd("here");
+      $categoryId = $this->createPockeytCustomersCategory();
+    }
+    dd($categoryId);
+    $this->clover_category_id = $categoryId;
+    $this->save();
+  }
 
+  public function createPockeytCustomersCategory() {
     $client = new Client(['base_uri' => env('CLOVER_BASE_URL')]);
     try {
       $response = $client->request('POST', 'v3/merchants/' . $this->merchant_id . '/categories', [
@@ -33,8 +40,7 @@ class ConnectedPos extends Model
       dd($exception->getResponse()->getBody(true));
     }
     $body = json_decode($response->getBody());
-    $this->clover_category_id = $body->id;
-    $this->save();
+    return $body->id;
   }
 
   public function checkIfCategoryExistsInClover() {
@@ -51,7 +57,13 @@ class ConnectedPos extends Model
       dd($exception->getResponse()->getBody(true));
     }
     $body = json_decode($response->getBody());
-    dd($body);
+    $categories = $body->elements;
+    foreach ($categories as $category) {
+      if (strtolower($category->name) == Config::get('constants.clover.category')) {
+        return category;
+      }
+    }
+    return null;
   }
 
   public function createDeleteCustomer($eventType, $userLocation) {

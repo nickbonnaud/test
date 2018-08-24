@@ -406,7 +406,7 @@ class Profile extends Model
       $connectedPos = $this->connectedPos()->save(new connectedPos($requestData));
     }
     if (!$connectedPos->clover_category_id && $connectedPos->merchant_id) {
-      $connectedPos->createPockeytCustomersCategory();
+      $connectedPos->addPockeytCustomersCategory();
     }
   }
 }
