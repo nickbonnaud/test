@@ -32,7 +32,7 @@ class ConnectedPos extends Model {
           'Accept' => 'application/json'
         ],
         'json' => [
-          'name' => 'Pockeyt Customers',
+          'name' => Config::get('constants.clover.category')
         ]
       ]);
     } catch (ClientErrorResponseException $exception) {
@@ -67,13 +67,33 @@ class ConnectedPos extends Model {
 
   public function createDeleteCustomer($eventType, $userLocation) {
     if ($eventType == 'enter') {
-      $this->createPockeytCustomer($userLocation);
+      $this->addPockeytCustomer($userLocation);
     } else {
       $this->deletePockeytCustomer($userLocation);
     }
   }
 
-  public function createPockeytCustomer($userLocation) {
+  public function addPockeytCustomer($userLocation) {
+    
+  }
+
+  public function checkIfCloverCustomerExists() {
+    $client = new Client(['base_uri' => env('CLOVER_BASE_URL')]);
+    try {
+      $response = $client->request("GET", "v3/merchants/{$this->merchant_id}/items", [
+        'headers' => [
+          'Authorization' => 'Bearer ' . $this->token,
+          'Accept' => 'application/json'
+        ]
+      ]);
+    } catch (ClientErrorResponseException $exception) {
+      dd($exception->getResponse()->getBody(true));
+    }
+    $body = json_decode($response->getBody());
+    dd($body);
+  }
+
+  public function createPockeytCustomer() {
     $client = new Client(['base_uri' => env('CLOVER_BASE_URL')]);
     try {
       $response = $client->request('POST', 'v3/merchants/' . $this->merchant_id . '/items', [
