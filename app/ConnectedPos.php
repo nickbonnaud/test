@@ -16,8 +16,6 @@ class ConnectedPos extends Model {
   }
 
   public function addPockeytCustomersCategory() {
-    dd(strtolower(Config::get('constants.clover.category')));
-
     if(!$categoryId = $this->checkIfCategoryExistsInClover()) {
       dd("here");
       $categoryId = $this->createPockeytCustomersCategory();
