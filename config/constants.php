@@ -1,5 +1,5 @@
 return [
 	'clover' => [
-		'category' => 'Pockeyt Customer',
+		'cat' => 'Pockeyt Customer',
 	]
 ];
