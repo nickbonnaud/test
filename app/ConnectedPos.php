@@ -77,10 +77,10 @@ class ConnectedPos extends Model {
     
   }
 
-  public function checkIfCloverCustomerExists() {
+  public function checkIfCloverCustomerExists($userLocation) {
     $client = new Client(['base_uri' => env('CLOVER_BASE_URL')]);
     try {
-      $response = $client->request("GET", "v3/merchants/{$this->merchant_id}/categories/5EYQZRQB2WSA0/items", [
+      $response = $client->request("GET", "v3/merchants/{$this->merchant_id}/categories/{$this->clover_category_id}/items", [
         'headers' => [
           'Authorization' => 'Bearer ' . $this->token,
           'Accept' => 'application/json'
@@ -91,8 +91,11 @@ class ConnectedPos extends Model {
     }
     $body = json_decode($response->getBody());
     $customers = $body->elements;
+    dd($customers);
     foreach ($customers as $customer) {
-      dd("in foreach");
+      if (strtolower(Config::get('constants.clover.customer_prefix')) . $userLocation->user_id == $customer) {
+        # code...
+      }
     }
     dd("after");
   }
