@@ -16,6 +16,8 @@ class ConnectedPos extends Model {
   }
 
   public function addPockeytCustomersCategory() {
+    dd(strtolower(Config::get('constants.clover.category')));
+
     if(!$categoryId = $this->checkIfCategoryExistsInClover()) {
       dd("here");
       $categoryId = $this->createPockeytCustomersCategory();
@@ -60,7 +62,7 @@ class ConnectedPos extends Model {
     $body = json_decode($response->getBody());
     $categories = $body->elements;
     foreach ($categories as $category) {
-      if (strtolower($category->name) == Config::get('constants.clover.category')) {
+      if (strtolower($category->name) == strtolower(Config::get('constants.clover.category'))) {
         return category;
       }
     }
