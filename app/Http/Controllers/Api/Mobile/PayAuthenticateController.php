@@ -31,6 +31,8 @@ class PayAuthenticateController extends Controller {
 	}
 
 	public function me(Request $request) {
+		return response()->json(['error' => 'token_invalid'], 401);
+
 		try {
 			if (!$user = JWTAuth::parseToken()->authenticate()) {
 				return response()->json(['error' => 'user_not_found'], 404);
