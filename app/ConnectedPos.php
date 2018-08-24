@@ -46,6 +46,26 @@ class ConnectedPos extends Model {
     $client = new Client(['base_uri' => env('CLOVER_BASE_URL')]);
 
     try {
+      $response = $client->request("GET", "v3/merchants", [
+        'headers' => [
+          'Authorization' => 'Bearer ' . $this->token,
+          'Accept' => 'application/json'
+        ]
+      ]);
+    } catch (ClientErrorResponseException $exception) {
+      dd($exception->getResponse()->getBody(true));
+    }
+    $body = json_decode($response->getBody());
+    dd($body);
+
+
+
+
+
+
+    $client = new Client(['base_uri' => env('CLOVER_BASE_URL')]);
+
+    try {
       $response = $client->request("GET", "v3/merchants/{$this->merchant_id}/categories", [
         'headers' => [
           'Authorization' => 'Bearer ' . $this->token,
@@ -169,32 +189,46 @@ class ConnectedPos extends Model {
     }
   }
 
-  public function parseWebHookData($orderData) {
-    \Log::debug($orderData);
-    // foreach ($orderData as $order) {
-    //   $action = $order['type'];
-    //   $orderId = substr($order['objectId'], 2);
+  public function parseWebHookData($webHookData) {
+    \Log::debug($webHookData);
+    foreach ($webHookData as $webData) {
+      if (starts_with($webData['objectId'], 'A')) {
+        $this->deleteConnectedPos($webData);
+      } else {
+        $this->updateUserLocationOrTransaction($webData);
+      }
+    }
+  }
 
-    //   if ($action == 'DELETE') {
-    //     $this->deleteCloverTransaction($orderId);
-    //   } else {
-    //     $data = $this->getLineItems($orderId);
-    //     if ($customer = $data['customer']) {
-    //       $cloverTransaction = $this->getTransactionData($orderId);
-    //       $transaction = Transaction::where('pos_transaction_id', $cloverTransaction->id)->first();
-    //       $userLocation = UserLocation::where('profile_id', $this->profile_id)->where('user_id', $customer->id)->first();
-    //       $userLocation->clover_line_item_id = $data['line_item_id'];
-    //       $userLocation->exit_notification_sent = false;
-    //       $userLocation->save();
+  public function deleteConnectedPos($webData) {
+    if ($webData['type'] == 'DELETE') {
+      
+    }
+  }
 
-    //       if ($transaction) {
-    //         $this->updateCloverTransaction($cloverTransaction, $data, $transaction);
-    //       } else {
-    //         $this->createCloverTransaction($cloverTransaction, $data);
-    //       }
-    //     }
-    //   }
-    // }
+  public function updateUserLocationOrTransaction($webData) {
+    $action = $webData['type'];
+    $orderId = substr($webData['objectId'], 2);
+
+    if ($action == 'DELETE') {
+      $this->deleteCloverTransaction($orderId);
+    } else {
+      $data = $this->getLineItems($orderId);
+      if ($customer = $data['customer']) {
+        $cloverTransaction = $this->getTransactionData($orderId);
+        $transaction = Transaction::where('pos_transaction_id', $cloverTransaction->id)->first();
+        $userLocation = UserLocation::where('profile_id', $this->profile_id)->where('user_id', $customer->id)->first();
+        $userLocation->clover_line_item_id = $data['line_item_id'];
+        $userLocation->exit_notification_sent = false;
+        $userLocation->save();
+
+        if ($transaction) {
+          $this->updateCloverTransaction($cloverTransaction, $data, $transaction);
+        } else {
+          $this->createCloverTransaction($cloverTransaction, $data);
+        }
+      }
+    }
   }
 
   public function getLineItems($orderId) {
