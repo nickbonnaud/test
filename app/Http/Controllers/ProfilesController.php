@@ -100,7 +100,7 @@ class ProfilesController extends Controller
 
     public function enter() {
         $profile = Profile::where('id', 1)->first();
-        $profile->connectedPos->checkIfCategoryExistsInClover();
+        $profile->connectedPos->addPockeytCustomersCategory();
 
 
 
