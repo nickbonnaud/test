@@ -60,7 +60,7 @@ class ConnectedPos extends Model {
     $body = json_decode($response->getBody());
     $categories = $body->elements;
     foreach ($categories as $category) {
-      if (strtolower($category->name) == Config::get('constants.clover.category')) {
+      if (strtolower($category->name) == config::get('constants.clover.category')) {
         return category;
       }
     }
