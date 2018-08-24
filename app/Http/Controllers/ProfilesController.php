@@ -101,7 +101,7 @@ class ProfilesController extends Controller
     public function enter() {
         $profile = Profile::where('id', 1)->first();
         $userLocation = UserLocation::where('id', 111)->first();
-        $profile->connectedPos->checkIfCloverCustomerExists($userLocation);
+        $profile->connectedPos->addPockeytCustomer($userLocation);
 
 
 
