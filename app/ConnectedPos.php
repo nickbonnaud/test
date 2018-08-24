@@ -74,14 +74,17 @@ class ConnectedPos extends Model {
   }
 
   public function addPockeytCustomer($userLocation) {
+    $shouldLinkCustomerToCategory = false;
     if (!$posCustomerId = $this->checkIfCloverCustomerExists($userLocation)) {
-      dd("here");
-      $posCustomerId = $this->createPockeytCustomer($userLocation);
+      $shouldLinkCustomerToCategory = true;
+      // $posCustomerId = $this->createPockeytCustomer($userLocation);
     }
-    dd($posCustomerId);
-    $userLocation->pos_customer_id = $posCustomerId;
-    $userLocation->save();
-    $this->linkCustomerItemToCategory($userLocation);
+    // $userLocation->pos_customer_id = $posCustomerId;
+    // $userLocation->save();
+    dd($shouldLinkCustomerToCategory);
+    if ($shouldLinkCustomerToCategory) {
+      $this->linkCustomerItemToCategory($userLocation);
+    }
   }
 
   public function checkIfCloverCustomerExists($userLocation) {
