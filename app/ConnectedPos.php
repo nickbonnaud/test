@@ -74,7 +74,7 @@ class ConnectedPos extends Model {
   }
 
   public function addPockeytCustomer($userLocation) {
-    if (!$posCustomerId = checkIfCloverCustomerExists($userLocation)) {
+    if (!$posCustomerId = $this->checkIfCloverCustomerExists($userLocation)) {
       dd("here");
       $posCustomerId = $this->createPockeytCustomer($userLocation);
     }
