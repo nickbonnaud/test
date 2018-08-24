@@ -1,6 +1,6 @@
 <?php
 return [
 	'clover' => [
-		'cat' => 'Pockeyt Customer',
+		'category' => 'Pockeyt Customer',
 	]
 ];
