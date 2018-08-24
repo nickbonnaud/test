@@ -90,7 +90,11 @@ class ConnectedPos extends Model {
       dd($exception->getResponse()->getBody(true));
     }
     $body = json_decode($response->getBody());
-    dd($body);
+    $customers = $body->elements;
+    foreach ($customers as $customer) {
+      dd("in foreach");
+    }
+    dd("after");
   }
 
   public function createPockeytCustomer() {
