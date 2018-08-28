@@ -22,8 +22,10 @@ class PayTransactionsController extends Controller {
 		$profile = $user->profile;
 
 		$transaction = Transaction::filter($filters, $profile)->first();
-		\Log::debug("*******************************************");
-		\Log::debug($transaction);
+
+		if (!$transaction) {
+			return response()->json(['error' => 'no_transaction_matching_criteria'], 200);
+		}
 		return new ApiTransactionResource($transaction);
 	}
 
