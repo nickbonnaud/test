@@ -24,7 +24,7 @@ class PayTransactionsController extends Controller {
 		$transaction = Transaction::filter($filters, $profile)->first();
 
 		if (!$transaction) {
-			return response()->json(['error' => 'no_transaction_matching_criteria'], 200);
+			return response()->json(['error' => 'no_transaction_matching_criteria'], 404);
 		}
 		return new ApiTransactionResource($transaction);
 	}
