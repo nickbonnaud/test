@@ -133,7 +133,6 @@ class ConnectedPos extends Model {
       dd($exception->getResponse()->getBody(true));
     }
     $body = json_decode($response->getBody());
-    dd($body);
     return $body->id;
   }
 
