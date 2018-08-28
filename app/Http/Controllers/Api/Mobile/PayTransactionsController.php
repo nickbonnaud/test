@@ -56,12 +56,9 @@ class PayTransactionsController extends Controller {
 	}
 
 	private function findOrCreateTransaction($request, $profile) {
-		\Log::debug("Employee Id: " . $request->employee_id);
 		if ($request->transaction_id) {
-			\Log::debug("Has transaction_id");
 			$transaction = Transaction::where('id', $request->transaction_id)->first();
 			if ($transaction->total != $request->total) {
-				\Log::debug("Not equal");
 				$connectedPos = $profile->connectedPos;
 				$cloverTransaction = $connectedPos->getTransactionData($request->pos_transaction_id);
 				$data = $connectedPos->getLineItems($request->pos_transaction_id);
@@ -84,7 +81,6 @@ class PayTransactionsController extends Controller {
 			}
 			return $transaction;
 		} else {
-			\Log::debug("No transaction_id");
 			$connectedPos = $profile->connectedPos;
 			$data = $connectedPos->getLineItems($request->pos_transaction_id);
 
