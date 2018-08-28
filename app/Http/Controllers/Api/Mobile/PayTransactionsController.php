@@ -22,6 +22,7 @@ class PayTransactionsController extends Controller {
 		$profile = $user->profile;
 
 		$transaction = Transaction::filter($filters, $profile)->first();
+		\Log::debug($transaction);
 		return new ApiTransactionResource($transaction);
 	}
 
