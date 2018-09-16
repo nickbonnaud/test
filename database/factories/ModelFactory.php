@@ -188,15 +188,6 @@ $factory->define(App\Photo::class, function ($faker) {
   ];
 });
 
-$factory->define(App\Beacon::class, function ($faker) {
-  $profile = factory('App\Profile')->create();
-  return [
-    'profile_id' => $profile->id,
-    'uuid' => $faker->uuid,
-    'identifier' => $profile->slug
-  ];
-});
-
 $factory->define(App\ConnectedPos::class, function ($faker) {
   $profile = factory('App\Profile')->create();
   return [
@@ -217,4 +208,12 @@ $factory->define(App\Employee::class, function ($faker) {
   ];
 });
 
+$factory->define(App\Beacon::class, function ($faker) {
+  $profile = factory('App\Profile')->create();
+  return [
+    'profile_id' => $profile->id,
+    'uuid' => $faker->uuid,
+    'identifier' => $profile->slug
+  ];
+});
 

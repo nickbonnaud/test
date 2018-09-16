@@ -19,7 +19,8 @@
         "pusher/pusher-php-server": "^3.0",
         "socialiteproviders/instagram": "^3.0",
         "splashpayments/splashpayments-php": "^1.0",
-        "tymon/jwt-auth": "dev-develop"
+        "tymon/jwt-auth": "dev-develop",
+        "webpatser/laravel-uuid": "^3.0"
     },
     "require-dev": {
         "filp/whoops": "~2.0",

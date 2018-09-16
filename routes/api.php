@@ -83,6 +83,7 @@ Route::prefix('pay')->group(function() {
 	Route::get('transaction', 'PayTransactionsController@index');
 	Route::get('employees', 'PayEmployeesController@index');
 	Route::get('tips', 'PayTipsController@index');
+	Route::get('beacons', 'PayBeaconsController@index');
 
 	Route::post('employees', 'PayEmployeesController@store');
 	Route::post('login', 'PayAuthenticateController@login');
