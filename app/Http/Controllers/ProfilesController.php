@@ -101,7 +101,7 @@ class ProfilesController extends Controller
     public function enter() {
         UserLocation::create([
             'profile_id' => 1,
-            'user_id' => 288
+            'user_id' => 124
         ]);
 
 
